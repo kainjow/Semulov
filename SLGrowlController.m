@@ -57,13 +57,15 @@
     NSString *notifTitle = SL_VOLUME_MOUNTED;
     NSString *notifDescription = [volume name];
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
-	[GrowlApplicationBridge notifyWithTitle:notifTitle
-								description:notifDescription
-						   notificationName:SL_VOLUME_MOUNTED
-								   iconData:[[volume image] TIFFRepresentation]
-								   priority:0
-								   isSticky:NO
-							   clickContext:[volume path]];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SLPostGrowlNotifications"]) {
+        [GrowlApplicationBridge notifyWithTitle:notifTitle
+                                    description:notifDescription
+                               notificationName:SL_VOLUME_MOUNTED
+                                       iconData:[[volume image] TIFFRepresentation]
+                                       priority:0
+                                       isSticky:NO
+                                   clickContext:[volume path]];
+    }
 }
 
 - (void)postVolumeUnmounted:(SLVolume *)volume;
@@ -71,13 +73,15 @@
     NSString *notifTitle = SL_VOLUME_UNMOUNTED;
     NSString *notifDescription = [volume name];
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
-	[GrowlApplicationBridge notifyWithTitle:notifTitle
-								description:notifDescription
-						   notificationName:SL_VOLUME_UNMOUNTED
-								   iconData:[[volume image] TIFFRepresentation]
-								   priority:0
-								   isSticky:NO
-							   clickContext:NULL];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SLPostGrowlNotifications"]) {
+        [GrowlApplicationBridge notifyWithTitle:notifTitle
+                                    description:notifDescription
+                               notificationName:SL_VOLUME_UNMOUNTED
+                                       iconData:[[volume image] TIFFRepresentation]
+                                       priority:0
+                                       isSticky:NO
+                                   clickContext:NULL];
+    }
 }
 
 - (void)growlNotificationWasClicked:(id)context

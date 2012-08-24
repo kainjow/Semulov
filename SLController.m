@@ -36,7 +36,7 @@
 
 + (void)initialize
 {
-	[[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:[NSDictionary dictionaryWithObjectsAndKeys:
+	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		[NSNumber numberWithBool:YES], SLShowVolumesNumber,
 		[NSNumber numberWithBool:NO], SLShowStartupDisk,
 		[NSNumber numberWithBool:NO], SLShowEjectAll,
@@ -44,7 +44,8 @@
 		[NSNumber numberWithBool:NO], SLLaunchAtStartup,
 		[NSNumber numberWithBool:NO], SLDisableDiscardWarning,
 		[NSNumber numberWithBool:NO], SLHideInternalDrives,
-		[NSNumber numberWithBool:NO], SLShowUnmountedVolumes,																	   
+		[NSNumber numberWithBool:NO], SLShowUnmountedVolumes,
+        [NSNumber numberWithBool:YES], @"SLPostGrowlNotifications",
 		nil]];
 }
 
