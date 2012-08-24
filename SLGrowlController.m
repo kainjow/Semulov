@@ -8,8 +8,8 @@
 
 #import "SLGrowlController.h"
 
-#define SL_VOLUME_MOUNTED	@"Volume Mounted"
-#define SL_VOLUME_UNMOUNTED	@"Volume Unmounted"
+#define SL_VOLUME_MOUNTED	NSLocalizedString(@"Volume Mounted", "")
+#define SL_VOLUME_UNMOUNTED	NSLocalizedString(@"Volume Unmounted", "")
 
 
 @implementation SLGrowlController
@@ -40,10 +40,25 @@
 		nil];
 }
 
+- (void)postNotificationCenterWithTitle:(NSString *)title subtitle:(NSString *)subtitle
+{
+    // We don't yet link against 10.8 SDK so can't use this API directly yet.
+    id userNotificationCenterClass = NSClassFromString(@"NSUserNotificationCenter");
+    if (userNotificationCenterClass != nil) {
+        id note = [[[NSClassFromString(@"NSUserNotification") alloc] init] autorelease];
+        [note setValue:title forKey:@"title"];
+        [note setValue:subtitle forKey:@"subtitle"];
+        [[userNotificationCenterClass performSelector:@selector(defaultUserNotificationCenter)] performSelector:@selector(deliverNotification:) withObject:note];
+    }
+}
+
 - (void)postVolumeMounted:(SLVolume *)volume
 {
-	[GrowlApplicationBridge notifyWithTitle:SL_VOLUME_MOUNTED
-								description:[volume name]
+    NSString *notifTitle = SL_VOLUME_MOUNTED;
+    NSString *notifDescription = [volume name];
+    [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
+	[GrowlApplicationBridge notifyWithTitle:notifTitle
+								description:notifDescription
 						   notificationName:SL_VOLUME_MOUNTED
 								   iconData:[[volume image] TIFFRepresentation]
 								   priority:0
@@ -53,8 +68,11 @@
 
 - (void)postVolumeUnmounted:(SLVolume *)volume;
 {
-	[GrowlApplicationBridge notifyWithTitle:SL_VOLUME_UNMOUNTED
-								description:[volume name]
+    NSString *notifTitle = SL_VOLUME_UNMOUNTED;
+    NSString *notifDescription = [volume name];
+    [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
+	[GrowlApplicationBridge notifyWithTitle:notifTitle
+								description:notifDescription
 						   notificationName:SL_VOLUME_UNMOUNTED
 								   iconData:[[volume image] TIFFRepresentation]
 								   priority:0
