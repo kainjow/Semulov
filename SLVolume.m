@@ -447,7 +447,8 @@ void volumeUnmountCallback(FSVolumeOperation volumeOp, void *clientData, OSStatu
 - (BOOL)isiPod
 {
 	BOOL isDir;
-	return ([[[NSFileManager alloc] init] fileExistsAtPath:[[self path] stringByAppendingPathComponent:@"iPod_Control"] isDirectory:&isDir] && isDir);
+    NSFileManager *fm = [[[NSFileManager alloc] init] autorelease];
+	return ([fm fileExistsAtPath:[[self path] stringByAppendingPathComponent:@"iPod_Control"] isDirectory:&isDir] && isDir);
 }
 
 - (NSComparisonResult)compare:(SLVolume *)b
