@@ -1,0 +1,404 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A5000D0C147ABDA20081A168 /* NSApplicationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A5000D0A147ABDA20081A168 /* NSApplicationAdditions.m */; };
+		A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A518D7730BB19CC5009EC77B /* DiskArbitration.framework */; };
+		A5455F8C0AFE64C6001F61C8 /* SLController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5455F8B0AFE64C6001F61C8 /* SLController.m */; };
+		A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = A5455FE60AFE66A1001F61C8 /* SLVolume.m */; };
+		A54561870AFE720D001F61C8 /* SLGrowlController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54561850AFE720D001F61C8 /* SLGrowlController.m */; };
+		A5537F0E0C822FE000A1806D /* SLNSImageAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A5537F0C0C822FE000A1806D /* SLNSImageAdditions.m */; };
+		A5537F1C0C82312D00A1806D /* SemulovIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A5537F1B0C82312D00A1806D /* SemulovIcon.icns */; };
+		A5552A140B10C2C9005EB062 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A5552A130B10C2C9005EB062 /* Credits.rtf */; };
+		A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */; };
+		A585413E13E5D5220002EF3C /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A585413D13E5D5220002EF3C /* Growl.framework */; };
+		A585415313E5D5BE0002EF3C /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = A585413D13E5D5220002EF3C /* Growl.framework */; };
+		A585417B13E5D6830002EF3C /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = A585417913E5D6830002EF3C /* Preferences.xib */; };
+		A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58BD399140FFCA8007E9DF9 /* IOKit.framework */; };
+		A58BD4BD14100163007E9DF9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4B914100163007E9DF9 /* Localizable.strings */; };
+		A58BD4BE14100163007E9DF9 /* Labels.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4BB14100163007E9DF9 /* Labels.strings */; };
+		A58BD52014100451007E9DF9 /* SLDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A58BD51F14100451007E9DF9 /* SLDeviceManager.m */; };
+		A58BD55F141006F5007E9DF9 /* SLUnmountedVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = A58BD55E141006F5007E9DF9 /* SLUnmountedVolume.m */; };
+		A5D4B9A2140F4C54005C0A59 /* DiscRecording.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A553835D0C825C9A00A1806D /* DiscRecording.framework */; };
+		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A545617F0AFE71F5001F61C8 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A585415313E5D5BE0002EF3C /* Growl.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* Semulov_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Semulov_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* Semulov.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Semulov.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5000D0A147ABDA20081A168 /* NSApplicationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSApplicationAdditions.m; sourceTree = "<group>"; };
+		A5000D0B147ABDA20081A168 /* NSApplicationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSApplicationAdditions.h; sourceTree = "<group>"; };
+		A518D7730BB19CC5009EC77B /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = /System/Library/Frameworks/DiskArbitration.framework; sourceTree = "<absolute>"; };
+		A5455F8A0AFE64C6001F61C8 /* SLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLController.h; sourceTree = "<group>"; };
+		A5455F8B0AFE64C6001F61C8 /* SLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLController.m; sourceTree = "<group>"; };
+		A5455FE50AFE66A1001F61C8 /* SLVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLVolume.h; sourceTree = "<group>"; };
+		A5455FE60AFE66A1001F61C8 /* SLVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLVolume.m; sourceTree = "<group>"; };
+		A54561840AFE720D001F61C8 /* SLGrowlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLGrowlController.h; sourceTree = "<group>"; };
+		A54561850AFE720D001F61C8 /* SLGrowlController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLGrowlController.m; sourceTree = "<group>"; };
+		A5537F0B0C822FE000A1806D /* SLNSImageAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLNSImageAdditions.h; sourceTree = "<group>"; };
+		A5537F0C0C822FE000A1806D /* SLNSImageAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLNSImageAdditions.m; sourceTree = "<group>"; };
+		A5537F1B0C82312D00A1806D /* SemulovIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SemulovIcon.icns; sourceTree = "<group>"; };
+		A553835D0C825C9A00A1806D /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = /System/Library/Frameworks/DiscRecording.framework; sourceTree = "<absolute>"; };
+		A5552A130B10C2C9005EB062 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTaskAdditions.h; sourceTree = "<group>"; };
+		A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTaskAdditions.m; sourceTree = "<group>"; };
+		A585413D13E5D5220002EF3C /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = "<group>"; };
+		A585417A13E5D6830002EF3C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
+		A58BD399140FFCA8007E9DF9 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		A58BD4BA14100163007E9DF9 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A58BD4BC14100163007E9DF9 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Labels.strings; sourceTree = "<group>"; };
+		A58BD51E14100451007E9DF9 /* SLDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDeviceManager.h; sourceTree = "<group>"; };
+		A58BD51F14100451007E9DF9 /* SLDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDeviceManager.m; sourceTree = "<group>"; };
+		A58BD55D141006F5007E9DF9 /* SLUnmountedVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLUnmountedVolume.h; sourceTree = "<group>"; };
+		A58BD55E141006F5007E9DF9 /* SLUnmountedVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLUnmountedVolume.m; sourceTree = "<group>"; };
+		A5D982940C8B7F7B002A802F /* Eject.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Eject.pdf; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */,
+				A585413E13E5D5220002EF3C /* Growl.framework in Frameworks */,
+				A5D4B9A2140F4C54005C0A59 /* DiscRecording.framework in Frameworks */,
+				A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A5455F8A0AFE64C6001F61C8 /* SLController.h */,
+				A5455F8B0AFE64C6001F61C8 /* SLController.m */,
+				A5455FE50AFE66A1001F61C8 /* SLVolume.h */,
+				A5455FE60AFE66A1001F61C8 /* SLVolume.m */,
+				A58BD55D141006F5007E9DF9 /* SLUnmountedVolume.h */,
+				A58BD55E141006F5007E9DF9 /* SLUnmountedVolume.m */,
+				A58BD51E14100451007E9DF9 /* SLDeviceManager.h */,
+				A58BD51F14100451007E9DF9 /* SLDeviceManager.m */,
+				A54561840AFE720D001F61C8 /* SLGrowlController.h */,
+				A54561850AFE720D001F61C8 /* SLGrowlController.m */,
+				A5537F0B0C822FE000A1806D /* SLNSImageAdditions.h */,
+				A5537F0C0C822FE000A1806D /* SLNSImageAdditions.m */,
+				A5000D0B147ABDA20081A168 /* NSApplicationAdditions.h */,
+				A5000D0A147ABDA20081A168 /* NSApplicationAdditions.m */,
+				A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */,
+				A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* Semulov.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Semulov */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				A58540F013E5D3B60002EF3C /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = Semulov;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A5D982940C8B7F7B002A802F /* Eject.pdf */,
+				A5537F1B0C82312D00A1806D /* SemulovIcon.icns */,
+				A5552A130B10C2C9005EB062 /* Credits.rtf */,
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				A58BD4B914100163007E9DF9 /* Localizable.strings */,
+				A58BD4BB14100163007E9DF9 /* Labels.strings */,
+				A585417913E5D6830002EF3C /* Preferences.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				A518D7730BB19CC5009EC77B /* DiskArbitration.framework */,
+				A553835D0C825C9A00A1806D /* DiscRecording.framework */,
+				A585413D13E5D5220002EF3C /* Growl.framework */,
+				A58BD399140FFCA8007E9DF9 /* IOKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A58540F013E5D3B60002EF3C /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* Semulov_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Semulov */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Semulov" */;
+			buildPhases = (
+				A58BD4C11410017D007E9DF9 /* Run genstrings */,
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				A545617F0AFE71F5001F61C8 /* Copy Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Semulov;
+			productInstallPath = "$(HOME)/Applications";
+			productName = Semulov;
+			productReference = 8D1107320486CEB800E47090 /* Semulov.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0410;
+				ORGANIZATIONNAME = "Kevin Wojniak";
+			};
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Semulov" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Semulov */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Semulov */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				A5552A140B10C2C9005EB062 /* Credits.rtf in Resources */,
+				A5537F1C0C82312D00A1806D /* SemulovIcon.icns in Resources */,
+				A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */,
+				A585417B13E5D6830002EF3C /* Preferences.xib in Resources */,
+				A58BD4BD14100163007E9DF9 /* Localizable.strings in Resources */,
+				A58BD4BE14100163007E9DF9 /* Labels.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A58BD4C11410017D007E9DF9 /* Run genstrings */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run genstrings";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "genstrings -o English.lproj *.m";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				A5455F8C0AFE64C6001F61C8 /* SLController.m in Sources */,
+				A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */,
+				A54561870AFE720D001F61C8 /* SLGrowlController.m in Sources */,
+				A5537F0E0C822FE000A1806D /* SLNSImageAdditions.m in Sources */,
+				A58BD52014100451007E9DF9 /* SLDeviceManager.m in Sources */,
+				A58BD55F141006F5007E9DF9 /* SLUnmountedVolume.m in Sources */,
+				A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */,
+				A5000D0C147ABDA20081A168 /* NSApplicationAdditions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A585417913E5D6830002EF3C /* Preferences.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A585417A13E5D6830002EF3C /* English */,
+			);
+			name = Preferences.xib;
+			sourceTree = "<group>";
+		};
+		A58BD4B914100163007E9DF9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58BD4BA14100163007E9DF9 /* English */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A58BD4BB14100163007E9DF9 /* Labels.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58BD4BC14100163007E9DF9 /* English */,
+			);
+			name = Labels.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Frameworks\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Semulov;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Frameworks\"",
+				);
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Semulov;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Semulov" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Semulov" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
