@@ -87,13 +87,14 @@
 				NSDictionary *diskImages = [SLVolume mountedDiskImages];
 				for (int i = 0; i < count; i++) {
 					SLVolume *vol = [SLVolume volumeWithStatfs:&buf[i] mountedDiskImages:diskImages];
+                    if (vol == nil) {
+                        continue;
+                    }
                     if ([vol.path isEqualToString:@"/Volumes/MobileBackups"]) {
                         // Time Machine temp backups volume, ignore.
                         continue;
                     }
-					if (vol) {
-						[volumes addObject:vol];
-					}
+                    [volumes addObject:vol];
 				}
 			}
 			free(buf);
