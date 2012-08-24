@@ -43,8 +43,6 @@ typedef enum
 
 + (NSArray *)allVolumes;
 
-- (id)initWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages;
-
 - (NSString *)path;
 - (NSString *)name;
 - (NSImage *)image;

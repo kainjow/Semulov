@@ -13,6 +13,12 @@
 #import <IOKit/storage/IOStorageDeviceCharacteristics.h>
 #import "NSTaskAdditions.h"
 
+@interface SLVolume (Private)
+
++ (id)volumeWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages;
+- (id)initWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages;
+
+@end
 
 @implementation SLVolume
 
@@ -80,10 +86,13 @@
 			if (getfsstat(buf, count * sizeof(struct statfs), MNT_NOWAIT) > 0) {
 				NSDictionary *diskImages = [SLVolume mountedDiskImages];
 				for (int i = 0; i < count; i++) {
-					SLVolume *vol = [[SLVolume alloc] initWithStatfs:&buf[i] mountedDiskImages:diskImages];
+					SLVolume *vol = [SLVolume volumeWithStatfs:&buf[i] mountedDiskImages:diskImages];
+                    if ([vol.path isEqualToString:@"/Volumes/MobileBackups"]) {
+                        // Time Machine temp backups volume, ignore.
+                        continue;
+                    }
 					if (vol) {
 						[volumes addObject:vol];
-						[vol release];
 					}
 				}
 			}
@@ -92,6 +101,11 @@
 	}
 	[volumes sortUsingSelector:@selector(compare:)];
 	return volumes;
+}
+
++ (id)volumeWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages
+{
+    return [[[self alloc] initWithStatfs:statfs mountedDiskImages:diskImages] autorelease];
 }
 
 - (id)initWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages
@@ -141,11 +155,13 @@
 						_type = SLVolumeFTP;
 					} else if ([[_hostURL scheme] isEqualToString:@"afp"]) {
 						// keep as SLVolumeNetwork
+                    } else if ([[_hostURL scheme] isEqualToString:@"file"]) {
+                        // probably file://localhost/Volumes/MobileBackups/ (mtmfs)
 					} else {
 						if ([fileSystemType isEqualToString:@"webdav"]) {
 							_type = SLVolumeWebDAV;
 						} else {
-							NSLog(@"uknown URL: %@ (%@)", _hostURL, fileSystemType);
+							NSLog(@"unknown URL: %@ (%@)", _hostURL, fileSystemType);
 						}
 					}
 				}
@@ -430,7 +446,7 @@ void volumeUnmountCallback(FSVolumeOperation volumeOp, void *clientData, OSStatu
 - (BOOL)isiPod
 {
 	BOOL isDir;
-	return ([[NSFileManager defaultManager] fileExistsAtPath:[[self path] stringByAppendingPathComponent:@"iPod_Control"] isDirectory:&isDir] && isDir);
+	return ([[[NSFileManager alloc] init] fileExistsAtPath:[[self path] stringByAppendingPathComponent:@"iPod_Control"] isDirectory:&isDir] && isDir);
 }
 
 - (NSComparisonResult)compare:(SLVolume *)b
