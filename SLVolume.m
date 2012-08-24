@@ -96,7 +96,8 @@
 
 - (id)initWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages
 {
-	if ([super init])
+    self = [super init];
+    if (self != nil)
 	{
 		NSString *fileSystemType = [NSString stringWithCString:statfs->f_fstypename encoding:NSUTF8StringEncoding];
 		NSString *path = [NSString stringWithUTF8String:statfs->f_mntonname];
