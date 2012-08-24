@@ -48,6 +48,16 @@
 		nil]];
 }
 
+- (id)init
+{
+    self = [super init];
+    if (self != nil) {
+        queue = dispatch_queue_create("com.kainjow.semulov.update", DISPATCH_QUEUE_SERIAL);
+        dispatch_set_target_queue(queue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+    }
+    return self;
+}
+
 - (void)dealoc
 {
 	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self];
@@ -155,7 +165,7 @@
 
 - (void)updateStatusItemMenu
 {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	dispatch_async(queue, ^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@try {
 			NSArray *volumes = [SLVolume allVolumes];
@@ -354,8 +364,13 @@
 {
 	[self updateStatusItemMenu];
 	
-	[[SLGrowlController sharedController] postVolumeMounted:
-		[self volumeWithMountPath:[[not userInfo] objectForKey:@"NSDevicePath"]]];
+    NSString *devicePath = [[not userInfo] objectForKey:@"NSDevicePath"];
+    // post on the serial queue so that the volumes list is reloaded by the time we post the note.
+    dispatch_async(queue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[SLGrowlController sharedController] postVolumeMounted:[self volumeWithMountPath:devicePath]];
+        });
+    });
 }
 
 - (void)handleUnmount:(NSNotification *)not

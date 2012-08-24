@@ -16,6 +16,7 @@
 	NSArray *_volumes;
 	NSWindowController *_prefs;
 	SLDeviceManager *deviceManager;
+    dispatch_queue_t queue;
 }
 
 @end
