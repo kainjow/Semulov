@@ -122,6 +122,12 @@
 			[self release];
 			return nil;
 		}
+        
+        if ([fileSystemType isEqualToString:@"vmhgfs"]) {
+            // Ignore VMware Shared Folders internal mounted volume
+            [self release];
+            return nil;
+        }
 		
 		if ((statfs->f_flags & MNT_LOCAL) == MNT_LOCAL)
 			_local = YES;
