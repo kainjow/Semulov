@@ -17,6 +17,7 @@
 	NSWindowController *_prefs;
 	SLDeviceManager *deviceManager;
     dispatch_queue_t queue;
+    NSArray *ignoredVolumes;
 }
 
 @end

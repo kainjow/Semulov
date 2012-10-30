@@ -18,11 +18,10 @@
 #define SLShowVolumesNumber		@"SLShowVolumesNumber"
 #define SLShowStartupDisk		@"SLShowStartupDisk"
 #define SLShowEjectAll			@"SLShowEjectAll"
-#define SLDisableInternalHD		@"SLDisableInternalHD"
 #define SLLaunchAtStartup		@"SLLaunchAtStartup"
 #define SLDisableDiscardWarning	@"SLDisableDiscardWarning"
-#define SLHideInternalDrives	@"SLHideInternalDrives"
 #define SLShowUnmountedVolumes  @"SLShowUnmountedVolumes"
+#define SLIgnoredVolumes        @"SLIgnoredVolumes"
 
 
 @interface SLController (Private)
@@ -40,10 +39,8 @@
 		[NSNumber numberWithBool:YES], SLShowVolumesNumber,
 		[NSNumber numberWithBool:NO], SLShowStartupDisk,
 		[NSNumber numberWithBool:NO], SLShowEjectAll,
-		[NSNumber numberWithBool:YES], SLDisableInternalHD,
 		[NSNumber numberWithBool:NO], SLLaunchAtStartup,
 		[NSNumber numberWithBool:NO], SLDisableDiscardWarning,
-		[NSNumber numberWithBool:NO], SLHideInternalDrives,
 		[NSNumber numberWithBool:NO], SLShowUnmountedVolumes,
         [NSNumber numberWithBool:YES], @"SLPostGrowlNotifications",
 		nil]];
@@ -73,11 +70,22 @@
 	[super dealloc];
 }
 
+- (void)updateIgnoredVolumes
+{
+    [ignoredVolumes release];
+    ignoredVolumes = nil;
+    id obj = [[NSUserDefaults standardUserDefaults] objectForKey:@"SLIgnoredVolumes"];
+    if ([obj isKindOfClass:[NSString class]]) {
+        ignoredVolumes = [[obj componentsSeparatedByString:@"\n"] retain];
+    }
+}
+
 #pragma mark -
 #pragma mark App Delegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notif
 {
+    [self updateIgnoredVolumes];
 	[self setupStatusItem];
 	
 	[[SLGrowlController sharedController] setup];
@@ -91,7 +99,7 @@
 	[self setupBindings];
 	
 	// At startup make sure we're in the login items if the pref is set (user may have manually removed us)
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SLLaunchAtStartup"]) {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
 		[NSApp addToLoginItems];
 	}
 }
@@ -105,17 +113,16 @@
 	[sdc addObserver:self forKeyPath:@"values.SLShowVolumesNumber" options:0 context:SLShowVolumesNumber];
 	[sdc addObserver:self forKeyPath:@"values.SLShowStartupDisk" options:0 context:SLShowStartupDisk];
 	[sdc addObserver:self forKeyPath:@"values.SLShowEjectAll" options:0 context:SLShowEjectAll];
-	[sdc addObserver:self forKeyPath:@"values.SLDisableInternalHD" options:0 context:SLDisableInternalHD];
-	[sdc addObserver:self forKeyPath:@"values.SLLaunchAtStartup" options:0 context:SLLaunchAtStartup];
-	[sdc addObserver:self forKeyPath:@"values.SLHideInternalDrives" options:0 context:SLHideInternalDrives];
+	[sdc addObserver:self forKeyPath:@"values."SLLaunchAtStartup options:0 context:SLLaunchAtStartup];
 	[sdc addObserver:self forKeyPath:@"values.SLShowUnmountedVolumes" options:0 context:SLShowUnmountedVolumes];
+    [sdc addObserver:self forKeyPath:@"values."SLIgnoredVolumes options:0 context:SLIgnoredVolumes];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([(NSString *)context isEqualToString:@"SLLaunchAtStartup"])
+	if ([(NSString *)context isEqualToString:SLLaunchAtStartup])
 	{
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SLLaunchAtStartup"])
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup])
 		{
 			// add us to the login items
 			[NSApp addToLoginItems];
@@ -127,6 +134,9 @@
 	}
 	else
 	{
+        if ([(NSString*)context isEqualToString:SLIgnoredVolumes]) {
+            [self updateIgnoredVolumes];
+        }
 		[self updateStatusItemMenu];
 	}
 }
@@ -152,14 +162,8 @@
 
 - (BOOL)volumeCanBeEjected:(SLVolume *)volume
 {
-	NSArray *userDefaultValues = [[NSUserDefaultsController sharedUserDefaultsController] values];
-	
 	if ([volume isInternalHardDrive] == NO && [volume isRoot] == NO)
 		return YES;
-	
-	if ([[userDefaultValues valueForKey:SLDisableInternalHD] boolValue] || 
-		[[userDefaultValues valueForKey:SLHideInternalDrives] boolValue])
-		return NO;
 	
 	return YES;
 }
@@ -180,6 +184,27 @@
 	});
 }
 
+- (BOOL)volumeIsOnIgnoreList:(NSString *)volume
+{
+    for (NSString *ignoredVol in ignoredVolumes) {
+        if ([ignoredVol compare:volume options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSArray *)filterVolumes:(NSArray *)volumes
+{
+    NSMutableArray *newVolumes = [NSMutableArray array];
+    for (SLVolume *vol in volumes) {
+        if ([self volumeIsOnIgnoreList:vol.name] == NO) {
+            [newVolumes addObject:vol];
+        }
+    }
+    return newVolumes;
+}
+
 - (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -192,9 +217,9 @@
 	BOOL showVolumesNumber = [[defaultValues valueForKey:SLShowVolumesNumber] boolValue];
 	BOOL showStartupDisk = [[defaultValues valueForKey:SLShowStartupDisk] boolValue];
 	BOOL showEjectAll = [[defaultValues valueForKey:SLShowEjectAll] boolValue];
-	BOOL hideInternalDrives = [[defaultValues valueForKey:SLHideInternalDrives] boolValue];
 	BOOL showUnmountedVolumes = [[defaultValues valueForKey:SLShowUnmountedVolumes] boolValue];
 	
+    volumes = [self filterVolumes:volumes];
 	if (_volumes != volumes) {
 		[_volumes release];
 		_volumes = [volumes retain];
@@ -206,8 +231,7 @@
 	
 	for (SLVolume *vol in _volumes)
 	{
-		if ((showStartupDisk == NO && [vol isRoot]) ||
-			(hideInternalDrives && [vol isInternalHardDrive]))
+		if ((showStartupDisk == NO && [vol isRoot]))
 		{
 			continue;
 		}
@@ -317,7 +341,12 @@
 	}
 	
 	if (showUnmountedVolumes) {
-		NSArray *unmountedVols = deviceManager.unmountedVolumes;
+        NSMutableArray *unmountedVols = [NSMutableArray array];
+        for (SLUnmountedVolume *uvol in deviceManager.unmountedVolumes) {
+            if ([self volumeIsOnIgnoreList:uvol.name] == NO) {
+                [unmountedVols addObject:uvol];
+            }
+        }
 		if ([unmountedVols count] > 0) {
 			[[menu addItemWithTitle:NSLocalizedString(@"Unmounted", nil) action:@selector(doEjectAll:) keyEquivalent:@""] setAction:nil];
 			for (SLUnmountedVolume *uvol in unmountedVols) {
