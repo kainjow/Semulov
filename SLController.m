@@ -10,7 +10,7 @@
 #import "SLVolume.h"
 #import "SLGrowlController.h"
 #import "SLNSImageAdditions.h"
-#import "NSApplicationAdditions.h"
+#import "NSApplication+LoginItems.h"
 #import "SLDeviceManager.h"
 #import "SLUnmountedVolume.h"
 

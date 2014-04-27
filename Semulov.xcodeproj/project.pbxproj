@@ -10,7 +10,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		A5000D0C147ABDA20081A168 /* NSApplicationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A5000D0A147ABDA20081A168 /* NSApplicationAdditions.m */; };
+		A517AE45190C990900DB66DC /* NSApplication+LoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */; };
 		A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A518D7730BB19CC5009EC77B /* DiskArbitration.framework */; };
 		A5455F8C0AFE64C6001F61C8 /* SLController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5455F8B0AFE64C6001F61C8 /* SLController.m */; };
 		A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = A5455FE60AFE66A1001F61C8 /* SLVolume.m */; };
@@ -51,8 +51,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Semulov.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Semulov.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A5000D0A147ABDA20081A168 /* NSApplicationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSApplicationAdditions.m; sourceTree = "<group>"; };
-		A5000D0B147ABDA20081A168 /* NSApplicationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSApplicationAdditions.h; sourceTree = "<group>"; };
+		A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+LoginItems.h"; path = "NSAppLoginItems/NSApplication+LoginItems.h"; sourceTree = "<group>"; };
+		A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+LoginItems.m"; path = "NSAppLoginItems/NSApplication+LoginItems.m"; sourceTree = "<group>"; };
 		A518D7730BB19CC5009EC77B /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = /System/Library/Frameworks/DiskArbitration.framework; sourceTree = "<absolute>"; };
 		A5455F8A0AFE64C6001F61C8 /* SLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLController.h; sourceTree = "<group>"; };
 		A5455F8B0AFE64C6001F61C8 /* SLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLController.m; sourceTree = "<group>"; };
@@ -110,10 +110,10 @@
 				A54561850AFE720D001F61C8 /* SLGrowlController.m */,
 				A5537F0B0C822FE000A1806D /* SLNSImageAdditions.h */,
 				A5537F0C0C822FE000A1806D /* SLNSImageAdditions.m */,
-				A5000D0B147ABDA20081A168 /* NSApplicationAdditions.h */,
-				A5000D0A147ABDA20081A168 /* NSApplicationAdditions.m */,
 				A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */,
 				A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */,
+				A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */,
+				A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -271,7 +271,7 @@
 				A58BD52014100451007E9DF9 /* SLDeviceManager.m in Sources */,
 				A58BD55F141006F5007E9DF9 /* SLUnmountedVolume.m in Sources */,
 				A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */,
-				A5000D0C147ABDA20081A168 /* NSApplicationAdditions.m in Sources */,
+				A517AE45190C990900DB66DC /* NSApplication+LoginItems.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
