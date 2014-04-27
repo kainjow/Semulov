@@ -286,7 +286,7 @@
 		// setup the first alternate item
 		altMenu = [[[NSMenuItem alloc] initWithTitle:[vol name] action:mainItemAction keyEquivalent:@""] autorelease];
 		[altMenu setAlternate:YES];
-		[altMenu setKeyEquivalentModifierMask:NSAlternateKeyMask];
+		[altMenu setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
 		[altMenu setRepresentedObject:vol];
 		[altMenu setImage:mainItemImage];
 		[altMenu setIndentationLevel:1];
@@ -302,7 +302,7 @@
 		// setup the second alternate item
 		altaltMenu = [[[NSMenuItem alloc] initWithTitle:[vol name] action:mainItemAction keyEquivalent:@""] autorelease];
 		[altaltMenu setAlternate:YES];
-		[altaltMenu setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
+		[altaltMenu setKeyEquivalentModifierMask:NSAlternateKeyMask];
 		[altaltMenu setRepresentedObject:vol];
 		[altaltMenu setImage:mainItemImage];
 		[altaltMenu setIndentationLevel:1];
