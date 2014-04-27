@@ -171,7 +171,7 @@
 - (void)updateStatusItemMenu
 {
 	dispatch_async(queue, ^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        @autoreleasepool {
 		@try {
 			NSArray *volumes = [SLVolume allVolumes];
 			dispatch_async(dispatch_get_main_queue(), ^{
@@ -180,7 +180,7 @@
 		} @catch (NSException *ex) {
 			NSLog(@"Caught exception: %@", ex);
 		}
-		[pool release];
+        }
 	});
 }
 

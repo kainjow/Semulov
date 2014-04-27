@@ -12,8 +12,7 @@
 
 int main(int argc, char *argv[])
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
+    @autoreleasepool {
 	[NSApplication sharedApplication];
 
 	SLController *controller = [[SLController alloc] init];
@@ -23,7 +22,6 @@ int main(int argc, char *argv[])
 	
 	[controller release];
 	
-	[pool release];
-	
     return 0;
+    }
 }
