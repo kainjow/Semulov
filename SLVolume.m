@@ -426,7 +426,9 @@ void volumeUnmountCallback(FSVolumeOperation volumeOp, void *clientData, OSStatu
 
 - (BOOL)showInFinder
 {
-	return [[NSWorkspace sharedWorkspace] openFile:[self path]];
+    // Use selectFile:inFileViewerRootedAtPath: for Path Finder compatibility.
+    // http://support.cocoatech.com/discussions/problems/12500-correct-code-for-path-finder-vs-finder-integration
+	return [[NSWorkspace sharedWorkspace] selectFile:nil inFileViewerRootedAtPath:[self path]];
 }
 
 - (SLVolumeType)type
