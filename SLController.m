@@ -207,8 +207,6 @@
 
 - (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	[_statusItem setMenu:[[[NSMenu alloc] init] autorelease]];
 	
 	NSMenu *menu = [[[NSMenu alloc] init] autorelease];
@@ -373,8 +371,6 @@
 	[menu addItem:slMenuItem];
 
 	[_statusItem setMenu:menu];
-	
-	[pool release];
 }
 
 #pragma mark -
