@@ -22,24 +22,6 @@
 	return instance;
 }
 
-- (void)setup
-{
-	[GrowlApplicationBridge setGrowlDelegate:self];
-}
-
-- (NSDictionary *)registrationDictionaryForGrowl
-{
-	NSArray *keys = [NSArray arrayWithObjects:
-		SL_VOLUME_MOUNTED,
-		SL_VOLUME_UNMOUNTED,
-		nil];
-	
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		keys, GROWL_NOTIFICATIONS_ALL,
-		keys, GROWL_NOTIFICATIONS_DEFAULT,
-		nil];
-}
-
 - (void)postNotificationCenterWithTitle:(NSString *)title subtitle:(NSString *)subtitle
 {
     // We don't yet link against 10.8 SDK so can't use this API directly yet.
@@ -57,15 +39,6 @@
     NSString *notifTitle = SL_VOLUME_MOUNTED;
     NSString *notifDescription = [volume name];
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SLPostGrowlNotifications"]) {
-        [GrowlApplicationBridge notifyWithTitle:notifTitle
-                                    description:notifDescription
-                               notificationName:SL_VOLUME_MOUNTED
-                                       iconData:[[volume image] TIFFRepresentation]
-                                       priority:0
-                                       isSticky:NO
-                                   clickContext:[volume path]];
-    }
 }
 
 - (void)postVolumeUnmounted:(SLVolume *)volume;
@@ -73,20 +46,6 @@
     NSString *notifTitle = SL_VOLUME_UNMOUNTED;
     NSString *notifDescription = [volume name];
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SLPostGrowlNotifications"]) {
-        [GrowlApplicationBridge notifyWithTitle:notifTitle
-                                    description:notifDescription
-                               notificationName:SL_VOLUME_UNMOUNTED
-                                       iconData:[[volume image] TIFFRepresentation]
-                                       priority:0
-                                       isSticky:NO
-                                   clickContext:NULL];
-    }
-}
-
-- (void)growlNotificationWasClicked:(id)context
-{
-	[[NSWorkspace sharedWorkspace] openFile:context];
 }
 
 @end

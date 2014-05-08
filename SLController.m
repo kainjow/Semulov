@@ -42,7 +42,6 @@
 		[NSNumber numberWithBool:NO], SLLaunchAtStartup,
 		[NSNumber numberWithBool:NO], SLDisableDiscardWarning,
 		[NSNumber numberWithBool:NO], SLShowUnmountedVolumes,
-        [NSNumber numberWithBool:YES], @"SLPostGrowlNotifications",
 		nil]];
 }
 
@@ -87,8 +86,6 @@
 {
     [self updateIgnoredVolumes];
 	[self setupStatusItem];
-	
-	[[SLGrowlController sharedController] setup];
 	
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(handleMount:) name:NSWorkspaceDidMountNotification object:nil];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(handleUnmount:) name:NSWorkspaceDidUnmountNotification object:nil];

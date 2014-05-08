@@ -7,17 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Growl/Growl.h>
 #import "SLVolume.h"
 
 
-@interface SLGrowlController : NSObject <GrowlApplicationBridgeDelegate>
+@interface SLGrowlController : NSObject
 {
 
 }
 
 + (id)sharedController;
-- (void)setup;
 
 - (void)postVolumeMounted:(SLVolume *)volume;
 - (void)postVolumeUnmounted:(SLVolume *)volume;

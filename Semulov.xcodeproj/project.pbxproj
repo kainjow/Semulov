@@ -19,8 +19,6 @@
 		A5537F1C0C82312D00A1806D /* SemulovIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A5537F1B0C82312D00A1806D /* SemulovIcon.icns */; };
 		A5552A140B10C2C9005EB062 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A5552A130B10C2C9005EB062 /* Credits.rtf */; };
 		A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */; };
-		A585413E13E5D5220002EF3C /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A585413D13E5D5220002EF3C /* Growl.framework */; };
-		A585415313E5D5BE0002EF3C /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = A585413D13E5D5220002EF3C /* Growl.framework */; };
 		A585417B13E5D6830002EF3C /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = A585417913E5D6830002EF3C /* Preferences.xib */; };
 		A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58BD399140FFCA8007E9DF9 /* IOKit.framework */; };
 		A58BD4BD14100163007E9DF9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4B914100163007E9DF9 /* Localizable.strings */; };
@@ -38,7 +36,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A585415313E5D5BE0002EF3C /* Growl.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,7 +64,6 @@
 		A5552A130B10C2C9005EB062 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTaskAdditions.h; sourceTree = "<group>"; };
 		A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTaskAdditions.m; sourceTree = "<group>"; };
-		A585413D13E5D5220002EF3C /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = "<group>"; };
 		A585417A13E5D6830002EF3C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
 		A58BD399140FFCA8007E9DF9 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		A58BD4BA14100163007E9DF9 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -86,7 +82,6 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */,
-				A585413E13E5D5220002EF3C /* Growl.framework in Frameworks */,
 				A5D4B9A2140F4C54005C0A59 /* DiscRecording.framework in Frameworks */,
 				A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */,
 			);
@@ -159,7 +154,6 @@
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				A518D7730BB19CC5009EC77B /* DiskArbitration.framework */,
 				A553835D0C825C9A00A1806D /* DiscRecording.framework */,
-				A585413D13E5D5220002EF3C /* Growl.framework */,
 				A58BD399140FFCA8007E9DF9 /* IOKit.framework */,
 			);
 			name = Frameworks;
