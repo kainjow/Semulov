@@ -3,7 +3,7 @@
 //  Semulov
 //
 //  Created by Kevin Wojniak on 11/5/06.
-//  Copyright __MyCompanyName__ 2006. All rights reserved.
+//  Copyright Kevin Wojniak 2006. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
