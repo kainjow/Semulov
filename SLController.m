@@ -19,9 +19,9 @@
 #define SLShowStartupDisk		@"SLShowStartupDisk"
 #define SLShowEjectAll			@"SLShowEjectAll"
 #define SLLaunchAtStartup		@"SLLaunchAtStartup"
-#define SLDisableDiscardWarning	@"SLDisableDiscardWarning"
 #define SLShowUnmountedVolumes  @"SLShowUnmountedVolumes"
 #define SLIgnoredVolumes        @"SLIgnoredVolumes"
+#define SLReverseChooseAction   @"SLReverseChooseAction"
 
 
 @interface SLController (Private)
@@ -40,8 +40,8 @@
 		[NSNumber numberWithBool:NO], SLShowStartupDisk,
 		[NSNumber numberWithBool:NO], SLShowEjectAll,
 		[NSNumber numberWithBool:NO], SLLaunchAtStartup,
-		[NSNumber numberWithBool:NO], SLDisableDiscardWarning,
 		[NSNumber numberWithBool:NO], SLShowUnmountedVolumes,
+        [NSNumber numberWithBool:NO], SLReverseChooseAction,
 		nil]];
 }
 
@@ -113,6 +113,7 @@
 	[sdc addObserver:self forKeyPath:@"values."SLLaunchAtStartup options:0 context:SLLaunchAtStartup];
 	[sdc addObserver:self forKeyPath:@"values.SLShowUnmountedVolumes" options:0 context:SLShowUnmountedVolumes];
     [sdc addObserver:self forKeyPath:@"values."SLIgnoredVolumes options:0 context:SLIgnoredVolumes];
+    [sdc addObserver:self forKeyPath:@"values."SLReverseChooseAction options:0 context:SLReverseChooseAction];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -213,6 +214,7 @@
 	BOOL showStartupDisk = [[defaultValues valueForKey:SLShowStartupDisk] boolValue];
 	BOOL showEjectAll = [[defaultValues valueForKey:SLShowEjectAll] boolValue];
 	BOOL showUnmountedVolumes = [[defaultValues valueForKey:SLShowUnmountedVolumes] boolValue];
+    BOOL reverseAction = [[defaultValues valueForKey:SLReverseChooseAction] boolValue];
 	
     volumes = [self filterVolumes:volumes];
 	if (_volumes != volumes) {
@@ -221,7 +223,7 @@
 	}
 	SLVolumeType _lastType = -1;
 	NSInteger vcount = 0;
-	NSMenuItem *titleMenu = nil, *menuItem = nil, *altMenu = nil, *altaltMenu;
+	NSMenuItem *titleMenu = nil, *menuItem = nil, *altMenu = nil;
 	NSString *titleName = nil;
 	
 	for (SLVolume *vol in _volumes)
@@ -266,44 +268,38 @@
 			titleMenu = [[NSMenuItem alloc] initWithTitle:titleName action:nil keyEquivalent:@""];
 		}
 		
-		SEL mainItemAction = ([vol isRoot] ? nil : @selector(doEject:));
+		SEL ejectAction = (![self volumeCanBeEjected:vol] ? nil : @selector(doEject:));
+        SEL showAction = @selector(doShowInFinder:);
+        NSString *mainTitle = [vol name];
+        NSString *altTitle;
+        SEL mainAction, altAction;
+        if (reverseAction) {
+            mainAction = showAction;
+            altAction = ejectAction;
+            altTitle = [NSString stringWithFormat:NSLocalizedString(@"Eject %@", nil), [vol name]];
+        } else {
+            mainAction = ejectAction;
+            altAction = showAction;
+            altTitle = [NSString stringWithFormat:NSLocalizedString(@"Show %@", nil), [vol name]];
+        }
+        
 		NSImage *mainItemImage = [[vol image] slResize:NSMakeSize(16, 16)];
-		
+        
 		// setup the main item
-		menuItem = [[[NSMenuItem alloc] initWithTitle:[vol name] action:mainItemAction keyEquivalent:@""] autorelease];
+		menuItem = [[[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""] autorelease];
 		[menuItem setRepresentedObject:vol];
 		[menuItem setImage:mainItemImage];
 		[menuItem setIndentationLevel:1];
 		[menuItem setTarget:self];
-		if (![self volumeCanBeEjected:vol])
-			[menuItem setAction:nil];
 		
-		// setup the first alternate item
-		altMenu = [[[NSMenuItem alloc] initWithTitle:[vol name] action:mainItemAction keyEquivalent:@""] autorelease];
+		// setup the alternate item
+		altMenu = [[[NSMenuItem alloc] initWithTitle:altTitle action:altAction keyEquivalent:@""] autorelease];
 		[altMenu setAlternate:YES];
-		[altMenu setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
+		[altMenu setKeyEquivalentModifierMask:NSAlternateKeyMask];
 		[altMenu setRepresentedObject:vol];
 		[altMenu setImage:mainItemImage];
 		[altMenu setIndentationLevel:1];
 		[altMenu setTarget:self];
-		if ([vol type] == SLVolumeDiskImage)
-		{
-			[altMenu setTitle:[NSString stringWithFormat:NSLocalizedString(@"Discard %@", nil), [vol name]]];
-			[altMenu setAction:@selector(doEjectAndDeleteDiskImage:)];
-		}
-		if (![self volumeCanBeEjected:vol])
-			[altMenu setAction:nil];
-
-		// setup the second alternate item
-		altaltMenu = [[[NSMenuItem alloc] initWithTitle:[vol name] action:mainItemAction keyEquivalent:@""] autorelease];
-		[altaltMenu setAlternate:YES];
-		[altaltMenu setKeyEquivalentModifierMask:NSAlternateKeyMask];
-		[altaltMenu setRepresentedObject:vol];
-		[altaltMenu setImage:mainItemImage];
-		[altaltMenu setIndentationLevel:1];
-		[altaltMenu setTitle:[NSString stringWithFormat:NSLocalizedString(@"Show %@", nil), [vol name]]];
-		[altaltMenu setAction:@selector(doShowInFinder:)];
-		[altaltMenu setTarget:self];
 		
 		if (titleMenu)
 		{
@@ -314,7 +310,6 @@
 
 		[menu addItem:menuItem];
 		[menu addItem:altMenu];
-		[menu addItem:altaltMenu];
 		
 		vcount++;
 	}
@@ -455,30 +450,6 @@
 	{
 		[NSApp activateIgnoringOtherApps:YES];
 		NSBeep();
-	}
-}
-
-- (void)doEjectAndDeleteDiskImage:(id)sender
-{
-	SLVolume *vol = [sender representedObject];
-	NSString *imagePath = [vol diskImagePath];
-
-	[NSApp activateIgnoringOtherApps:YES];
-
-	if (![[NSFileManager defaultManager] fileExistsAtPath:imagePath])
-	{
-		NSRunAlertPanel(NSLocalizedString(@"Disk image not found", nil), NSLocalizedString(@"The corresponding disk image file for the mounted volume could not be found.", nil), nil, nil, nil);
-		return;
-	}
-	
-	BOOL showWarning = [[NSUserDefaults standardUserDefaults] boolForKey:@"SLDisableDiscardWarning"];
-	if (
-		(showWarning == YES) ||
-		((showWarning == NO) && (NSRunAlertPanel(NSLocalizedString(@"Are you sure you want to unmount this volume and delete its associated disk image?", nil), NSLocalizedString(@"You cannot undo this action.", nil), NSLocalizedString(@"No", nil), NSLocalizedString(@"Yes", nil), nil) == NSCancelButton))
-		)
-	{
-		if ([self ejectVolumeWithFeedback:vol])
-			[[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
 	}
 }
 

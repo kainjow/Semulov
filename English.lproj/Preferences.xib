@@ -15,15 +15,15 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="Prefs" animationBehavior="default" id="5" userLabel="Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="301" y="392" width="402" height="365"/>
+            <rect key="contentRect" x="301" y="392" width="402" height="401"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
             <value key="minSize" type="size" width="213" height="107"/>
             <view key="contentView" id="6">
-                <rect key="frame" x="0.0" y="0.0" width="402" height="365"/>
+                <rect key="frame" x="0.0" y="0.0" width="402" height="401"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button id="7">
-                        <rect key="frame" x="30" y="304" width="323" height="18"/>
+                        <rect key="frame" x="30" y="340" width="323" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show number of mounted volumes in menu bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="39">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -34,7 +34,7 @@
                         </connections>
                     </button>
                     <button id="11">
-                        <rect key="frame" x="30" y="284" width="263" height="18"/>
+                        <rect key="frame" x="30" y="320" width="263" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show startup disk" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="40">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -45,7 +45,7 @@
                         </connections>
                     </button>
                     <button id="13">
-                        <rect key="frame" x="30" y="264" width="263" height="18"/>
+                        <rect key="frame" x="30" y="300" width="263" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show &quot;Eject All&quot; menu item" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="41">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -67,7 +67,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" id="20">
-                        <rect key="frame" x="17" y="328" width="114" height="17"/>
+                        <rect key="frame" x="17" y="364" width="114" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Interface" id="44">
                             <font key="font" metaFont="systemBold"/>
@@ -84,19 +84,8 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button id="22">
-                        <rect key="frame" x="30" y="224" width="354" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Disable warning dialog when discarding disk images" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="46">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <binding destination="8" name="value" keyPath="values.SLDisableDiscardWarning" id="23"/>
-                        </connections>
-                    </button>
                     <button id="48">
-                        <rect key="frame" x="30" y="244" width="247" height="18"/>
+                        <rect key="frame" x="30" y="280" width="247" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show unmounted volumes" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="49">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -157,6 +146,26 @@
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Enter names (case insensitive) of volumes to be ignored. One name per line:" id="77">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button id="WEg-hc-7EG">
+                        <rect key="frame" x="30" y="258" width="246" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Set default action to Show in Finder" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="UqK-6c-pKu">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="8" name="value" keyPath="values.SLReverseChooseAction" id="V4E-AC-8U4"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="hXX-iA-bmL">
+                        <rect key="frame" x="48" y="226" width="336" height="28"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Default is Eject. Hold down the Option key to Show in Finder. This option reverses that." id="cw3-CD-N9b">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
