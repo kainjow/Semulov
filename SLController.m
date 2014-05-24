@@ -102,6 +102,18 @@
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
 		[NSApp addToLoginItems];
 	}
+    
+    // Handle Command-W for open windows
+    [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent* (NSEvent *event){
+        if ([event modifierFlags] & NSCommandKeyMask && [[event characters] characterAtIndex:0] == 'w') {
+            NSWindow *win = [[NSApp windows] lastObject];
+            if (win) {
+                [win performClose:nil];
+                return nil;
+            }
+        }
+        return event;
+    }];
 }
 
 #pragma mark -
