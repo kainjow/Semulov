@@ -160,10 +160,7 @@
 
 - (BOOL)volumeCanBeEjected:(SLVolume *)volume
 {
-	if ([volume isInternalHardDrive] == NO && [volume isRoot] == NO)
-		return YES;
-	
-	return YES;
+	return ![volume isRoot] && ![self volumeIsOnIgnoreList:volume.name];
 }
 
 - (void)updateStatusItemMenu
