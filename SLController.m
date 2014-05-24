@@ -22,6 +22,8 @@
 #define SLShowUnmountedVolumes  @"SLShowUnmountedVolumes"
 #define SLIgnoredVolumes        @"SLIgnoredVolumes"
 #define SLReverseChooseAction   @"SLReverseChooseAction"
+#define SLCustomIconPattern     @"SLCustomIconPattern"
+#define SLCustomIconColor       @"SLCustomIconColor"
 
 
 @interface SLController (Private)
@@ -29,6 +31,7 @@
 - (void)setupStatusItem;
 - (void)updateStatusItemMenu;
 - (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes;
+- (void)updateStatusItemIcon;
 @end
 
 @implementation SLController
@@ -114,24 +117,20 @@
 	[sdc addObserver:self forKeyPath:@"values.SLShowUnmountedVolumes" options:0 context:SLShowUnmountedVolumes];
     [sdc addObserver:self forKeyPath:@"values."SLIgnoredVolumes options:0 context:SLIgnoredVolumes];
     [sdc addObserver:self forKeyPath:@"values."SLReverseChooseAction options:0 context:SLReverseChooseAction];
+    [sdc addObserver:self forKeyPath:@"values."SLCustomIconPattern options:0 context:SLCustomIconPattern];
+    [sdc addObserver:self forKeyPath:@"values."SLCustomIconColor options:0 context:SLCustomIconColor];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([(NSString *)context isEqualToString:SLLaunchAtStartup])
-	{
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup])
-		{
-			// add us to the login items
+    NSString *ctx = (NSString *)context;
+	if ([ctx isEqualToString:SLLaunchAtStartup]) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
 			[NSApp addToLoginItems];
-		}
-		else
-		{
+		} else {
 			[NSApp removeFromLoginItems];
 		}
-	}
-	else
-	{
+    } else {
         if ([(NSString*)context isEqualToString:SLIgnoredVolumes]) {
             [self updateIgnoredVolumes];
         }
@@ -151,11 +150,47 @@
 	}
 	_statusItem = [[[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] retain];
 	[_statusItem setHighlightMode:YES];
-	
-	NSImage *ejectImage = [NSImage imageNamed:@"Eject"];
-	[ejectImage setTemplate:YES];
-	[_statusItem setImage:ejectImage];
+
+    NSImage *ejectImageAlt = [[[NSImage imageNamed:@"Eject"] copy] autorelease];
+    [ejectImageAlt setTemplate:YES];
+    [_statusItem setAlternateImage:ejectImageAlt];
+
+    [self updateStatusItemIcon];
 	[self updateStatusItemMenu];
+}
+
+- (NSImage *)colorImage:(NSImage *)image withColor:(NSColor *)color
+{
+    NSImage *newImage = [[[NSImage alloc] initWithSize:[image size]] autorelease];
+    [newImage lockFocus];
+    [image drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+    [color set];
+    NSRectFillUsingOperation(NSMakeRect(0, 0, [image size].width, [image size].height), NSCompositeSourceAtop);
+    [newImage unlockFocus];
+    return newImage;
+}
+
+- (void)updateStatusItemIcon
+{
+    NSImage *baseImage = [NSImage imageNamed:@"Eject"];
+    BOOL setDefault = YES;
+    if (NSClassFromString(@"NSRegularExpression")) { // NSRegularExpressionSearch only available on 10.7+
+        NSString *iconPattern = [[NSUserDefaults standardUserDefaults] objectForKey:SLCustomIconPattern];
+        NSData *iconColorData = [[NSUserDefaults standardUserDefaults] objectForKey:SLCustomIconColor];
+        NSColor *iconColor = iconColorData ? (NSColor *)[NSUnarchiver unarchiveObjectWithData:iconColorData] : nil;
+        if (iconPattern && iconColor && [iconPattern length] > 0) {
+            for (SLVolume *vol in _volumes) {
+                if ([vol.name rangeOfString:iconPattern options:NSCaseInsensitiveSearch|NSRegularExpressionSearch].location != NSNotFound) {
+                    [_statusItem setImage:[self colorImage:[[baseImage copy] autorelease] withColor:iconColor]];
+                    setDefault = NO;
+                    break;
+                }
+            }
+        }
+    }
+    if (setDefault) {
+        [_statusItem setImage:[[baseImage copy] autorelease]];
+    }
 }
 
 - (BOOL)volumeCanBeEjected:(SLVolume *)volume
@@ -171,6 +206,7 @@
 			NSArray *volumes = [SLVolume allVolumes];
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self updateStatusItemMenuWithVolumes:volumes];
+                [self updateStatusItemIcon];
 			});
 		} @catch (NSException *ex) {
 			NSLog(@"Caught exception: %@", ex);
