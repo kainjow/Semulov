@@ -386,15 +386,20 @@
     // post on the serial queue so that the volumes list is reloaded by the time we post the note.
     dispatch_async(queue, ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[SLGrowlController sharedController] postVolumeMounted:[self volumeWithMountPath:devicePath]];
+            SLVolume *vol = [self volumeWithMountPath:devicePath];
+            if (vol) {
+                [[SLGrowlController sharedController] postVolumeMounted:vol];
+            }
         });
     });
 }
 
 - (void)handleUnmount:(NSNotification *)not
 {
-	[[SLGrowlController sharedController] postVolumeUnmounted:
-		[self volumeWithMountPath:[[not userInfo] objectForKey:@"NSDevicePath"]]];
+    SLVolume *vol = [self volumeWithMountPath:[[not userInfo] objectForKey:@"NSDevicePath"]];
+    if (vol) {
+        [[SLGrowlController sharedController] postVolumeUnmounted:vol];
+    }
 
 	[self updateStatusItemMenu];
 }
