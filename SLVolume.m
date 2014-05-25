@@ -135,39 +135,29 @@
 		_path = [path copy];		
 		_name = [[[[[NSFileManager alloc] init] autorelease] displayNameAtPath:path] copy];
 
-		BOOL gotCatalogInfo = NO;
-		FSRef ref;
-		CFURLGetFSRef((CFURLRef)[NSURL fileURLWithPath:[self path]], &ref);
-		FSCatalogInfo catalogInfo;
-		gotCatalogInfo = (FSGetCatalogInfo(&ref, kFSCatInfoVolume, &catalogInfo, NULL, NULL, NULL) == noErr);
-		
 		if ([self isLocal] == NO)
 		{
 			_type = SLVolumeNetwork;
 			
-			if (gotCatalogInfo)
+            NSURL *hostURL = nil;
+            (void)[[NSURL fileURLWithPath:[self path]] getResourceValue:&hostURL forKey:NSURLVolumeURLForRemountingKey error:nil];
+			if (hostURL)
 			{
-				CFURLRef hostURL = NULL;
-				FSCopyURLForVolume(catalogInfo.volume, &hostURL);
-				if (hostURL)
-				{
-					_hostURL = [(NSURL *)hostURL copy];
-					CFRelease(hostURL);
-					
-					if ([[_hostURL scheme] isEqualToString:@"ftp"]) {
-						_type = SLVolumeFTP;
-					} else if ([[_hostURL scheme] isEqualToString:@"afp"]) {
-						// keep as SLVolumeNetwork
-                    } else if ([[_hostURL scheme] isEqualToString:@"file"]) {
-                        // probably file://localhost/Volumes/MobileBackups/ (mtmfs)
-					} else {
-						if ([fileSystemType isEqualToString:@"webdav"]) {
-							_type = SLVolumeWebDAV;
-						} else {
-							NSLog(@"unknown URL: %@ (%@)", _hostURL, fileSystemType);
-						}
-					}
-				}
+                _hostURL = [hostURL copy];
+                
+                if ([[_hostURL scheme] isEqualToString:@"ftp"]) {
+                    _type = SLVolumeFTP;
+                } else if ([[_hostURL scheme] isEqualToString:@"afp"]) {
+                    // keep as SLVolumeNetwork
+                } else if ([[_hostURL scheme] isEqualToString:@"file"]) {
+                    // probably file:///Volumes/MobileBackups/ (mtmfs)
+                } else {
+                    if ([fileSystemType isEqualToString:@"webdav"]) {
+                        _type = SLVolumeWebDAV;
+                    } else {
+                        NSLog(@"unknown URL: %@ (%@)", _hostURL, fileSystemType);
+                    }
+                }
 			}
 		}
 		else
@@ -331,41 +321,28 @@
 	return _root;
 }
 
-void volumeUnmountCallback(FSVolumeOperation volumeOp, void *clientData, OSStatus err, FSVolumeRefNum volumeRefNum, pid_t dissenter)
-{
-	if (err != noErr) {
-		NSLog(@"callback err: %ld", (long)err);
-	}
-}
-
 - (BOOL)eject
 {
-	BOOL ret = NO;
-	
-	ret = [[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtPath:[self path]];
-	
-	if (!ret)
-	{
-		FSRef ref;
-		if (FSPathMakeRef((const UInt8 *)[[self path] fileSystemRepresentation], &ref, NULL) == noErr)
-		{
-			FSCatalogInfo catalogInfo;
-			if (FSGetCatalogInfo (&ref, kFSCatInfoVolume, &catalogInfo, NULL, NULL, NULL) == noErr)
-			{
-				//pid_t *dissenter = NULL;
-				FSVolumeUnmountUPP unmountUPP = NewFSVolumeUnmountUPP(volumeUnmountCallback);
-				FSVolumeOperation volumeOp;
-				if (FSCreateVolumeOperation(&volumeOp) == noErr) {
-					if (FSUnmountVolumeAsync(catalogInfo.volume, 0, volumeOp, NULL, unmountUPP, CFRunLoopGetMain(), kCFRunLoopDefaultMode) == noErr)
-					//if (FSUnmountVolumeSync(catalogInfo.volume, 0, dissenter) == noErr)
-						ret = YES;
-					FSDisposeVolumeOperation(volumeOp);
-				}
-			}
-		}
-	}
-	
-	return ret;
+    NSError *err = nil;
+    BOOL ret = [[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:[NSURL fileURLWithPath:[self path]] error:&err];
+    if (err || !ret) {
+        NSLog(@"eject failed: %@", err);
+
+        DASessionRef session = DASessionCreate(kCFAllocatorDefault);
+        if (session) {
+            NSURL *url = [NSURL fileURLWithPath:[self path]];
+            DADiskRef disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session, (CFURLRef)url);
+            if (disk) {
+                DADiskUnmount(disk, 0, NULL, NULL);
+                // TODO: wait for callback? Then do Eject?
+                CFRelease(disk);
+                ret = YES;
+            }
+            CFRelease(session);
+        }
+    }
+    
+    return ret;
 }
 
 - (BOOL)showInFinder
