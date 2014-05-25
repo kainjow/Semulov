@@ -19,12 +19,11 @@ typedef enum
 	SLVolumeFTP,
 	SLVolumeWebDAV,
 	SLVolumeDiskImage,
-	SLVolumeAudioCDROM,
-	SLVolumeCDROM,
+	SLVolumeCD,
 	SLVolumeDVD,
-	SLVolumeDVDVideo,
 	SLVolumeHardDrive,
 	SLVolumeRAMDisk,
+    SLVolumeBluray,
 } SLVolumeType;
 
 @interface SLVolume : NSObject <NSCopying>

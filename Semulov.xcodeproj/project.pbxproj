@@ -25,7 +25,6 @@
 		A58BD4BE14100163007E9DF9 /* Labels.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4BB14100163007E9DF9 /* Labels.strings */; };
 		A58BD52014100451007E9DF9 /* SLDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A58BD51F14100451007E9DF9 /* SLDeviceManager.m */; };
 		A58BD55F141006F5007E9DF9 /* SLUnmountedVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = A58BD55E141006F5007E9DF9 /* SLUnmountedVolume.m */; };
-		A5D4B9A2140F4C54005C0A59 /* DiscRecording.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A553835D0C825C9A00A1806D /* DiscRecording.framework */; };
 		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
 /* End PBXBuildFile section */
 
@@ -60,7 +59,6 @@
 		A5537F0B0C822FE000A1806D /* SLNSImageAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLNSImageAdditions.h; sourceTree = "<group>"; };
 		A5537F0C0C822FE000A1806D /* SLNSImageAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLNSImageAdditions.m; sourceTree = "<group>"; };
 		A5537F1B0C82312D00A1806D /* SemulovIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SemulovIcon.icns; sourceTree = "<group>"; };
-		A553835D0C825C9A00A1806D /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = /System/Library/Frameworks/DiscRecording.framework; sourceTree = "<absolute>"; };
 		A5552A130B10C2C9005EB062 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTaskAdditions.h; sourceTree = "<group>"; };
 		A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTaskAdditions.m; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */,
-				A5D4B9A2140F4C54005C0A59 /* DiscRecording.framework in Frameworks */,
 				A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,7 +150,6 @@
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				A518D7730BB19CC5009EC77B /* DiskArbitration.framework */,
-				A553835D0C825C9A00A1806D /* DiscRecording.framework */,
 				A58BD399140FFCA8007E9DF9 /* IOKit.framework */,
 			);
 			name = Frameworks;

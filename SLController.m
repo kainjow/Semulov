@@ -300,16 +300,14 @@
 				titleName = NSLocalizedStringFromTable(@"Disk Images", @"Labels", nil);
 			else if (_lastType == SLVolumeDVD)
 				titleName = NSLocalizedStringFromTable(@"DVDs", @"Labels", nil);
-			else if (_lastType == SLVolumeDVDVideo)
-				titleName = NSLocalizedStringFromTable(@"Video DVDs", @"Labels", nil);
-			else if (_lastType == SLVolumeCDROM)
+			else if (_lastType == SLVolumeCD)
 				titleName = NSLocalizedStringFromTable(@"CDs", @"Labels", nil);
-			else if (_lastType == SLVolumeAudioCDROM)
-				titleName = NSLocalizedStringFromTable(@"Audio CDs", @"Labels", nil);
 			else if (_lastType == SLVolumeHardDrive)
 				titleName = NSLocalizedStringFromTable(@"Hard Drives", @"Labels", nil);
 			else if (_lastType == SLVolumeRAMDisk)
 				titleName = NSLocalizedStringFromTable(@"RAM Disks", @"Labels", nil);
+            else if (_lastType == SLVolumeBluray)
+                titleName = NSLocalizedStringFromTable(@"Blurays", @"Labels", nil);
 			titleMenu = [[NSMenuItem alloc] initWithTitle:titleName action:nil keyEquivalent:@""];
 		}
 		

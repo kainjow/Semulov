@@ -8,7 +8,6 @@
 
 #import "SLVolume.h"
 #import <DiskArbitration/DiskArbitration.h>
-#import <DiscRecording/DiscRecording.h>
 #import <IOKit/storage/IOStorageDeviceCharacteristics.h>
 #import "NSTaskAdditions.h"
 
@@ -191,54 +190,6 @@
 					_type = SLVolumeDiskImage;
 				}
 			}
-
-			if (gotCatalogInfo)
-			{
-				// for use with FSGetVolumeInfo
-				//> filesystemID    signature    format
-				//>     0            'BD'        HFS
-				//>     0            'H+'        HFS+
-				//>     0            0xD2D7        MFS
-				//>     0            'AG'        ISO 9960
-				//					(0x4147)		'
-				//		'cu'			'			'
-				//		(0x6375)
-				//>     0            'BB'        High Sierra
-				//>     'cu'        'JH'        Audio CD
-				//>     0x55DF        0x75DF        DVD-ROM
-				//>     'as'        any            above formats over AppleShare
-				//>     'IS'        'BD'        MS-DOS
-				
-				//		0			0x482B		disk image
-				//		0			0x4244		cd-rom
-				//	0x4A48 (JH)		0x4244 (BD)
-				
-				
-				FSVolumeInfo volumeInfo;
-				if (FSGetVolumeInfo(catalogInfo.volume, 0, NULL, kFSVolInfoFSInfo, &volumeInfo, NULL, NULL) == noErr)
-				{
-					if (((volumeInfo.filesystemID == 0) && (volumeInfo.signature == 0x4244)) ||
-						((volumeInfo.filesystemID == 0x6375) && (volumeInfo.signature == 0x4147)))
-					{
-						_type = SLVolumeCDROM;
-					}
-					else if ((volumeInfo.filesystemID == 0x4A48) && (volumeInfo.signature == 0x4244))
-					{
-						_type = SLVolumeAudioCDROM;
-					}
-					
-					/*NSLog(@"%@: %02X (%c%c) - %02X (%c%c)",
-						  [self name],
-						  volumeInfo.filesystemID,
-						  (volumeInfo.filesystemID%0xFF00)>>8,
-						  volumeInfo.filesystemID&0x00FF,
-						  volumeInfo.signature,
-						  (volumeInfo.signature&0xFF00)>>8,
-						  volumeInfo.signature&0x00FF);*/
-				}
-			}
-			
-			CFStringRef devicePath = NULL;
 			
 			DASessionRef session = DASessionCreate(kCFAllocatorDefault);
 			if (session)
@@ -251,6 +202,7 @@
 					{
 						CFBooleanRef isInternal, isEjectable;
 						CFStringRef deviceModel;
+                        CFStringRef mediaKind;
 						if (!CFDictionaryGetValueIfPresent(desc, kDADiskDescriptionDeviceInternalKey, (void *)&isInternal)) {
 							isInternal = kCFBooleanFalse;
 						}
@@ -260,9 +212,9 @@
 						if (!CFDictionaryGetValueIfPresent(desc, kDADiskDescriptionDeviceModelKey, (void *)&deviceModel)) {
 							deviceModel = NULL;
 						}
-						if (!CFDictionaryGetValueIfPresent(desc, kDADiskDescriptionDevicePathKey, (void *)&devicePath)) {
-							devicePath = NULL;
-						}
+                        if (!CFDictionaryGetValueIfPresent(desc, kDADiskDescriptionMediaKindKey, (void *)&mediaKind)) {
+                            mediaKind = NULL;
+                        }
 						
 						// 2nd check for disk images..
 						if (([self type] != SLVolumeDiskImage) && ([(NSString *)deviceModel isEqualToString:@"Disk Image"]))
@@ -304,30 +256,24 @@
 							}
 						}
 						
+                        if (mediaKind != NULL) {
+                            // could be IODVDMedia, IOCDMedia, IOBDMedia, etc.
+                            if ([(NSString *)mediaKind rangeOfString:@"DVD"].location != NSNotFound) {
+                                _type = SLVolumeDVD;
+                            } else if ([(NSString *)mediaKind rangeOfString:@"CD"].location != NSNotFound) {
+                                _type = SLVolumeCD;
+                            } else if ([(NSString *)mediaKind rangeOfString:@"BD"].location != NSNotFound) {
+                                _type = SLVolumeBluray;
+                            }
+                        }
+
 						CFRelease(desc);
 					}
 					CFRelease(disk);
 				}
 				CFRelease(session);
 			}
-			
-			// check for a DVD. TODO: replace this with DiskArb checks.
-			if (devicePath) {
-				DRDevice *dvdDevice = [DRDevice deviceForBSDName:[NSString stringWithCString:statfs->f_mntfromname encoding:NSUTF8StringEncoding]]; //deviceForIORegistryEntryPath:(NSString *)devicePath];
-				if ((dvdDevice != nil) && ([dvdDevice mediaIsPresent]))
-				{
-					if ([[dvdDevice mediaType] hasPrefix:@"DRDeviceMediaTypeDVD"])
-						_type = SLVolumeDVD;
-					else if ([[dvdDevice mediaType] hasPrefix:@"DRDeviceMediaTypeCD"])
-						_type = SLVolumeCDROM;
-				}
-				else
-				{
-					if ([fileSystemType isEqualToString:@"udf"])
-						_type = SLVolumeDVD;
-				}
-			}
-		}
+        }
 	}
 	
 	return self;
