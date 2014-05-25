@@ -154,9 +154,7 @@
 					_hostURL = [(NSURL *)hostURL copy];
 					CFRelease(hostURL);
 					
-					if ([[_hostURL host] isEqualToString:@"idisk.mac.com"]) {
-						_type = SLVolumeiDisk;
-					} else if ([[_hostURL scheme] isEqualToString:@"ftp"]) {
+					if ([[_hostURL scheme] isEqualToString:@"ftp"]) {
 						_type = SLVolumeFTP;
 					} else if ([[_hostURL scheme] isEqualToString:@"afp"]) {
 						// keep as SLVolumeNetwork

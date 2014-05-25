@@ -290,8 +290,6 @@
 				titleName = NSLocalizedStringFromTable(@"iPods", @"Labels", nil);
 			else if (_lastType == SLVolumeNetwork)
 				titleName = NSLocalizedStringFromTable(@"Network", @"Labels", nil);
-			else if (_lastType == SLVolumeiDisk)
-				titleName = NSLocalizedStringFromTable(@"iDisks", @"Labels", nil);
 			else if (_lastType == SLVolumeFTP)
 				titleName = NSLocalizedStringFromTable(@"FTP", @"Labels", nil);
 			else if (_lastType == SLVolumeWebDAV)

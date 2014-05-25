@@ -15,7 +15,6 @@ typedef enum
 	SLVolumeDrive,
 	SLVolumeiPod,
 	SLVolumeNetwork,
-	SLVolumeiDisk,
 	SLVolumeFTP,
 	SLVolumeWebDAV,
 	SLVolumeDiskImage,
