@@ -58,20 +58,6 @@
     return self;
 }
 
-- (void)dealoc
-{
-	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self];
-	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
-	
-	[[NSStatusBar systemStatusBar] removeStatusItem:_statusItem];
-	[_statusItem release];
-
-	[_volumes release];
-	[_prefs release];
-
-	[super dealloc];
-}
-
 - (void)updateIgnoredVolumes
 {
     [ignoredVolumes release];

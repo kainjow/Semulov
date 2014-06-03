@@ -13,12 +13,12 @@
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
-	[NSApplication sharedApplication];
+	NSApplication *app = [NSApplication sharedApplication];
 
 	SLController *controller = [[SLController alloc] init];
 	
-	[NSApp setDelegate:controller];
-	[NSApp run];
+	[app setDelegate:controller];
+	[app run];
 	
 	[controller release];
 	

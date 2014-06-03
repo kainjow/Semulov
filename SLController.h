@@ -10,7 +10,7 @@
 
 @class SLDeviceManager;
 
-@interface SLController : NSObject
+@interface SLController : NSObject <NSApplicationDelegate>
 {
 	NSStatusItem *_statusItem;
 	NSArray *_volumes;
