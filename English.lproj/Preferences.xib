@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1060" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
@@ -96,7 +96,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" id="65">
-                        <rect key="frame" x="17" y="108" width="118" height="17"/>
+                        <rect key="frame" x="17" y="108" width="119" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Ignored Volumes" id="66">
                             <font key="font" metaFont="systemBold"/>
@@ -140,7 +140,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="76">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="76">
                         <rect key="frame" x="29" y="66" width="355" height="34"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Enter names (case insensitive) of volumes to be ignored. One name per line:" id="77">
@@ -160,7 +160,7 @@
                             <binding destination="8" name="value" keyPath="values.SLReverseChooseAction" id="V4E-AC-8U4"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="hXX-iA-bmL">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="hXX-iA-bmL">
                         <rect key="frame" x="48" y="363" width="336" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Default is Eject. Hold down the Option key to Show in Finder. This option reverses that." id="cw3-CD-N9b">
@@ -199,7 +199,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" id="yam-Si-wKb">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="yam-Si-wKb">
                         <rect key="frame" x="48" y="206" width="336" height="56"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="TQm-86-LK3">
