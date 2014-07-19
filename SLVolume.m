@@ -164,7 +164,6 @@
 			_type = SLVolumeNetwork;
 			
             NSURL *hostURL = [[self class] volumeURL:[NSURL fileURLWithPath:[self path]]];
-            NSLog(@"hostURL: %@", hostURL);
 			if (hostURL)
 			{
                 _hostURL = [hostURL copy];
