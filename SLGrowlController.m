@@ -27,7 +27,7 @@
     // We don't yet link against 10.8 SDK so can't use this API directly yet.
     id userNotificationCenterClass = NSClassFromString(@"NSUserNotificationCenter");
     if (userNotificationCenterClass != nil) {
-        id note = [[[NSClassFromString(@"NSUserNotification") alloc] init] autorelease];
+        id note = [[NSClassFromString(@"NSUserNotification") alloc] init];
         [note setValue:title forKey:@"title"];
         [note setValue:subtitle forKey:@"subtitle"];
         [[userNotificationCenterClass performSelector:@selector(defaultUserNotificationCenter)] performSelector:@selector(deliverNotification:) withObject:note];

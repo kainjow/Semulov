@@ -60,11 +60,10 @@
 
 - (void)updateIgnoredVolumes
 {
-    [ignoredVolumes release];
     ignoredVolumes = nil;
     id obj = [[NSUserDefaults standardUserDefaults] objectForKey:@"SLIgnoredVolumes"];
     if ([obj isKindOfClass:[NSString class]]) {
-        ignoredVolumes = [[obj componentsSeparatedByString:@"\n"] retain];
+        ignoredVolumes = [obj componentsSeparatedByString:@"\n"];
     }
 }
 
@@ -121,7 +120,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    NSString *ctx = (NSString *)context;
+    NSString *ctx = (__bridge NSString *)context;
 	if ([ctx isEqualToString:SLLaunchAtStartup]) {
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
 			[NSApp addToLoginItems];
@@ -129,7 +128,7 @@
 			[NSApp removeFromLoginItems];
 		}
     } else {
-        if ([(NSString*)context isEqualToString:SLIgnoredVolumes]) {
+        if ([ctx isEqualToString:SLIgnoredVolumes]) {
             [self updateIgnoredVolumes];
         }
 		[self updateStatusItemMenu];
@@ -144,12 +143,11 @@
 	if (_statusItem)
 	{
 		[[NSStatusBar systemStatusBar] removeStatusItem:_statusItem];
-		[_statusItem release];
 	}
-	_statusItem = [[[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] retain];
+	_statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
 	[_statusItem setHighlightMode:YES];
 
-    NSImage *ejectImageAlt = [[[NSImage imageNamed:@"Eject"] copy] autorelease];
+    NSImage *ejectImageAlt = [[NSImage imageNamed:@"Eject"] copy];
     [ejectImageAlt setTemplate:YES];
     [_statusItem setAlternateImage:ejectImageAlt];
 
@@ -159,7 +157,7 @@
 
 - (NSImage *)colorImage:(NSImage *)image withColor:(NSColor *)color
 {
-    NSImage *newImage = [[[NSImage alloc] initWithSize:[image size]] autorelease];
+    NSImage *newImage = [[NSImage alloc] initWithSize:[image size]];
     [newImage lockFocus];
     [image drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
     [color set];
@@ -179,7 +177,7 @@
         if (iconPattern && iconColor && [iconPattern length] > 0) {
             for (SLVolume *vol in _volumes) {
                 if ([vol.name rangeOfString:iconPattern options:NSCaseInsensitiveSearch|NSRegularExpressionSearch].location != NSNotFound) {
-                    [_statusItem setImage:[self colorImage:[[baseImage copy] autorelease] withColor:iconColor]];
+                    [_statusItem setImage:[self colorImage:[baseImage copy] withColor:iconColor]];
                     setDefault = NO;
                     break;
                 }
@@ -187,7 +185,7 @@
         }
     }
     if (setDefault) {
-        [_statusItem setImage:[[baseImage copy] autorelease]];
+        [_statusItem setImage:[baseImage copy]];
     }
 }
 
@@ -236,9 +234,9 @@
 
 - (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes
 {
-	[_statusItem setMenu:[[[NSMenu alloc] init] autorelease]];
+	[_statusItem setMenu:[[NSMenu alloc] init]];
 	
-	NSMenu *menu = [[[NSMenu alloc] init] autorelease];
+	NSMenu *menu = [[NSMenu alloc] init];
 	
 	NSDictionary *defaultValues = [[NSUserDefaultsController sharedUserDefaultsController] values];
 	BOOL showVolumesNumber = [[defaultValues valueForKey:SLShowVolumesNumber] boolValue];
@@ -249,8 +247,7 @@
 	
     volumes = [self filterVolumes:volumes];
 	if (_volumes != volumes) {
-		[_volumes release];
-		_volumes = [volumes retain];
+		_volumes = volumes;
 	}
 	SLVolumeType _lastType = -1;
 	NSInteger vcount = 0;
@@ -313,14 +310,14 @@
 		NSImage *mainItemImage = [[vol image] slResize:NSMakeSize(16, 16)];
         
 		// setup the main item
-		menuItem = [[[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""] autorelease];
+		menuItem = [[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""];
 		[menuItem setRepresentedObject:vol];
 		[menuItem setImage:mainItemImage];
 		[menuItem setIndentationLevel:1];
 		[menuItem setTarget:self];
 		
 		// setup the alternate item
-		altMenu = [[[NSMenuItem alloc] initWithTitle:altTitle action:altAction keyEquivalent:@""] autorelease];
+		altMenu = [[NSMenuItem alloc] initWithTitle:altTitle action:altAction keyEquivalent:@""];
 		[altMenu setAlternate:YES];
 		[altMenu setKeyEquivalentModifierMask:NSAlternateKeyMask];
 		[altMenu setRepresentedObject:vol];
@@ -331,7 +328,6 @@
 		if (titleMenu)
 		{
 			[menu addItem:titleMenu];
-			[titleMenu release];
 			titleMenu = nil;
 		}
 
@@ -367,7 +363,7 @@
 		if ([unmountedVols count] > 0) {
 			[[menu addItemWithTitle:NSLocalizedString(@"Unmounted", nil) action:@selector(doEjectAll:) keyEquivalent:@""] setAction:nil];
 			for (SLUnmountedVolume *uvol in unmountedVols) {
-				menuItem = [[[NSMenuItem alloc] initWithTitle:uvol.name action:@selector(doMount:) keyEquivalent:@""] autorelease];
+				menuItem = [[NSMenuItem alloc] initWithTitle:uvol.name action:@selector(doMount:) keyEquivalent:@""];
 				[menuItem setIndentationLevel:1];
 				[menuItem setRepresentedObject:uvol.diskID];
 				[menuItem setImage:[uvol.icon slResize:NSMakeSize(16, 16)]];
@@ -377,8 +373,8 @@
 		}
 	}
 	
-	NSMenuItem *slMenuItem = [[[NSMenuItem alloc] initWithTitle:@"Semulov" action:nil keyEquivalent:@""] autorelease];
-	NSMenu *slSubmenu = [[[NSMenu alloc] init] autorelease];
+	NSMenuItem *slMenuItem = [[NSMenuItem alloc] initWithTitle:@"Semulov" action:nil keyEquivalent:@""];
+	NSMenu *slSubmenu = [[NSMenu alloc] init];
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"About", nil) action:@selector(doAbout:) keyEquivalent:@""];
 	[slSubmenu addItem:[NSMenuItem separatorItem]];
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"Preferences\u2026", nil) action:@selector(doPrefs:) keyEquivalent:@""];
@@ -468,7 +464,7 @@
 
 - (void)doEjectAll:(id)sender
 {
-	NSArray *volumesCopy = [[_volumes copy] autorelease];
+	NSArray *volumesCopy = [_volumes copy];
 	for (SLVolume *vol in volumesCopy) {
 		if ([self volumeCanBeEjected:vol]) {
 			[vol eject];

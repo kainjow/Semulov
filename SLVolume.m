@@ -104,31 +104,14 @@
 
 + (id)volumeWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages
 {
-    return [[[self alloc] initWithStatfs:statfs mountedDiskImages:diskImages] autorelease];
+    return [[self alloc] initWithStatfs:statfs mountedDiskImages:diskImages];
 }
 
 + (NSURL *)volumeURL:(NSURL *)url
 {
-    if (floor(NSFoundationVersionNumber) >= NSFoundationVersionNumber10_7) {
-        NSURL *hostURL = nil;
-        (void)[url getResourceValue:&hostURL forKey:NSURLVolumeURLForRemountingKey error:nil];
-        return hostURL;
-    }
-    
-    FSRef ref;
-    if (CFURLGetFSRef((CFURLRef)url, &ref)) {
-        FSCatalogInfo catalogInfo;
-        if (FSGetCatalogInfo(&ref, kFSCatInfoVolume, &catalogInfo, NULL, NULL, NULL) == noErr) {
-            CFURLRef hostURL = NULL;
-            if (FSCopyURLForVolume(catalogInfo.volume, &hostURL) == noErr) {
-                if (hostURL) {
-                    return [(NSURL *)hostURL autorelease];
-                }
-            }
-        }
-    }
-    
-    return nil;
+    NSURL *hostURL = nil;
+    (void)[url getResourceValue:&hostURL forKey:NSURLVolumeURLForRemountingKey error:nil];
+    return hostURL;
 }
 
 - (id)initWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages
@@ -141,13 +124,11 @@
 		//NSLog(@"%@: %@", [path lastPathComponent], fileSystemType);
 		if (!([path isEqualToString:@"/"] || [path hasPrefix:@"/Volumes"]))
 		{
-			[self release];
 			return nil;
 		}
         
         if ([fileSystemType isEqualToString:@"vmhgfs"]) {
             // Ignore VMware Shared Folders internal mounted volume
-            [self release];
             return nil;
         }
 		
@@ -157,7 +138,7 @@
 			_root = YES;
 		
 		_path = [path copy];		
-		_name = [[[[[NSFileManager alloc] init] autorelease] displayNameAtPath:path] copy];
+		_name = [[[[NSFileManager alloc] init] displayNameAtPath:path] copy];
 
 		if ([self isLocal] == NO)
 		{
@@ -197,7 +178,7 @@
 				NSString *imgPath = [diskImages objectForKey:[self path]];
 				if (imgPath)
 				{
-					_imagePath = [imgPath retain];
+					_imagePath = [imgPath copy];
 					_type = SLVolumeDiskImage;
 				}
 			}
@@ -228,7 +209,7 @@
                         }
 						
 						// 2nd check for disk images..
-						if (([self type] != SLVolumeDiskImage) && ([(NSString *)deviceModel isEqualToString:@"Disk Image"]))
+						if (([self type] != SLVolumeDiskImage) && ([(__bridge NSString *)deviceModel isEqualToString:@"Disk Image"]))
 						{
 							_type = SLVolumeDiskImage;
 						}
@@ -269,11 +250,11 @@
 						
                         if (mediaKind != NULL) {
                             // could be IODVDMedia, IOCDMedia, IOBDMedia, etc.
-                            if ([(NSString *)mediaKind rangeOfString:@"DVD"].location != NSNotFound) {
+                            if ([(__bridge NSString *)mediaKind rangeOfString:@"DVD"].location != NSNotFound) {
                                 _type = SLVolumeDVD;
-                            } else if ([(NSString *)mediaKind rangeOfString:@"CD"].location != NSNotFound) {
+                            } else if ([(__bridge NSString *)mediaKind rangeOfString:@"CD"].location != NSNotFound) {
                                 _type = SLVolumeCD;
-                            } else if ([(NSString *)mediaKind rangeOfString:@"BD"].location != NSNotFound) {
+                            } else if ([(__bridge NSString *)mediaKind rangeOfString:@"BD"].location != NSNotFound) {
                                 _type = SLVolumeBluray;
                             }
                         }
@@ -288,17 +269,6 @@
 	}
 	
 	return self;
-}
-
-- (void)dealloc
-{
-	[_path release];
-	[_name release];
-	[_image release];
-	[_hostURL release];
-	[_imagePath release];
-
-	[super dealloc];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -318,12 +288,12 @@
 
 - (NSString *)path
 {
-	return [[_path retain] autorelease];
+	return _path;
 }
 
 - (NSString *)name
 {
-	return [[_name retain] autorelease];
+	return _name;
 }
 
 - (NSImage *)image
@@ -331,7 +301,7 @@
 	if (!_image) {
 		_image = [[[NSWorkspace sharedWorkspace] iconForFile:_path] copy];
 	}
-	return [[_image retain] autorelease];
+	return _image;
 }
 
 - (BOOL)isLocal
@@ -354,7 +324,7 @@
         DASessionRef session = DASessionCreate(kCFAllocatorDefault);
         if (session) {
             NSURL *url = [NSURL fileURLWithPath:[self path]];
-            DADiskRef disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session, (CFURLRef)url);
+            DADiskRef disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session, (__bridge CFURLRef)url);
             if (disk) {
                 DADiskUnmount(disk, 0, NULL, NULL);
                 // TODO: wait for callback? Then do Eject?
@@ -385,7 +355,7 @@
 
 - (NSURL *)hostURL
 {
-	return [[_hostURL retain] autorelease];
+	return _hostURL;
 }
 
 - (BOOL)isInternalHardDrive
@@ -401,7 +371,7 @@
 - (BOOL)isiPod
 {
 	BOOL isDir;
-    NSFileManager *fm = [[[NSFileManager alloc] init] autorelease];
+    NSFileManager *fm = [[NSFileManager alloc] init];
 	return ([fm fileExistsAtPath:[[self path] stringByAppendingPathComponent:@"iPod_Control"] isDirectory:&isDir] && isDir);
 }
 

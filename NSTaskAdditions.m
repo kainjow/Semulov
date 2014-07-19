@@ -16,7 +16,7 @@
 	NSPipe *inPipe = nil, *outPipe = nil;
 	NSFileHandle *inHandle = nil, *outHandle = nil;
 	NSData *outputData = nil;
-	NSFileManager *fm = [[[NSFileManager alloc] init] autorelease];
+	NSFileManager *fm = [[NSFileManager alloc] init];
 	
 	if (!taskPath || ![fm fileExistsAtPath:taskPath] || ![fm isExecutableFileAtPath:taskPath]) {
 		return nil;
@@ -52,10 +52,6 @@
 	
 	[task waitUntilExit];
 	
-	[outPipe release];
-	[inPipe release];
-	[task release];
-	
 	return outputData;
 }
 
@@ -63,7 +59,7 @@
 {
 	NSData *data = [[self class] outputDataForTaskAtPath:taskPath arguments:args];
 	if (data && [data length]) {
-		return [[[NSString alloc] initWithData:data encoding:encoding] autorelease];
+		return [[NSString alloc] initWithData:data encoding:encoding];
 	}
 	return @"";
 }

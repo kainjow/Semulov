@@ -20,17 +20,17 @@ NSString * const SLDeviceManagerUnmountedVolumesDidChangeNotification = @"SLDevi
 
 void diskAppearedCallback(DADiskRef disk, void *context)
 {
-	[(SLDeviceManager *)context diskChanged:disk isGone:NO];
+	[(__bridge SLDeviceManager *)context diskChanged:disk isGone:NO];
 }
 
 void diskDisappearedCallback(DADiskRef disk, void *context)
 {
-	[(SLDeviceManager *)context diskChanged:disk isGone:YES];
+	[(__bridge SLDeviceManager *)context diskChanged:disk isGone:YES];
 }
 
 void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *context)
 {
-	[(SLDeviceManager *)context diskChanged:disk isGone:NO];
+	[(__bridge SLDeviceManager *)context diskChanged:disk isGone:NO];
 }
 
 @implementation SLDeviceManager
@@ -44,13 +44,12 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
 		session = DASessionCreate(kCFAllocatorDefault);
 		if (!session) {
 			NSLog(@"Failed to create session");
-			[self release];
 			return nil;
 		}
 		
-		DARegisterDiskAppearedCallback(session, kDADiskDescriptionMatchVolumeMountable, diskAppearedCallback, self);
-		DARegisterDiskDisappearedCallback(session, kDADiskDescriptionMatchVolumeMountable, diskDisappearedCallback, self);
-		DARegisterDiskDescriptionChangedCallback(session, kDADiskDescriptionMatchVolumeMountable, kDADiskDescriptionWatchVolumePath, diskDescriptionChangedCallback, self);
+		DARegisterDiskAppearedCallback(session, kDADiskDescriptionMatchVolumeMountable, diskAppearedCallback, (__bridge void *)self);
+		DARegisterDiskDisappearedCallback(session, kDADiskDescriptionMatchVolumeMountable, diskDisappearedCallback, (__bridge void *)self);
+		DARegisterDiskDescriptionChangedCallback(session, kDADiskDescriptionMatchVolumeMountable, kDADiskDescriptionWatchVolumePath, diskDescriptionChangedCallback, (__bridge void *)self);
 		DASessionScheduleWithRunLoop(session, [[NSRunLoop currentRunLoop] getCFRunLoop], kCFRunLoopDefaultMode);
 	}
 	return self;
@@ -68,7 +67,7 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
 
 - (void)diskChanged:(DADiskRef)disk isGone:(BOOL)gone
 {
-	NSDictionary *description = [(NSDictionary *)DADiskCopyDescription(disk) autorelease];
+	NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
 	NSString *diskID = [description objectForKey:(NSString *)kDADiskDescriptionMediaBSDNameKey];
 	NSString *volumeName = [description objectForKey:(NSString *)kDADiskDescriptionVolumeNameKey];
 	if (!diskID || !volumeName) {
@@ -87,15 +86,15 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
 		}
 		[unmountedVolumes removeObjectsInArray:volsToRemove];
 	} else {
-		SLUnmountedVolume *vol = [[[SLUnmountedVolume alloc] init] autorelease];
+		SLUnmountedVolume *vol = [[SLUnmountedVolume alloc] init];
 		NSDictionary *mediaIcon = [description objectForKey:(NSString *)kDADiskDescriptionMediaIconKey];
 		NSString *bundleIdent = [mediaIcon objectForKey:(NSString *)kCFBundleIdentifierKey];
 		NSString *iconFile = [mediaIcon objectForKey:@kIOBundleResourceFileKey];
 		if (bundleIdent && iconFile) {
-			NSURL *bundleURL = [(NSURL *)KextManagerCreateURLForBundleIdentifier(kCFAllocatorDefault, (CFStringRef)bundleIdent) autorelease];
+			NSURL *bundleURL = (__bridge_transfer NSURL *)KextManagerCreateURLForBundleIdentifier(kCFAllocatorDefault, (__bridge CFStringRef)bundleIdent);
 			if (bundleURL) {
 				NSBundle *bundle = [NSBundle bundleWithURL:bundleURL];
-				vol.icon = [[[NSImage alloc] initWithContentsOfFile:[bundle pathForResource:iconFile ofType:nil]] autorelease];
+				vol.icon = [[NSImage alloc] initWithContentsOfFile:[bundle pathForResource:iconFile ofType:nil]];
 			}
 		}
 		vol.diskID = diskID;

@@ -13,8 +13,8 @@
 
 - (NSImage *)slResize:(NSSize)size
 {
-    NSImage *image = [[[NSImage alloc] initWithSize:size] autorelease];;
-    NSImage *imgCopy = [[self copy] autorelease];
+    NSImage *image = [[NSImage alloc] initWithSize:size];
+    NSImage *imgCopy = [self copy];
     [imgCopy setSize:size];
     [image lockFocus];
     [imgCopy drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];

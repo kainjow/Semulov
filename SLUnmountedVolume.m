@@ -13,12 +13,4 @@
 
 @synthesize diskID, name, icon;
 
-- (void)dealloc
-{
-	[diskID release];
-	[name release];
-	[icon release];
-	[super dealloc];
-}
-
 @end

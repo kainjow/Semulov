@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
 	[app setDelegate:controller];
 	[app run];
 	
-	[controller release];
-	
     return 0;
     }
 }
