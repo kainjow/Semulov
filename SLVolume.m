@@ -107,6 +107,30 @@
     return [[[self alloc] initWithStatfs:statfs mountedDiskImages:diskImages] autorelease];
 }
 
++ (NSURL *)volumeURL:(NSURL *)url
+{
+    if (floor(NSFoundationVersionNumber) >= NSFoundationVersionNumber10_7) {
+        NSURL *hostURL = nil;
+        (void)[url getResourceValue:&hostURL forKey:NSURLVolumeURLForRemountingKey error:nil];
+        return hostURL;
+    }
+    
+    FSRef ref;
+    if (CFURLGetFSRef((CFURLRef)url, &ref)) {
+        FSCatalogInfo catalogInfo;
+        if (FSGetCatalogInfo(&ref, kFSCatInfoVolume, &catalogInfo, NULL, NULL, NULL) == noErr) {
+            CFURLRef hostURL = NULL;
+            if (FSCopyURLForVolume(catalogInfo.volume, &hostURL) == noErr) {
+                if (hostURL) {
+                    return [(NSURL *)hostURL autorelease];
+                }
+            }
+        }
+    }
+    
+    return nil;
+}
+
 - (id)initWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages
 {
     self = [super init];
@@ -139,8 +163,8 @@
 		{
 			_type = SLVolumeNetwork;
 			
-            NSURL *hostURL = nil;
-            (void)[[NSURL fileURLWithPath:[self path]] getResourceValue:&hostURL forKey:NSURLVolumeURLForRemountingKey error:nil];
+            NSURL *hostURL = [[self class] volumeURL:[NSURL fileURLWithPath:[self path]]];
+            NSLog(@"hostURL: %@", hostURL);
 			if (hostURL)
 			{
                 _hostURL = [hostURL copy];
