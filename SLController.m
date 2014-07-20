@@ -307,6 +307,9 @@
                     if (childDisk.isStartupDisk && !showStartupDisk) {
                         continue;
                     }
+                    if (!childDisk.mounted && !showUnmountedVolumes) {
+                        continue;
+                    }
                     SEL sel = nil;
                     if (!childDisk.isStartupDisk) {
                         if (childDisk.mounted) {
