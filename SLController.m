@@ -273,6 +273,18 @@
 	
     NSMenuItem *menuItem = nil;
     
+    volumes = [self filterVolumes:volumes];
+    if (_volumes != volumes) {
+        _volumes = volumes;
+    }
+    NSMutableArray *volumesToDisplay = [NSMutableArray array];
+    for (SLVolume *vol in volumes) {
+        if (vol.isRoot && !showStartupDisk) {
+            continue;
+        }
+        [volumesToDisplay addObject:vol];
+    }
+
     if (disksLayout) {
         NSArray *disks = [deviceManager.disks sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
         if (disks.count > 0) {
@@ -320,20 +332,11 @@
             [menu addItem:[NSMenuItem separatorItem]];
         }
     } else {
-        volumes = [self filterVolumes:volumes];
-        if (_volumes != volumes) {
-            _volumes = volumes;
-        }
         SLVolumeType _lastType = -1;
-        NSInteger vcount = 0;
         NSMenuItem *titleMenu = nil, *altMenu = nil;
         NSString *titleName = nil;
         
-        for (SLVolume *vol in _volumes) {
-            if ((showStartupDisk == NO && [vol isRoot])) {
-                continue;
-            }
-            
+        for (SLVolume *vol in volumesToDisplay) {
             if ([vol type] != _lastType) {
                 _lastType = [vol type];
                 
@@ -404,17 +407,9 @@
 
             [menu addItem:menuItem];
             [menu addItem:altMenu];
-            
-            vcount++;
         }
         
-        if (showVolumesNumber) {
-            [_statusItem setTitle:[NSString stringWithFormat:@"%ld", (long)vcount]];
-        } else {
-            [_statusItem setTitle:nil];
-        }
-        
-        if (vcount) {
+        if (volumesToDisplay.count > 0) {
             if (showEjectAll) {
                 [menu addItem:[NSMenuItem separatorItem]];
                 [menu addItemWithTitle:NSLocalizedString(@"Eject All", nil) action:@selector(doEjectAll:) keyEquivalent:@""];
@@ -446,6 +441,12 @@
                 [menu addItem:[NSMenuItem separatorItem]];
             }
         }
+    }
+    
+    if (showVolumesNumber) {
+        [_statusItem setTitle:[NSString stringWithFormat:@"%lu", (unsigned long)volumesToDisplay.count]];
+    } else {
+        [_statusItem setTitle:nil];
     }
     
 	NSMenuItem *slMenuItem = [[NSMenuItem alloc] initWithTitle:@"Semulov" action:nil keyEquivalent:@""];
