@@ -7,10 +7,10 @@
 //
 
 #import "SLGrowlController.h"
+#import "SLVolume.h"
 
 #define SL_VOLUME_MOUNTED	NSLocalizedString(@"Volume Mounted", "")
 #define SL_VOLUME_UNMOUNTED	NSLocalizedString(@"Volume Unmounted", "")
-
 
 @implementation SLGrowlController
 

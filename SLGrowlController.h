@@ -7,13 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "SLVolume.h"
 
+@class SLVolume;
 
 @interface SLGrowlController : NSObject
-{
-
-}
 
 + (id)sharedController;
 

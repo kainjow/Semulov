@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#include <sys/mount.h>
 
 typedef enum
 {
@@ -26,18 +25,6 @@ typedef enum
 } SLVolumeType;
 
 @interface SLVolume : NSObject <NSCopying>
-{
-	NSString *_path;
-	NSString *_name;
-	NSImage *_image;
-	BOOL _local;
-	BOOL _root;
-	NSURL *_hostURL;
-	BOOL _internal;
-	NSString *_imagePath;
-	
-	SLVolumeType _type;
-}
 
 + (NSArray *)allVolumes;
 

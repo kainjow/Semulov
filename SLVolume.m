@@ -9,6 +9,7 @@
 #import "SLVolume.h"
 #import <DiskArbitration/DiskArbitration.h>
 #import <IOKit/storage/IOStorageDeviceCharacteristics.h>
+#import <sys/mount.h>
 #import "NSTaskAdditions.h"
 
 @interface SLVolume (Private)
@@ -19,6 +20,18 @@
 @end
 
 @implementation SLVolume
+{
+	NSString *_path;
+	NSString *_name;
+	NSImage *_image;
+	BOOL _local;
+	BOOL _root;
+	NSURL *_hostURL;
+	BOOL _internal;
+	NSString *_imagePath;
+	
+	SLVolumeType _type;
+}
 
 + (NSDictionary *)mountedDiskImages
 {

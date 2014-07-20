@@ -32,6 +32,14 @@
 @end
 
 @implementation SLController
+{
+	NSStatusItem *_statusItem;
+	NSArray *_volumes;
+	NSWindowController *_prefs;
+	SLDiskManager *deviceManager;
+    dispatch_queue_t queue;
+    NSArray *ignoredVolumes;
+}
 
 + (void)initialize
 {
