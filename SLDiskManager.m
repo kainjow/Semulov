@@ -135,8 +135,6 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
     NSNumber *wholeNum = [description objectForKey:(NSString *)kDADiskDescriptionMediaWholeKey];
     BOOL isWhole = wholeNum && [wholeNum boolValue];
     
-    NSLog(@"%@: gone=%d", diskID, gone);
-    
     if (gone) {
         // Disk disappeared, remove entire object
         for (NSInteger i = _disks.count - 1; i >= 0; --i) {
