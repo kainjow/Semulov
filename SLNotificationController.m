@@ -1,18 +1,18 @@
 //
-//  SLGrowlController.m
+//  SLNotificationController.m
 //  Semulov
 //
 //  Created by Kevin Wojniak on 11/5/06.
 //  Copyright 2006 Kevin Wojniak. All rights reserved.
 //
 
-#import "SLGrowlController.h"
+#import "SLNotificationController.h"
 #import "SLVolume.h"
 
 #define SL_VOLUME_MOUNTED	NSLocalizedString(@"Volume Mounted", "")
 #define SL_VOLUME_UNMOUNTED	NSLocalizedString(@"Volume Unmounted", "")
 
-@implementation SLGrowlController
+@implementation SLNotificationController
 
 + (id)sharedController
 {

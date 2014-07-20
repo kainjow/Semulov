@@ -8,7 +8,7 @@
 
 #import "SLController.h"
 #import "SLVolume.h"
-#import "SLGrowlController.h"
+#import "SLNotificationController.h"
 #import "NSApplication+LoginItems.h"
 #import "SLDiskManager.h"
 
@@ -458,7 +458,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             SLVolume *vol = [self volumeWithMountPath:devicePath];
             if (vol) {
-                [[SLGrowlController sharedController] postVolumeMounted:vol];
+                [[SLNotificationController sharedController] postVolumeMounted:vol];
             }
         });
     });
@@ -468,7 +468,7 @@
 {
     SLVolume *vol = [self volumeWithMountPath:[[not userInfo] objectForKey:@"NSDevicePath"]];
     if (vol) {
-        [[SLGrowlController sharedController] postVolumeUnmounted:vol];
+        [[SLNotificationController sharedController] postVolumeUnmounted:vol];
     }
 
 	[self updateStatusItemMenu];

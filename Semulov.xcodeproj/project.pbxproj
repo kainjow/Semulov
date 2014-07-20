@@ -14,7 +14,7 @@
 		A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A518D7730BB19CC5009EC77B /* DiskArbitration.framework */; };
 		A5455F8C0AFE64C6001F61C8 /* SLController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5455F8B0AFE64C6001F61C8 /* SLController.m */; };
 		A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = A5455FE60AFE66A1001F61C8 /* SLVolume.m */; };
-		A54561870AFE720D001F61C8 /* SLGrowlController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54561850AFE720D001F61C8 /* SLGrowlController.m */; };
+		A54561870AFE720D001F61C8 /* SLNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54561850AFE720D001F61C8 /* SLNotificationController.m */; };
 		A5537F1C0C82312D00A1806D /* SemulovIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A5537F1B0C82312D00A1806D /* SemulovIcon.icns */; };
 		A5552A140B10C2C9005EB062 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A5552A130B10C2C9005EB062 /* Credits.rtf */; };
 		A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */; };
@@ -52,8 +52,8 @@
 		A5455F8B0AFE64C6001F61C8 /* SLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLController.m; sourceTree = "<group>"; };
 		A5455FE50AFE66A1001F61C8 /* SLVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLVolume.h; sourceTree = "<group>"; };
 		A5455FE60AFE66A1001F61C8 /* SLVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLVolume.m; sourceTree = "<group>"; };
-		A54561840AFE720D001F61C8 /* SLGrowlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLGrowlController.h; sourceTree = "<group>"; };
-		A54561850AFE720D001F61C8 /* SLGrowlController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLGrowlController.m; sourceTree = "<group>"; };
+		A54561840AFE720D001F61C8 /* SLNotificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLNotificationController.h; sourceTree = "<group>"; };
+		A54561850AFE720D001F61C8 /* SLNotificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLNotificationController.m; sourceTree = "<group>"; };
 		A5537F1B0C82312D00A1806D /* SemulovIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SemulovIcon.icns; sourceTree = "<group>"; };
 		A5552A130B10C2C9005EB062 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTaskAdditions.h; sourceTree = "<group>"; };
@@ -90,8 +90,8 @@
 				A5455FE60AFE66A1001F61C8 /* SLVolume.m */,
 				A58BD51E14100451007E9DF9 /* SLDiskManager.h */,
 				A58BD51F14100451007E9DF9 /* SLDiskManager.m */,
-				A54561840AFE720D001F61C8 /* SLGrowlController.h */,
-				A54561850AFE720D001F61C8 /* SLGrowlController.m */,
+				A54561840AFE720D001F61C8 /* SLNotificationController.h */,
+				A54561850AFE720D001F61C8 /* SLNotificationController.m */,
 				A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */,
 				A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */,
 				A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */,
@@ -246,7 +246,7 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				A5455F8C0AFE64C6001F61C8 /* SLController.m in Sources */,
 				A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */,
-				A54561870AFE720D001F61C8 /* SLGrowlController.m in Sources */,
+				A54561870AFE720D001F61C8 /* SLNotificationController.m in Sources */,
 				A58BD52014100451007E9DF9 /* SLDiskManager.m in Sources */,
 				A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */,
 				A517AE45190C990900DB66DC /* NSApplication+LoginItems.m in Sources */,

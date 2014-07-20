@@ -1,5 +1,5 @@
 //
-//  SLGrowlController.h
+//  SLNotificationController.h
 //  Semulov
 //
 //  Created by Kevin Wojniak on 11/5/06.
@@ -10,7 +10,7 @@
 
 @class SLVolume;
 
-@interface SLGrowlController : NSObject
+@interface SLNotificationController : NSObject
 
 + (id)sharedController;
 
