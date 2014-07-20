@@ -161,13 +161,23 @@
 
 - (NSImage *)colorImage:(NSImage *)image withColor:(NSColor *)color
 {
-    NSImage *newImage = [[NSImage alloc] initWithSize:[image size]];
-    [newImage lockFocus];
-    [image drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
-    [color set];
-    NSRectFillUsingOperation(NSMakeRect(0, 0, [image size].width, [image size].height), NSCompositeSourceAtop);
-    [newImage unlockFocus];
-    return newImage;
+    BOOL (^handler)(NSRect dstRect) = ^BOOL(NSRect dstRect) {
+        [image drawAtPoint:NSMakePoint(NSMinX(dstRect), NSMinY(dstRect)) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+        [color set];
+        NSRectFillUsingOperation(NSMakeRect(NSMinX(dstRect), NSMinY(dstRect), NSWidth(dstRect), NSHeight(dstRect)), NSCompositeSourceAtop);
+        return YES;
+    };
+    
+    if ([NSImage respondsToSelector:@selector(imageWithSize:flipped:drawingHandler:)]) {
+        // 10.8+ method
+        return [NSImage imageWithSize:image.size flipped:NO drawingHandler:handler];
+    } else {
+        NSImage *newImage = [[NSImage alloc] initWithSize:image.size];
+        [newImage lockFocus];
+        (void)handler(NSMakeRect(0, 0, newImage.size.width, newImage.size.height));
+        [newImage unlockFocus];
+        return newImage;
+    }
 }
 
 - (void)updateStatusItemIcon
