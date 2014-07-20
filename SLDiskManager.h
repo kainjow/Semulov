@@ -31,6 +31,7 @@ extern NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification;
 @property (weak) SLDisk *parent;
 @property (readwrite, copy) NSString *diskID;
 @property (readwrite, copy) NSString *name;
+@property (readwrite, copy) NSString *deviceName;
 @property (readwrite, strong) NSImage *icon;
 @property (readwrite, strong) NSURL *volumePath;
 @property (readonly) BOOL mounted;

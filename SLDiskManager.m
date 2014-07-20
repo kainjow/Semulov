@@ -87,7 +87,6 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
     NSDictionary *mediaIcon = [description objectForKey:(NSString *)kDADiskDescriptionMediaIconKey];
     NSString *bundleIdent = [mediaIcon objectForKey:(NSString *)kCFBundleIdentifierKey];
     NSString *iconFile = [mediaIcon objectForKey:@kIOBundleResourceFileKey];
-    NSString *volumeName = [description objectForKey:(NSString *)kDADiskDescriptionVolumeNameKey];
     if (bundleIdent && iconFile) {
         NSURL *bundleURL = (__bridge_transfer NSURL *)KextManagerCreateURLForBundleIdentifier(kCFAllocatorDefault, (__bridge CFStringRef)bundleIdent);
         if (bundleURL) {
@@ -95,11 +94,11 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
             disk.icon = [[NSImage alloc] initWithContentsOfFile:[bundle pathForResource:iconFile ofType:nil]];
         }
     }
-    disk.name = volumeName;
+    disk.name = [description objectForKey:(NSString *)kDADiskDescriptionVolumeNameKey];
+    disk.deviceName = [[description objectForKey:(NSString *)kDADiskDescriptionDeviceModelKey] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     disk.volumePath = [description objectForKey:(NSString *)kDADiskDescriptionVolumePathKey];
     disk.mountable = [[description objectForKey:(NSString *)kDADiskDescriptionVolumeMountableKey] boolValue];
     disk.whole = [[description objectForKey:(NSString *)kDADiskDescriptionMediaWholeKey] boolValue];
-
 }
 
 - (SLDisk *)diskFromDescription:(NSDictionary *)description diskID:(NSString *)diskID

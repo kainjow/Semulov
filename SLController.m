@@ -373,6 +373,38 @@
 			[menu addItem:[NSMenuItem separatorItem]];
 		}
 	}
+    
+    if (1) {
+        NSArray *disks = [deviceManager.disks sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
+        if (disks.count > 0) {
+            for (SLDisk *disk in disks) {
+                menuItem = [[NSMenuItem alloc] initWithTitle:disk.deviceName action:@selector(doEject:) keyEquivalent:@""];
+                [menuItem setRepresentedObject:disk];
+                [menuItem setImage:[disk.icon slResize:NSMakeSize(16, 16)]];
+                [menu addItem:menuItem];
+                NSArray *children = [disk.children sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
+                if (!children.count && disk.mountable) {
+                    children = @[disk];
+                }
+                for (SLDisk *childDisk in children) {
+                    SEL sel = childDisk.mounted ? @selector(doEject:) : @selector(doMount:);
+                    menuItem = [[NSMenuItem alloc] initWithTitle:childDisk.name action:sel keyEquivalent:@""];
+                    if (!childDisk.mounted) {
+                        NSAttributedString *astr = [[NSAttributedString alloc] initWithString:childDisk.name attributes:@{
+                            NSForegroundColorAttributeName: [NSColor grayColor],
+                            NSFontAttributeName: [NSFont menuFontOfSize:14],
+                        }];
+                        menuItem.attributedTitle = astr;
+                    }
+                    [menuItem setIndentationLevel:1];
+                    [menuItem setRepresentedObject:childDisk];
+                    [menuItem setImage:[childDisk.icon slResize:NSMakeSize(16, 16)]];
+                    [menu addItem:menuItem];
+                }
+            }
+            [menu addItem:[NSMenuItem separatorItem]];
+        }
+    }
 	
 	NSMenuItem *slMenuItem = [[NSMenuItem alloc] initWithTitle:@"Semulov" action:nil keyEquivalent:@""];
 	NSMenu *slSubmenu = [[NSMenu alloc] init];
