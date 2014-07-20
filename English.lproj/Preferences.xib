@@ -15,15 +15,15 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="Prefs" animationBehavior="default" id="5" userLabel="Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="301" y="392" width="399" height="616"/>
+            <rect key="contentRect" x="301" y="392" width="399" height="560"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
             <value key="minSize" type="size" width="213" height="107"/>
             <view key="contentView" id="6">
-                <rect key="frame" x="0.0" y="0.0" width="399" height="616"/>
+                <rect key="frame" x="0.0" y="0.0" width="399" height="560"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button id="7">
-                        <rect key="frame" x="31" y="508" width="323" height="18"/>
+                        <rect key="frame" x="31" y="452" width="323" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show number of mounted volumes in menu bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="39">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -34,7 +34,7 @@
                         </connections>
                     </button>
                     <button id="11">
-                        <rect key="frame" x="31" y="488" width="263" height="18"/>
+                        <rect key="frame" x="31" y="432" width="263" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show startup disk" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="40">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -45,7 +45,7 @@
                         </connections>
                     </button>
                     <button id="13">
-                        <rect key="frame" x="31" y="468" width="263" height="18"/>
+                        <rect key="frame" x="31" y="412" width="263" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show &quot;Eject All&quot; menu item" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="41">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -56,7 +56,7 @@
                         </connections>
                     </button>
                     <button id="17">
-                        <rect key="frame" x="31" y="555" width="320" height="18"/>
+                        <rect key="frame" x="31" y="499" width="320" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Launch Semulov at login" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="43">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -67,7 +67,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" id="20">
-                        <rect key="frame" x="18" y="532" width="114" height="17"/>
+                        <rect key="frame" x="18" y="476" width="114" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Interface" id="44">
                             <font key="font" metaFont="systemBold"/>
@@ -76,7 +76,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="21">
-                        <rect key="frame" x="18" y="579" width="114" height="17"/>
+                        <rect key="frame" x="18" y="523" width="114" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="General" id="45">
                             <font key="font" metaFont="systemBold"/>
@@ -85,7 +85,7 @@
                         </textFieldCell>
                     </textField>
                     <button id="48">
-                        <rect key="frame" x="31" y="448" width="247" height="18"/>
+                        <rect key="frame" x="31" y="392" width="247" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show unmounted volumes" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="49">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -96,7 +96,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" id="65">
-                        <rect key="frame" x="18" y="127" width="119" height="17"/>
+                        <rect key="frame" x="18" y="108" width="119" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Ignored Volumes" id="66">
                             <font key="font" metaFont="systemBold"/>
@@ -105,7 +105,7 @@
                         </textFieldCell>
                     </textField>
                     <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="72">
-                        <rect key="frame" x="33" y="39" width="259" height="38"/>
+                        <rect key="frame" x="33" y="20" width="259" height="38"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <clipView key="contentView" id="gEo-ND-Lbc">
                             <rect key="frame" x="1" y="1" width="257" height="36"/>
@@ -141,7 +141,7 @@
                         </scroller>
                     </scrollView>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="76">
-                        <rect key="frame" x="30" y="85" width="351" height="34"/>
+                        <rect key="frame" x="30" y="66" width="351" height="34"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Enter names (case insensitive) of volumes to be ignored. One name per line:" id="77">
                             <font key="font" metaFont="system"/>
@@ -150,7 +150,7 @@
                         </textFieldCell>
                     </textField>
                     <button id="WEg-hc-7EG">
-                        <rect key="frame" x="31" y="426" width="246" height="18"/>
+                        <rect key="frame" x="31" y="370" width="246" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Set default action to Show in Finder" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="UqK-6c-pKu">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -161,7 +161,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="hXX-iA-bmL">
-                        <rect key="frame" x="49" y="394" width="332" height="28"/>
+                        <rect key="frame" x="49" y="338" width="332" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Default is Eject. Hold down the Option key to Show in Finder. This option reverses that." id="cw3-CD-N9b">
                             <font key="font" metaFont="smallSystem"/>
@@ -170,7 +170,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="slr-3C-OyO">
-                        <rect key="frame" x="51" y="324" width="268" height="22"/>
+                        <rect key="frame" x="51" y="268" width="268" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="fji-JV-2QP">
                             <font key="font" metaFont="system"/>
@@ -182,7 +182,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="MqD-Yv-gg3">
-                        <rect key="frame" x="30" y="369" width="351" height="17"/>
+                        <rect key="frame" x="30" y="313" width="351" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Alternative bundle ID of application for Show in Finder:" id="Ytg-IX-0xA">
                             <font key="font" metaFont="system"/>
@@ -191,7 +191,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="sM7-Ey-cUg">
-                        <rect key="frame" x="49" y="349" width="147" height="14"/>
+                        <rect key="frame" x="49" y="293" width="147" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Leave blank to use default." id="Lvk-Tj-b9h">
                             <font key="font" metaFont="smallSystem"/>
@@ -200,7 +200,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="yam-Si-wKb">
-                        <rect key="frame" x="49" y="237" width="332" height="56"/>
+                        <rect key="frame" x="49" y="181" width="332" height="56"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="TQm-86-LK3">
                             <font key="font" metaFont="smallSystem"/>
@@ -211,7 +211,7 @@ For example, ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01."
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="sLE-SJ-wSx">
-                        <rect key="frame" x="51" y="212" width="268" height="22"/>
+                        <rect key="frame" x="51" y="156" width="268" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="3GL-14-2Rt">
                             <font key="font" metaFont="system"/>
@@ -223,7 +223,7 @@ For example, ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01."
                         </connections>
                     </textField>
                     <colorWell id="bsK-Nv-wwX">
-                        <rect key="frame" x="327" y="211" width="44" height="23"/>
+                        <rect key="frame" x="327" y="155" width="44" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <color key="color" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
@@ -235,7 +235,7 @@ For example, ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01."
                         </connections>
                     </colorWell>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Kuw-7f-0Je">
-                        <rect key="frame" x="30" y="299" width="67" height="17"/>
+                        <rect key="frame" x="30" y="243" width="67" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Icon color" id="2ni-Lu-47j">
                             <font key="font" metaFont="system"/>
@@ -244,7 +244,7 @@ For example, ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01."
                         </textFieldCell>
                     </textField>
                     <button id="w3w-eX-20e">
-                        <rect key="frame" x="30" y="187" width="351" height="18"/>
+                        <rect key="frame" x="30" y="131" width="351" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Use alternative disks layout" bezelStyle="regularSquare" imagePosition="left" inset="2" id="qaB-mK-aFB">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
