@@ -22,6 +22,7 @@
 #define SLReverseChooseAction   @"SLReverseChooseAction"
 #define SLCustomIconPattern     @"SLCustomIconPattern"
 #define SLCustomIconColor       @"SLCustomIconColor"
+#define SLDisksLayout           @"SLDisksLayout"
 
 @interface SLController (Private)
 - (void)setupBindings;
@@ -50,6 +51,7 @@
 		[NSNumber numberWithBool:NO], SLLaunchAtStartup,
 		[NSNumber numberWithBool:NO], SLShowUnmountedVolumes,
         [NSNumber numberWithBool:NO], SLReverseChooseAction,
+        @(NO), SLDisksLayout,
 		nil]];
 }
 
@@ -121,6 +123,7 @@
     [sdc addObserver:self forKeyPath:@"values."SLReverseChooseAction options:0 context:SLReverseChooseAction];
     [sdc addObserver:self forKeyPath:@"values."SLCustomIconPattern options:0 context:SLCustomIconPattern];
     [sdc addObserver:self forKeyPath:@"values."SLCustomIconColor options:0 context:SLCustomIconColor];
+    [sdc addObserver:self forKeyPath:@"values."SLDisksLayout options:0 context:SLDisksLayout];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -266,140 +269,11 @@
 	BOOL showEjectAll = [[defaultValues valueForKey:SLShowEjectAll] boolValue];
 	BOOL showUnmountedVolumes = [[defaultValues valueForKey:SLShowUnmountedVolumes] boolValue];
     BOOL reverseAction = [[defaultValues valueForKey:SLReverseChooseAction] boolValue];
+    BOOL disksLayout = [[defaultValues valueForKey:SLDisksLayout] boolValue];
 	
-    volumes = [self filterVolumes:volumes];
-	if (_volumes != volumes) {
-		_volumes = volumes;
-	}
-	SLVolumeType _lastType = -1;
-	NSInteger vcount = 0;
-	NSMenuItem *titleMenu = nil, *menuItem = nil, *altMenu = nil;
-	NSString *titleName = nil;
-	
-	for (SLVolume *vol in _volumes)
-	{
-		if ((showStartupDisk == NO && [vol isRoot]))
-		{
-			continue;
-		}
-		
-		if ([vol type] != _lastType)
-		{
-			_lastType = [vol type];
-			
-			if (_lastType == SLVolumeDrive)
-				titleName = NSLocalizedStringFromTable(@"Volumes", @"Labels", nil);
-			else if (_lastType == SLVolumeRoot)
-				titleName = NSLocalizedStringFromTable(@"Startup Disk", @"Labels", nil);
-			else if (_lastType == SLVolumeiPod)
-				titleName = NSLocalizedStringFromTable(@"iPods", @"Labels", nil);
-			else if (_lastType == SLVolumeNetwork)
-				titleName = NSLocalizedStringFromTable(@"Network", @"Labels", nil);
-			else if (_lastType == SLVolumeFTP)
-				titleName = NSLocalizedStringFromTable(@"FTP", @"Labels", nil);
-			else if (_lastType == SLVolumeWebDAV)
-				titleName = NSLocalizedStringFromTable(@"WebDAV", @"Labels", nil);
-			else if (_lastType == SLVolumeDiskImage)
-				titleName = NSLocalizedStringFromTable(@"Disk Images", @"Labels", nil);
-			else if (_lastType == SLVolumeDVD)
-				titleName = NSLocalizedStringFromTable(@"DVDs", @"Labels", nil);
-			else if (_lastType == SLVolumeCD)
-				titleName = NSLocalizedStringFromTable(@"CDs", @"Labels", nil);
-			else if (_lastType == SLVolumeHardDrive)
-				titleName = NSLocalizedStringFromTable(@"Hard Drives", @"Labels", nil);
-			else if (_lastType == SLVolumeRAMDisk)
-				titleName = NSLocalizedStringFromTable(@"RAM Disks", @"Labels", nil);
-            else if (_lastType == SLVolumeBluray)
-                titleName = NSLocalizedStringFromTable(@"Blurays", @"Labels", nil);
-			titleMenu = [[NSMenuItem alloc] initWithTitle:titleName action:nil keyEquivalent:@""];
-		}
-		
-		SEL ejectAction = (![self volumeCanBeEjected:vol] ? nil : @selector(doEject:));
-        SEL showAction = @selector(doShowInFinder:);
-        NSString *mainTitle = [vol name];
-        NSString *altTitle;
-        SEL mainAction, altAction;
-        if (reverseAction) {
-            mainAction = showAction;
-            altAction = ejectAction;
-            altTitle = [NSString stringWithFormat:NSLocalizedString(@"Eject %@", nil), [vol name]];
-        } else {
-            mainAction = ejectAction;
-            altAction = showAction;
-            altTitle = [NSString stringWithFormat:NSLocalizedString(@"Show %@", nil), [vol name]];
-        }
-        
-		NSImage *mainItemImage = [self shrinkImageForMenu:vol.image];
-        
-		// setup the main item
-		menuItem = [[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""];
-		[menuItem setRepresentedObject:vol];
-		[menuItem setImage:mainItemImage];
-		[menuItem setIndentationLevel:1];
-		[menuItem setTarget:self];
-		
-		// setup the alternate item
-		altMenu = [[NSMenuItem alloc] initWithTitle:altTitle action:altAction keyEquivalent:@""];
-		[altMenu setAlternate:YES];
-		[altMenu setKeyEquivalentModifierMask:NSAlternateKeyMask];
-		[altMenu setRepresentedObject:vol];
-		[altMenu setImage:mainItemImage];
-		[altMenu setIndentationLevel:1];
-		[altMenu setTarget:self];
-		
-		if (titleMenu)
-		{
-			[menu addItem:titleMenu];
-			titleMenu = nil;
-		}
-
-		[menu addItem:menuItem];
-		[menu addItem:altMenu];
-		
-		vcount++;
-	}
-	
-	if (showVolumesNumber)
-		[_statusItem setTitle:[NSString stringWithFormat:@"%ld", (long)vcount]];
-	else
-		[_statusItem setTitle:nil];
-	
-	if (vcount)
-	{
-		if (showEjectAll)
-		{
-			[menu addItem:[NSMenuItem separatorItem]];
-			[menu addItemWithTitle:NSLocalizedString(@"Eject All", nil) action:@selector(doEjectAll:) keyEquivalent:@""];
-		}
-		
-		[menu addItem:[NSMenuItem separatorItem]];
-	}
-	
-	if (showUnmountedVolumes) {
-        NSMutableArray *unmountedVols = [NSMutableArray array];
-        for (SLDisk *uvol in deviceManager.unmountedDisks) {
-            if ([self volumeIsOnIgnoreList:uvol.name] == NO) {
-                [unmountedVols addObject:uvol];
-            }
-        }
-		if ([unmountedVols count] > 0) {
-			[menu addItemWithTitle:NSLocalizedString(@"Unmounted", nil) action:nil keyEquivalent:@""];
-			for (SLDisk *uvol in unmountedVols) {
-                NSString *uvolName = uvol.name;
-                if (!uvolName) {
-                    uvolName = uvol.diskID;
-                }
-				menuItem = [[NSMenuItem alloc] initWithTitle:uvolName action:@selector(doMount:) keyEquivalent:@""];
-				[menuItem setIndentationLevel:1];
-				[menuItem setRepresentedObject:uvol.diskID];
-				[menuItem setImage:[self shrinkImageForMenu:uvol.icon]];
-				[menu addItem:menuItem];
-			}
-			[menu addItem:[NSMenuItem separatorItem]];
-		}
-	}
+    NSMenuItem *menuItem = nil;
     
-    if (1) {
+    if (disksLayout) {
         NSArray *disks = [deviceManager.disks sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
         if (disks.count > 0) {
             for (SLDisk *disk in disks) {
@@ -435,8 +309,135 @@
             }
             [menu addItem:[NSMenuItem separatorItem]];
         }
+    } else {
+        volumes = [self filterVolumes:volumes];
+        if (_volumes != volumes) {
+            _volumes = volumes;
+        }
+        SLVolumeType _lastType = -1;
+        NSInteger vcount = 0;
+        NSMenuItem *titleMenu = nil, *altMenu = nil;
+        NSString *titleName = nil;
+        
+        for (SLVolume *vol in _volumes) {
+            if ((showStartupDisk == NO && [vol isRoot])) {
+                continue;
+            }
+            
+            if ([vol type] != _lastType) {
+                _lastType = [vol type];
+                
+                if (_lastType == SLVolumeDrive)
+                    titleName = NSLocalizedStringFromTable(@"Volumes", @"Labels", nil);
+                else if (_lastType == SLVolumeRoot)
+                    titleName = NSLocalizedStringFromTable(@"Startup Disk", @"Labels", nil);
+                else if (_lastType == SLVolumeiPod)
+                    titleName = NSLocalizedStringFromTable(@"iPods", @"Labels", nil);
+                else if (_lastType == SLVolumeNetwork)
+                    titleName = NSLocalizedStringFromTable(@"Network", @"Labels", nil);
+                else if (_lastType == SLVolumeFTP)
+                    titleName = NSLocalizedStringFromTable(@"FTP", @"Labels", nil);
+                else if (_lastType == SLVolumeWebDAV)
+                    titleName = NSLocalizedStringFromTable(@"WebDAV", @"Labels", nil);
+                else if (_lastType == SLVolumeDiskImage)
+                    titleName = NSLocalizedStringFromTable(@"Disk Images", @"Labels", nil);
+                else if (_lastType == SLVolumeDVD)
+                    titleName = NSLocalizedStringFromTable(@"DVDs", @"Labels", nil);
+                else if (_lastType == SLVolumeCD)
+                    titleName = NSLocalizedStringFromTable(@"CDs", @"Labels", nil);
+                else if (_lastType == SLVolumeHardDrive)
+                    titleName = NSLocalizedStringFromTable(@"Hard Drives", @"Labels", nil);
+                else if (_lastType == SLVolumeRAMDisk)
+                    titleName = NSLocalizedStringFromTable(@"RAM Disks", @"Labels", nil);
+                else if (_lastType == SLVolumeBluray)
+                    titleName = NSLocalizedStringFromTable(@"Blurays", @"Labels", nil);
+                titleMenu = [[NSMenuItem alloc] initWithTitle:titleName action:nil keyEquivalent:@""];
+            }
+            
+            SEL ejectAction = (![self volumeCanBeEjected:vol] ? nil : @selector(doEject:));
+            SEL showAction = @selector(doShowInFinder:);
+            NSString *mainTitle = [vol name];
+            NSString *altTitle;
+            SEL mainAction, altAction;
+            if (reverseAction) {
+                mainAction = showAction;
+                altAction = ejectAction;
+                altTitle = [NSString stringWithFormat:NSLocalizedString(@"Eject %@", nil), [vol name]];
+            } else {
+                mainAction = ejectAction;
+                altAction = showAction;
+                altTitle = [NSString stringWithFormat:NSLocalizedString(@"Show %@", nil), [vol name]];
+            }
+            
+            NSImage *mainItemImage = [self shrinkImageForMenu:vol.image];
+            
+            // setup the main item
+            menuItem = [[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""];
+            [menuItem setRepresentedObject:vol];
+            [menuItem setImage:mainItemImage];
+            [menuItem setIndentationLevel:1];
+            [menuItem setTarget:self];
+            
+            // setup the alternate item
+            altMenu = [[NSMenuItem alloc] initWithTitle:altTitle action:altAction keyEquivalent:@""];
+            [altMenu setAlternate:YES];
+            [altMenu setKeyEquivalentModifierMask:NSAlternateKeyMask];
+            [altMenu setRepresentedObject:vol];
+            [altMenu setImage:mainItemImage];
+            [altMenu setIndentationLevel:1];
+            [altMenu setTarget:self];
+            
+            if (titleMenu) {
+                [menu addItem:titleMenu];
+                titleMenu = nil;
+            }
+
+            [menu addItem:menuItem];
+            [menu addItem:altMenu];
+            
+            vcount++;
+        }
+        
+        if (showVolumesNumber) {
+            [_statusItem setTitle:[NSString stringWithFormat:@"%ld", (long)vcount]];
+        } else {
+            [_statusItem setTitle:nil];
+        }
+        
+        if (vcount) {
+            if (showEjectAll) {
+                [menu addItem:[NSMenuItem separatorItem]];
+                [menu addItemWithTitle:NSLocalizedString(@"Eject All", nil) action:@selector(doEjectAll:) keyEquivalent:@""];
+            }
+            
+            [menu addItem:[NSMenuItem separatorItem]];
+        }
+        
+        if (showUnmountedVolumes) {
+            NSMutableArray *unmountedVols = [NSMutableArray array];
+            for (SLDisk *uvol in deviceManager.unmountedDisks) {
+                if ([self volumeIsOnIgnoreList:uvol.name] == NO) {
+                    [unmountedVols addObject:uvol];
+                }
+            }
+            if ([unmountedVols count] > 0) {
+                [menu addItemWithTitle:NSLocalizedString(@"Unmounted", nil) action:nil keyEquivalent:@""];
+                for (SLDisk *uvol in unmountedVols) {
+                    NSString *uvolName = uvol.name;
+                    if (!uvolName) {
+                        uvolName = uvol.diskID;
+                    }
+                    menuItem = [[NSMenuItem alloc] initWithTitle:uvolName action:@selector(doMount:) keyEquivalent:@""];
+                    [menuItem setIndentationLevel:1];
+                    [menuItem setRepresentedObject:uvol.diskID];
+                    [menuItem setImage:[self shrinkImageForMenu:uvol.icon]];
+                    [menu addItem:menuItem];
+                }
+                [menu addItem:[NSMenuItem separatorItem]];
+            }
+        }
     }
-	
+    
 	NSMenuItem *slMenuItem = [[NSMenuItem alloc] initWithTitle:@"Semulov" action:nil keyEquivalent:@""];
 	NSMenu *slSubmenu = [[NSMenu alloc] init];
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"About", nil) action:@selector(doAbout:) keyEquivalent:@""];
