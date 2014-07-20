@@ -214,7 +214,6 @@
 	dispatch_async(queue, ^{
         @autoreleasepool {
 		@try {
-            [deviceManager.diskImageManager reloadInfo];
 			NSArray *volumes = [SLVolume allVolumesWithDiskManager:deviceManager.diskImageManager];
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self updateStatusItemMenuWithVolumes:volumes];
@@ -406,7 +405,13 @@
             for (SLDisk *disk in disks) {
                 menuItem = [[NSMenuItem alloc] initWithTitle:disk.deviceName action:@selector(doEject:) keyEquivalent:@""];
                 [menuItem setRepresentedObject:disk];
-                [menuItem setImage:[self shrinkImageForMenu:disk.icon]];
+                NSImage *diskIcon;
+                if (disk.isDiskImage && disk.diskImage) {
+                    diskIcon = [[NSWorkspace sharedWorkspace] iconForFile:disk.diskImage];
+                } else {
+                    diskIcon = disk.icon;
+                }
+                [menuItem setImage:[self shrinkImageForMenu:diskIcon]];
                 [menu addItem:menuItem];
                 NSArray *children = [disk.children sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
                 if (!children.count && disk.mountable) {

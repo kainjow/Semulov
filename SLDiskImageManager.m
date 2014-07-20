@@ -71,4 +71,26 @@
     return nil;
 }
 
+- (NSString *)diskImageForDiskID:(NSString *)diskID
+{
+    for (NSDictionary *imagesDict in [_info objectForKey:@"images"]) {
+        NSString *imagePath = imagesDict[@"image-path"];
+        
+        // if .dmg is mounted from safari, imagePath will be the .dmg within the .download file
+        NSRange dotDownloadRange = [imagePath rangeOfString:@".download"];
+        if (dotDownloadRange.location != NSNotFound) {
+            imagePath = [imagePath substringToIndex:dotDownloadRange.location];
+        }
+        
+        for (NSDictionary *sysEntity in imagesDict[@"system-entities"]) {
+            NSString *devEntry = [[sysEntity objectForKey:@"dev-entry"] lastPathComponent];
+            if ([devEntry isEqualToString:diskID]) {
+                return imagePath;
+            }
+        }
+    }
+    
+    return nil;
+}
+
 @end

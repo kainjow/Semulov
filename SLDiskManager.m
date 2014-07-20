@@ -11,6 +11,7 @@
 #import <DiskArbitration/DiskArbitration.h>
 #import <IOKit/kext/KextManager.h>
 #import <sys/mount.h>
+#import "SLDiskImageManager.h"
 
 NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification = @"SLDiskManagerUnmountedVolumesDidChangeNotification";
 
@@ -106,6 +107,13 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
     disk.volumePath = [description objectForKey:(NSString *)kDADiskDescriptionVolumePathKey];
     disk.mountable = [[description objectForKey:(NSString *)kDADiskDescriptionVolumeMountableKey] boolValue];
     disk.whole = [[description objectForKey:(NSString *)kDADiskDescriptionMediaWholeKey] boolValue];
+    disk.diskImage = [_diskImageManager diskImageForDiskID:disk.diskID];
+    if (disk.diskImage) {
+        disk.isDiskImage = YES;
+        if (disk.whole) {
+            disk.deviceName = [disk.diskImage lastPathComponent];
+        }
+    }
 }
 
 - (SLDisk *)diskFromDescription:(NSDictionary *)description diskID:(NSString *)diskID
@@ -135,6 +143,8 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
 
 - (void)diskChanged:(DADiskRef)disk isGone:(BOOL)gone
 {
+    [_diskImageManager reloadInfo];
+    
 	NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
 	NSString *diskID = [description objectForKey:(NSString *)kDADiskDescriptionMediaBSDNameKey];
 	if (!diskID) {

@@ -13,5 +13,6 @@
 - (void)reloadInfo;
 
 - (NSString *)diskImageForVolume:(NSString *)volume;
+- (NSString *)diskImageForDiskID:(NSString *)diskID;
 
 @end

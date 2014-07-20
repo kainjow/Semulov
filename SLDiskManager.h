@@ -43,6 +43,8 @@ extern NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification;
 @property (readwrite) BOOL whole;
 @property (readonly) BOOL isStartupDisk;
 @property (readonly) BOOL containsStartupDisk;
+@property (readwrite) BOOL isDiskImage;
+@property (readwrite, copy) NSString *diskImage;
 @property (readwrite, strong) NSMutableArray *children;
 
 @end
