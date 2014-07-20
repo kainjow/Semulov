@@ -79,6 +79,7 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
         
         _pendingDisks = [[NSMutableDictionary alloc] init];
         _disks = [[NSMutableArray alloc] init];
+        _diskImageManager = [[SLDiskImageManager alloc] init];
 		
 		DARegisterDiskAppearedCallback(_session, NULL, diskAppearedCallback, (__bridge void *)self);
 		DARegisterDiskDisappearedCallback(_session, NULL, diskDisappearedCallback, (__bridge void *)self);
