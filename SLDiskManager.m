@@ -39,9 +39,15 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
 	DASessionRef _session;
     NSMutableDictionary *_pendingDisks;
     NSMutableArray *_disks;
+    SLDiskImageManager *_diskImageManager;
 }
 
-@dynamic disks;
+@dynamic disks, diskImageManager;
+
+- (SLDiskImageManager *)diskImageManager
+{
+    return _diskImageManager;
+}
 
 - (NSArray *)unmountedDisks {
     NSMutableArray *unmountedDisks = [NSMutableArray array];

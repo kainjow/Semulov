@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SLDisk;
+@class SLDiskImageManager;
 
 @interface SLDiskManager : NSObject
 
@@ -22,6 +23,8 @@ typedef void (^SLUnmountHandler)(BOOL unmounted);
 
 - (SLDisk *)diskForPath:(NSString *)path;
 - (SLDisk *)diskForDiskID:(NSString *)diskID;
+
+@property (readonly) SLDiskImageManager *diskImageManager;
 
 @end
 

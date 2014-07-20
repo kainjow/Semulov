@@ -37,7 +37,6 @@
 	NSArray *_volumes;
 	NSWindowController *_prefs;
 	SLDiskManager *deviceManager;
-    SLDiskImageManager *_diskImageManager;
     dispatch_queue_t queue;
     NSArray *ignoredVolumes;
 }
@@ -87,8 +86,6 @@
 	deviceManager = [[SLDiskManager alloc] init];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
     
-    _diskImageManager = [[SLDiskImageManager alloc] init];
-	
 	[self setupBindings];
 	
 	// At startup make sure we're in the login items if the pref is set (user may have manually removed us)
@@ -217,8 +214,8 @@
 	dispatch_async(queue, ^{
         @autoreleasepool {
 		@try {
-            [_diskImageManager reloadInfo];
-			NSArray *volumes = [SLVolume allVolumesWithDiskManager:_diskImageManager];
+            [deviceManager.diskImageManager reloadInfo];
+			NSArray *volumes = [SLVolume allVolumesWithDiskManager:deviceManager.diskImageManager];
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self updateStatusItemMenuWithVolumes:volumes];
                 [self updateStatusItemIcon];
