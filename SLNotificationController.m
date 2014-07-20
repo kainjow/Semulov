@@ -3,7 +3,7 @@
 //  Semulov
 //
 //  Created by Kevin Wojniak on 11/5/06.
-//  Copyright 2006 Kevin Wojniak. All rights reserved.
+//  Copyright 2006-2014 Kevin Wojniak. All rights reserved.
 //
 
 #import "SLNotificationController.h"
@@ -24,13 +24,11 @@
 
 - (void)postNotificationCenterWithTitle:(NSString *)title subtitle:(NSString *)subtitle
 {
-    // We don't yet link against 10.8 SDK so can't use this API directly yet.
-    id userNotificationCenterClass = NSClassFromString(@"NSUserNotificationCenter");
-    if (userNotificationCenterClass != nil) {
-        id note = [[NSClassFromString(@"NSUserNotification") alloc] init];
-        [note setValue:title forKey:@"title"];
-        [note setValue:subtitle forKey:@"subtitle"];
-        [[userNotificationCenterClass performSelector:@selector(defaultUserNotificationCenter)] performSelector:@selector(deliverNotification:) withObject:note];
+    if (NSClassFromString(@"NSUserNotification")) {
+        NSUserNotification *note = [[NSUserNotification alloc] init];
+        note.title = title;
+        note.subtitle = subtitle;
+        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:note];
     }
 }
 
