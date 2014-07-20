@@ -479,7 +479,7 @@
 	[NSApp terminate:nil];
 }
 
-- (void)ejectVolume:(SLVolume *)volume withUIFeedback:(BOOL)uiFeedback
+- (void)eject:(id)object withUIFeedback:(BOOL)uiFeedback
 {
     SLUnmountHandler handler = ^(BOOL unmounted) {
         if (!unmounted && uiFeedback) {
@@ -488,22 +488,30 @@
         }
     };
     
-    if (!volume.isLocal) {
-        handler([[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:[NSURL fileURLWithPath:volume.path] error:nil]);
-        return;
+    SLDisk *disk = nil;
+    
+    if ([object isKindOfClass:[SLVolume class]]) {
+        SLVolume *volume = (SLVolume *)object;
+        if (!volume.isLocal) {
+            handler([[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:[NSURL fileURLWithPath:volume.path] error:nil]);
+            return;
+        }
+        
+        disk = [deviceManager diskForPath:volume.path];
+        if (!disk) {
+            NSLog(@"Can't get disk for volume: %@", volume.path);
+            return;
+        }
+    } else if ([object isKindOfClass:[SLDisk class]]) {
+        disk = (SLDisk *)object;
     }
     
-    SLDisk *disk = [deviceManager diskForPath:volume.path];
-    if (!disk) {
-        NSLog(@"Can't get disk for volume: %@", volume.path);
-        return;
-    }
     [deviceManager unmountAndMaybeEject:disk handler:handler];
 }
 
 - (void)doEject:(id)sender
 {
-	[self ejectVolume:[sender representedObject] withUIFeedback:YES];
+    [self eject:[sender representedObject] withUIFeedback:YES];
 }
 
 - (void)doEjectAll:(id)sender
@@ -512,7 +520,7 @@
 	NSArray *volumesCopy = [_volumes copy];
 	for (SLVolume *vol in volumesCopy) {
 		if ([self volumeCanBeEjected:vol]) {
-            [self ejectVolume:vol withUIFeedback:NO];
+            [self eject:vol withUIFeedback:NO];
 		}
 	}
 }
@@ -528,7 +536,12 @@
 
 - (void)doMount:(id)sender
 {
-	[deviceManager mount:[sender representedObject]];
+    id obj = [sender representedObject];
+    if ([obj isKindOfClass:[NSString class]]) {
+        [deviceManager mount:[deviceManager diskForDiskID:obj]];
+    } else if ([obj isKindOfClass:[SLDisk class]]) {
+        [deviceManager mount:(SLDisk *)obj];
+    }
 }
 
 - (void)doFeedback:(id)sender

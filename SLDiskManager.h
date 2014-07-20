@@ -15,12 +15,13 @@
 @property (readonly) NSArray *unmountedDisks;
 @property (readonly) NSArray *disks;
 
-- (void)mount:(NSString *)diskID;
+- (void)mount:(SLDisk *)disk;
 
 typedef void (^SLUnmountHandler)(BOOL unmounted);
 - (void)unmountAndMaybeEject:(SLDisk *)disk handler:(SLUnmountHandler)handler;
 
 - (SLDisk *)diskForPath:(NSString *)path;
+- (SLDisk *)diskForDiskID:(NSString *)diskID;
 
 @end
 
