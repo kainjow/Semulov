@@ -314,30 +314,6 @@
 	return _root;
 }
 
-- (BOOL)eject
-{
-    NSError *err = nil;
-    BOOL ret = [[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:[NSURL fileURLWithPath:[self path]] error:&err];
-    if (err || !ret) {
-        NSLog(@"eject failed: %@", err);
-
-        DASessionRef session = DASessionCreate(kCFAllocatorDefault);
-        if (session) {
-            NSURL *url = [NSURL fileURLWithPath:[self path]];
-            DADiskRef disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session, (__bridge CFURLRef)url);
-            if (disk) {
-                DADiskUnmount(disk, 0, NULL, NULL);
-                // TODO: wait for callback? Then do Eject?
-                CFRelease(disk);
-                ret = YES;
-            }
-            CFRelease(session);
-        }
-    }
-    
-    return ret;
-}
-
 - (BOOL)showInFinder
 {
     NSString *defaultAppID = [[NSUserDefaults standardUserDefaults] objectForKey:@"SLShowinFinderBundleID"];

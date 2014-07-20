@@ -447,30 +447,40 @@
 	[NSApp terminate:nil];
 }
 
-- (void)ejectVolumeWithFeedback:(SLVolume *)volume
+- (void)ejectVolume:(SLVolume *)volume withUIFeedback:(BOOL)uiFeedback
 {
-    SLDisk *disk = [deviceManager diskForPath:volume.path];
-    if (disk) {
-        [deviceManager unmountAndMaybeEject:disk handler:^(BOOL unmounted) {
-            if (!unmounted) {
-                [NSApp activateIgnoringOtherApps:YES];
-                NSRunAlertPanel(NSLocalizedString(@"Unmount failed", nil), NSLocalizedString(@"Failed to eject volume.", nil), nil, nil, nil);
-            }
-        }];
+    SLUnmountHandler handler = ^(BOOL unmounted) {
+        if (!unmounted && uiFeedback) {
+            [NSApp activateIgnoringOtherApps:YES];
+            NSRunAlertPanel(NSLocalizedString(@"Unmount failed", nil), NSLocalizedString(@"Failed to eject volume.", nil), nil, nil, nil);
+        }
+    };
+    
+    if (!volume.isLocal) {
+        handler([[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:[NSURL fileURLWithPath:volume.path] error:nil]);
+        return;
     }
+    
+    SLDisk *disk = [deviceManager diskForPath:volume.path];
+    if (!disk) {
+        NSLog(@"Can't get disk for volume: %@", volume.path);
+        return;
+    }
+    [deviceManager unmountAndMaybeEject:disk handler:handler];
 }
 
 - (void)doEject:(id)sender
 {
-	[self ejectVolumeWithFeedback:[sender representedObject]];
+	[self ejectVolume:[sender representedObject] withUIFeedback:YES];
 }
 
 - (void)doEjectAll:(id)sender
 {
+    // FIXME: for disks with lots of partitions, this doesn't eject it, just unmounts all of them.
 	NSArray *volumesCopy = [_volumes copy];
 	for (SLVolume *vol in volumesCopy) {
 		if ([self volumeCanBeEjected:vol]) {
-			[vol eject];
+            [self ejectVolume:vol withUIFeedback:NO];
 		}
 	}
 }

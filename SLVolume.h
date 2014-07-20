@@ -54,7 +54,6 @@ typedef enum
 
 - (BOOL)isiPod;
 
-- (BOOL)eject;
 - (BOOL)showInFinder;
 
 @end
