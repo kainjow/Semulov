@@ -293,6 +293,9 @@
                 }
                 for (SLDisk *childDisk in children) {
                     SEL sel = childDisk.mounted ? @selector(doEject:) : @selector(doMount:);
+                    if (childDisk.isStartupDisk && !showStartupDisk) {
+                        sel = nil;
+                    }
                     menuItem = [[NSMenuItem alloc] initWithTitle:childDisk.name action:sel keyEquivalent:@""];
                     if (!childDisk.mounted) {
                         NSAttributedString *astr = [[NSAttributedString alloc] initWithString:childDisk.name attributes:@{
