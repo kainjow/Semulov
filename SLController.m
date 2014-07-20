@@ -9,7 +9,6 @@
 #import "SLController.h"
 #import "SLVolume.h"
 #import "SLGrowlController.h"
-#import "SLNSImageAdditions.h"
 #import "NSApplication+LoginItems.h"
 #import "SLDiskManager.h"
 
@@ -237,6 +236,13 @@
     return newVolumes;
 }
 
+- (NSImage *)shrinkImageForMenu:(NSImage *)image
+{
+    NSImage *img = [image copy];
+    [img setSize:NSMakeSize(16, 16)];
+    return img;
+}
+
 - (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes
 {
 	[_statusItem setMenu:[[NSMenu alloc] init]];
@@ -312,7 +318,7 @@
             altTitle = [NSString stringWithFormat:NSLocalizedString(@"Show %@", nil), [vol name]];
         }
         
-		NSImage *mainItemImage = [[vol image] slResize:NSMakeSize(16, 16)];
+		NSImage *mainItemImage = [self shrinkImageForMenu:vol.image];
         
 		// setup the main item
 		menuItem = [[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""];
@@ -375,7 +381,7 @@
 				menuItem = [[NSMenuItem alloc] initWithTitle:uvolName action:@selector(doMount:) keyEquivalent:@""];
 				[menuItem setIndentationLevel:1];
 				[menuItem setRepresentedObject:uvol.diskID];
-				[menuItem setImage:[uvol.icon slResize:NSMakeSize(16, 16)]];
+				[menuItem setImage:[self shrinkImageForMenu:uvol.icon]];
 				[menu addItem:menuItem];
 			}
 			[menu addItem:[NSMenuItem separatorItem]];
@@ -388,7 +394,7 @@
             for (SLDisk *disk in disks) {
                 menuItem = [[NSMenuItem alloc] initWithTitle:disk.deviceName action:@selector(doEject:) keyEquivalent:@""];
                 [menuItem setRepresentedObject:disk];
-                [menuItem setImage:[disk.icon slResize:NSMakeSize(16, 16)]];
+                [menuItem setImage:[self shrinkImageForMenu:disk.icon]];
                 [menu addItem:menuItem];
                 NSArray *children = [disk.children sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
                 if (!children.count && disk.mountable) {
@@ -406,7 +412,7 @@
                     }
                     [menuItem setIndentationLevel:1];
                     [menuItem setRepresentedObject:childDisk];
-                    [menuItem setImage:[childDisk.icon slResize:NSMakeSize(16, 16)]];
+                    [menuItem setImage:[self shrinkImageForMenu:childDisk.icon]];
                     [menu addItem:menuItem];
                 }
             }
