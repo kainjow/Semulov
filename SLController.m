@@ -12,8 +12,6 @@
 #import "SLNSImageAdditions.h"
 #import "NSApplication+LoginItems.h"
 #import "SLDeviceManager.h"
-#import "SLUnmountedVolume.h"
-
 
 #define SLShowVolumesNumber		@"SLShowVolumesNumber"
 #define SLShowStartupDisk		@"SLShowStartupDisk"
@@ -24,7 +22,6 @@
 #define SLReverseChooseAction   @"SLReverseChooseAction"
 #define SLCustomIconPattern     @"SLCustomIconPattern"
 #define SLCustomIconColor       @"SLCustomIconColor"
-
 
 @interface SLController (Private)
 - (void)setupBindings;
@@ -355,15 +352,19 @@
 	
 	if (showUnmountedVolumes) {
         NSMutableArray *unmountedVols = [NSMutableArray array];
-        for (SLUnmountedVolume *uvol in deviceManager.unmountedVolumes) {
+        for (SLDisk *uvol in deviceManager.unmountedDisks) {
             if ([self volumeIsOnIgnoreList:uvol.name] == NO) {
                 [unmountedVols addObject:uvol];
             }
         }
 		if ([unmountedVols count] > 0) {
 			[[menu addItemWithTitle:NSLocalizedString(@"Unmounted", nil) action:@selector(doEjectAll:) keyEquivalent:@""] setAction:nil];
-			for (SLUnmountedVolume *uvol in unmountedVols) {
-				menuItem = [[NSMenuItem alloc] initWithTitle:uvol.name action:@selector(doMount:) keyEquivalent:@""];
+			for (SLDisk *uvol in unmountedVols) {
+                NSString *uvolName = uvol.name;
+                if (!uvolName) {
+                    uvolName = uvol.diskID;
+                }
+				menuItem = [[NSMenuItem alloc] initWithTitle:uvolName action:@selector(doMount:) keyEquivalent:@""];
 				[menuItem setIndentationLevel:1];
 				[menuItem setRepresentedObject:uvol.diskID];
 				[menuItem setImage:[uvol.icon slResize:NSMakeSize(16, 16)]];
