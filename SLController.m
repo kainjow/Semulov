@@ -207,9 +207,14 @@
     }
 }
 
-- (BOOL)volumeCanBeEjected:(SLVolume *)volume
+- (BOOL)objectCanBeEjected:(id)obj
 {
-	return ![volume isRoot] && ![self volumeIsOnIgnoreList:volume.name];
+    if ([obj isKindOfClass:[SLVolume class]]) {
+        SLVolume *volume = (SLVolume *)obj;
+        return ![volume isRoot] && ![self volumeIsOnIgnoreList:volume.name];
+    }
+    SLDisk *disk = (SLDisk *)obj;
+    return !disk.isStartupDisk && ![self volumeIsOnIgnoreList:disk.name];
 }
 
 - (void)updateStatusItemMenu
@@ -257,6 +262,67 @@
     return img;
 }
 
+- (NSArray *)setupMenuItemsForMoutableObject:(id)obj reverseAction:(BOOL)reverseAction
+{
+    NSMenuItem *menuItem = nil;
+    NSMenuItem *altMenuItem = nil;
+    
+    SEL mainAction = nil;
+    SEL altAction = nil;
+    NSString *mainTitle = [obj name];
+    NSString *altTitle = nil;
+
+    SLDisk *disk = [obj isKindOfClass:[SLDisk class]] ? (SLDisk *)obj : nil;
+    
+    if (disk && !disk.mounted) {
+        mainAction = @selector(doMount:);
+    } else {
+        SEL ejectAction = (![self objectCanBeEjected:obj] ? nil : @selector(doEject:));
+        SEL showAction = @selector(doShowInFinder:);
+        if (reverseAction) {
+            mainAction = showAction;
+            altAction = ejectAction;
+            altTitle = [NSString stringWithFormat:NSLocalizedString(@"Eject %@", nil), [obj name]];
+        } else {
+            mainAction = ejectAction;
+            altAction = showAction;
+            altTitle = [NSString stringWithFormat:NSLocalizedString(@"Show %@", nil), [obj name]];
+        }
+    }
+    
+    NSImage *mainItemImage = [self shrinkImageForMenu:[obj isKindOfClass:[SLVolume class]] ? [obj image] : [obj icon]];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""];
+    [menuItem setRepresentedObject:obj];
+    [menuItem setImage:mainItemImage];
+    [menuItem setIndentationLevel:1];
+    [menuItem setTarget:self];
+    
+    if (disk && !disk.mounted) {
+        NSAttributedString *astr = [[NSAttributedString alloc] initWithString:disk.name attributes:@{
+            NSForegroundColorAttributeName: [NSColor grayColor],
+            NSFontAttributeName: [NSFont menuFontOfSize:14],
+        }];
+        menuItem.attributedTitle = astr;
+    }
+    
+    if (altAction && altTitle) {
+        altMenuItem = [[NSMenuItem alloc] initWithTitle:altTitle action:altAction keyEquivalent:@""];
+        [altMenuItem setAlternate:YES];
+        [altMenuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
+        [altMenuItem setRepresentedObject:obj];
+        [altMenuItem setImage:mainItemImage];
+        [altMenuItem setIndentationLevel:1];
+        [altMenuItem setTarget:self];
+    }
+    
+    if (altMenuItem) {
+        return @[menuItem, altMenuItem];
+    }
+    
+    return @[menuItem];
+}
+
 - (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes
 {
 	[_statusItem setMenu:[[NSMenu alloc] init]];
@@ -271,8 +337,6 @@
     BOOL reverseAction = [[defaultValues valueForKey:SLReverseChooseAction] boolValue];
     BOOL disksLayout = [[defaultValues valueForKey:SLDisksLayout] boolValue];
 	
-    NSMenuItem *menuItem = nil;
-    
     volumes = [self filterVolumes:volumes];
     if (_volumes != volumes) {
         _volumes = volumes;
@@ -289,7 +353,7 @@
         NSArray *disks = [deviceManager.disks sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
         if (disks.count > 0) {
             for (SLDisk *disk in disks) {
-                menuItem = [[NSMenuItem alloc] initWithTitle:disk.deviceName action:@selector(doEject:) keyEquivalent:@""];
+                NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:disk.deviceName action:@selector(doEject:) keyEquivalent:@""];
                 [menuItem setRepresentedObject:disk];
                 NSImage *diskIcon;
                 if (disk.isDiskImage && disk.diskImage) {
@@ -310,33 +374,16 @@
                     if (!childDisk.mounted && !showUnmountedVolumes) {
                         continue;
                     }
-                    SEL sel = nil;
-                    if (!childDisk.isStartupDisk) {
-                        if (childDisk.mounted) {
-                            sel = @selector(doEject:);
-                        } else {
-                            sel = @selector(doMount:);
-                        }
+                    for (NSMenuItem *item in [self setupMenuItemsForMoutableObject:childDisk reverseAction:reverseAction]) {
+                        [menu addItem:item];
                     }
-                    menuItem = [[NSMenuItem alloc] initWithTitle:childDisk.name action:sel keyEquivalent:@""];
-                    if (!childDisk.mounted) {
-                        NSAttributedString *astr = [[NSAttributedString alloc] initWithString:childDisk.name attributes:@{
-                            NSForegroundColorAttributeName: [NSColor grayColor],
-                            NSFontAttributeName: [NSFont menuFontOfSize:14],
-                        }];
-                        menuItem.attributedTitle = astr;
-                    }
-                    [menuItem setIndentationLevel:1];
-                    [menuItem setRepresentedObject:childDisk];
-                    [menuItem setImage:[self shrinkImageForMenu:childDisk.icon]];
-                    [menu addItem:menuItem];
                 }
             }
             [menu addItem:[NSMenuItem separatorItem]];
         }
     } else {
         SLVolumeType _lastType = -1;
-        NSMenuItem *titleMenu = nil, *altMenu = nil;
+        NSMenuItem *titleMenu = nil;
         NSString *titleName = nil;
         
         for (SLVolume *vol in volumesToDisplay) {
@@ -370,46 +417,14 @@
                 titleMenu = [[NSMenuItem alloc] initWithTitle:titleName action:nil keyEquivalent:@""];
             }
             
-            SEL ejectAction = (![self volumeCanBeEjected:vol] ? nil : @selector(doEject:));
-            SEL showAction = @selector(doShowInFinder:);
-            NSString *mainTitle = [vol name];
-            NSString *altTitle;
-            SEL mainAction, altAction;
-            if (reverseAction) {
-                mainAction = showAction;
-                altAction = ejectAction;
-                altTitle = [NSString stringWithFormat:NSLocalizedString(@"Eject %@", nil), [vol name]];
-            } else {
-                mainAction = ejectAction;
-                altAction = showAction;
-                altTitle = [NSString stringWithFormat:NSLocalizedString(@"Show %@", nil), [vol name]];
-            }
-            
-            NSImage *mainItemImage = [self shrinkImageForMenu:vol.image];
-            
-            // setup the main item
-            menuItem = [[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""];
-            [menuItem setRepresentedObject:vol];
-            [menuItem setImage:mainItemImage];
-            [menuItem setIndentationLevel:1];
-            [menuItem setTarget:self];
-            
-            // setup the alternate item
-            altMenu = [[NSMenuItem alloc] initWithTitle:altTitle action:altAction keyEquivalent:@""];
-            [altMenu setAlternate:YES];
-            [altMenu setKeyEquivalentModifierMask:NSAlternateKeyMask];
-            [altMenu setRepresentedObject:vol];
-            [altMenu setImage:mainItemImage];
-            [altMenu setIndentationLevel:1];
-            [altMenu setTarget:self];
-            
             if (titleMenu) {
                 [menu addItem:titleMenu];
                 titleMenu = nil;
             }
 
-            [menu addItem:menuItem];
-            [menu addItem:altMenu];
+            for (NSMenuItem *item in [self setupMenuItemsForMoutableObject:vol reverseAction:reverseAction]) {
+                [menu addItem:item];
+            }
         }
         
         if (volumesToDisplay.count > 0) {
@@ -435,7 +450,7 @@
                     if (!uvolName) {
                         uvolName = uvol.diskID;
                     }
-                    menuItem = [[NSMenuItem alloc] initWithTitle:uvolName action:@selector(doMount:) keyEquivalent:@""];
+                    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:uvolName action:@selector(doMount:) keyEquivalent:@""];
                     [menuItem setIndentationLevel:1];
                     [menuItem setRepresentedObject:uvol.diskID];
                     [menuItem setImage:[self shrinkImageForMenu:uvol.icon]];
@@ -565,7 +580,7 @@
     // FIXME: for disks with lots of partitions, this doesn't eject it, just unmounts all of them.
 	NSArray *volumesCopy = [_volumes copy];
 	for (SLVolume *vol in volumesCopy) {
-		if ([self volumeCanBeEjected:vol]) {
+		if ([self objectCanBeEjected:vol]) {
             [self eject:vol withUIFeedback:NO];
 		}
 	}
@@ -573,11 +588,21 @@
 
 - (void)doShowInFinder:(id)sender
 {
-	if (![[sender representedObject] showInFinder])
-	{
-		[NSApp activateIgnoringOtherApps:YES];
-		NSBeep();
-	}
+    id obj = [sender representedObject];
+    NSString *path = nil;
+    if ([obj isKindOfClass:[SLVolume class]]) {
+        path = [(SLVolume *)obj path];
+    } else if ([obj isKindOfClass:[SLDisk class]]) {
+        path = [(SLDisk *)obj volumePath].path;
+    }
+    if (path) {
+        NSString *defaultAppID = [[NSUserDefaults standardUserDefaults] objectForKey:@"SLShowinFinderBundleID"];
+        if (defaultAppID && [defaultAppID length] > 0) {
+            NSURL *appURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:defaultAppID];
+            (void)[[NSWorkspace sharedWorkspace] openFile:path withApplication:[appURL path]];
+        }
+        (void)[[NSWorkspace sharedWorkspace] selectFile:nil inFileViewerRootedAtPath:path];
+    }
 }
 
 - (void)doMount:(id)sender

@@ -43,6 +43,4 @@ typedef enum
 
 - (BOOL)isiPod;
 
-- (BOOL)showInFinder;
-
 @end

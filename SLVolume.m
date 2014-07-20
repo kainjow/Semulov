@@ -262,16 +262,6 @@
 	return _root;
 }
 
-- (BOOL)showInFinder
-{
-    NSString *defaultAppID = [[NSUserDefaults standardUserDefaults] objectForKey:@"SLShowinFinderBundleID"];
-    if (defaultAppID && [defaultAppID length] > 0) {
-        NSURL *appURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:defaultAppID];
-        return [[NSWorkspace sharedWorkspace] openFile:[self path] withApplication:[appURL path]];
-    }
-    return [[NSWorkspace sharedWorkspace] selectFile:nil inFileViewerRootedAtPath:[self path]];
-}
-
 - (SLVolumeType)type
 {
 	return _type;
