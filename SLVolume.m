@@ -3,19 +3,18 @@
 //  Semulov
 //
 //  Created by Kevin Wojniak on 11/5/06.
-//  Copyright 2006 - 2011 Kevin Wojniak. All rights reserved.
+//  Copyright 2006 - 2014 Kevin Wojniak. All rights reserved.
 //
 
 #import "SLVolume.h"
 #import <DiskArbitration/DiskArbitration.h>
 #import <IOKit/storage/IOStorageDeviceCharacteristics.h>
 #import <sys/mount.h>
-#import "NSTaskAdditions.h"
+#import "SLDiskImageManager.h"
 
-@interface SLVolume (Private)
+@interface SLVolume ()
 
-+ (id)volumeWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages;
-- (id)initWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages;
+- (id)initWithStatfs:(struct statfs *)statfs diskImageManager:(SLDiskImageManager *)diskImageManager;
 
 @end
 
@@ -33,61 +32,7 @@
 	SLVolumeType _type;
 }
 
-+ (NSDictionary *)mountedDiskImages
-{
-	NSString *plistStr = [NSTask outputStringForTaskAtPath:@"/usr/bin/hdiutil" arguments:[NSArray arrayWithObjects:@"info", @"-plist", nil] encoding:NSUTF8StringEncoding];
-	
-	// sometimes hdiutil returns an error in the first line or so of it's output.
-	// so we try to determine if an error exists, and skip past it to the xml
-	
-	NSString *xmlStr = @"<?xml";
-	NSRange xmlRange = [plistStr rangeOfString:xmlStr];
-	if (xmlRange.location == NSNotFound)
-	{
-		// not valid xml?!
-		return nil;
-	}
-	if (xmlRange.location > 0)
-	{
-		// scan up to XML
-		NSScanner *scanner = [NSScanner scannerWithString:plistStr];
-		[scanner scanUpToString:xmlStr intoString:nil];
-		plistStr = [plistStr substringFromIndex:[scanner scanLocation]];
-	}
-
-	NSDictionary *plistDict = [plistStr propertyList];
-	if ((plistDict == nil) || ([plistDict isKindOfClass:[NSDictionary class]] == NO))
-		return nil;
-	
-	NSMutableDictionary *mountPoints = [NSMutableDictionary dictionary];
-	NSArray *images = [plistDict objectForKey:@"images"];
-	NSDictionary *imagesDict = nil;
-	for (imagesDict in images)
-	{
-		NSString *imagePath = [imagesDict objectForKey:@"image-path"];
-		NSArray *sysEntities = [imagesDict objectForKey:@"system-entities"];
-		NSDictionary *sysEntity = nil;
-		
-		// if .dmg is mounted from safari, imagePath will be the .dmg within the .download file
-		NSRange dotDownloadRange = [imagePath rangeOfString:@".download"];
-		if (dotDownloadRange.location != NSNotFound)
-			imagePath = [imagePath substringToIndex:dotDownloadRange.location];
-		
-		for (sysEntity in sysEntities)
-		{
-			NSString *mountPoint = [sysEntity objectForKey:@"mount-point"];
-			
-			if ((imagePath != nil) && (mountPoint != nil))
-			{
-				[mountPoints setObject:imagePath forKey:mountPoint];
-			}
-		}
-	}
-	
-	return ([mountPoints count] ? mountPoints : nil);
-}
-
-+ (NSArray *)allVolumes
++ (NSArray *)allVolumesWithDiskManager:(SLDiskImageManager *)diskImageManager
 {
 	NSMutableArray *volumes = [NSMutableArray array];
 	int count = getfsstat(NULL, 0, MNT_NOWAIT);
@@ -95,9 +40,8 @@
 		struct statfs *buf = calloc(count, sizeof(struct statfs));
 		if (buf) {
 			if (getfsstat(buf, count * sizeof(struct statfs), MNT_NOWAIT) > 0) {
-				NSDictionary *diskImages = [SLVolume mountedDiskImages];
 				for (int i = 0; i < count; i++) {
-					SLVolume *vol = [SLVolume volumeWithStatfs:&buf[i] mountedDiskImages:diskImages];
+					SLVolume *vol = [[SLVolume alloc] initWithStatfs:&buf[i] diskImageManager:diskImageManager];
                     if (vol == nil) {
                         continue;
                     }
@@ -115,11 +59,6 @@
 	return volumes;
 }
 
-+ (id)volumeWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages
-{
-    return [[self alloc] initWithStatfs:statfs mountedDiskImages:diskImages];
-}
-
 + (NSURL *)volumeURL:(NSURL *)url
 {
     NSURL *hostURL = nil;
@@ -127,7 +66,7 @@
     return hostURL;
 }
 
-- (id)initWithStatfs:(struct statfs *)statfs mountedDiskImages:(NSDictionary *)diskImages
+- (id)initWithStatfs:(struct statfs *)statfs diskImageManager:(SLDiskImageManager *)diskImageManager
 {
     self = [super init];
     if (self != nil)
@@ -186,14 +125,10 @@
 			else
 				_type = SLVolumeDrive;
 			
-			if (diskImages != nil)
-			{
-				NSString *imgPath = [diskImages objectForKey:[self path]];
-				if (imgPath)
-				{
-					_imagePath = [imgPath copy];
-					_type = SLVolumeDiskImage;
-				}
+            NSString *imgPath = [diskImageManager diskImageForVolume:[self path]];
+            if (imgPath) {
+                _imagePath = [imgPath copy];
+                _type = SLVolumeDiskImage;
 			}
 			
 			DASessionRef session = DASessionCreate(kCFAllocatorDefault);

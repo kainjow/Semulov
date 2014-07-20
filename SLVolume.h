@@ -3,10 +3,12 @@
 //  Semulov
 //
 //  Created by Kevin Wojniak on 11/5/06.
-//  Copyright 2006 - 2011 Kevin Wojniak. All rights reserved.
+//  Copyright 2006 - 2014 Kevin Wojniak. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
+
+@class SLDiskImageManager;
 
 typedef enum
 {
@@ -26,7 +28,7 @@ typedef enum
 
 @interface SLVolume : NSObject <NSCopying>
 
-+ (NSArray *)allVolumes;
++ (NSArray *)allVolumesWithDiskManager:(SLDiskImageManager *)diskImageManager;
 
 - (NSString *)path;
 - (NSString *)name;

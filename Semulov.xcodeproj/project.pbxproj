@@ -23,6 +23,7 @@
 		A58BD4BD14100163007E9DF9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4B914100163007E9DF9 /* Localizable.strings */; };
 		A58BD4BE14100163007E9DF9 /* Labels.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4BB14100163007E9DF9 /* Labels.strings */; };
 		A58BD52014100451007E9DF9 /* SLDiskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A58BD51F14100451007E9DF9 /* SLDiskManager.m */; };
+		A58DAA47197C4C7100DCC2CA /* SLDiskImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA46197C4C7100DCC2CA /* SLDiskImageManager.m */; };
 		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,8 @@
 		A58BD4BC14100163007E9DF9 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Labels.strings; sourceTree = "<group>"; };
 		A58BD51E14100451007E9DF9 /* SLDiskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDiskManager.h; sourceTree = "<group>"; };
 		A58BD51F14100451007E9DF9 /* SLDiskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDiskManager.m; sourceTree = "<group>"; };
+		A58DAA45197C4C4C00DCC2CA /* SLDiskImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDiskImageManager.h; sourceTree = "<group>"; };
+		A58DAA46197C4C7100DCC2CA /* SLDiskImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDiskImageManager.m; sourceTree = "<group>"; };
 		A5D982940C8B7F7B002A802F /* Eject.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Eject.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,6 +93,8 @@
 				A5455FE60AFE66A1001F61C8 /* SLVolume.m */,
 				A58BD51E14100451007E9DF9 /* SLDiskManager.h */,
 				A58BD51F14100451007E9DF9 /* SLDiskManager.m */,
+				A58DAA45197C4C4C00DCC2CA /* SLDiskImageManager.h */,
+				A58DAA46197C4C7100DCC2CA /* SLDiskImageManager.m */,
 				A54561840AFE720D001F61C8 /* SLNotificationController.h */,
 				A54561850AFE720D001F61C8 /* SLNotificationController.m */,
 				A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */,
@@ -250,6 +255,7 @@
 				A58BD52014100451007E9DF9 /* SLDiskManager.m in Sources */,
 				A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */,
 				A517AE45190C990900DB66DC /* NSApplication+LoginItems.m in Sources */,
+				A58DAA47197C4C7100DCC2CA /* SLDiskImageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

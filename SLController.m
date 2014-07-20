@@ -11,6 +11,7 @@
 #import "SLNotificationController.h"
 #import "NSApplication+LoginItems.h"
 #import "SLDiskManager.h"
+#import "SLDiskImageManager.h"
 
 #define SLShowVolumesNumber		@"SLShowVolumesNumber"
 #define SLShowStartupDisk		@"SLShowStartupDisk"
@@ -36,6 +37,7 @@
 	NSArray *_volumes;
 	NSWindowController *_prefs;
 	SLDiskManager *deviceManager;
+    SLDiskImageManager *_diskImageManager;
     dispatch_queue_t queue;
     NSArray *ignoredVolumes;
 }
@@ -84,6 +86,8 @@
 	
 	deviceManager = [[SLDiskManager alloc] init];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
+    
+    _diskImageManager = [[SLDiskImageManager alloc] init];
 	
 	[self setupBindings];
 	
@@ -213,7 +217,8 @@
 	dispatch_async(queue, ^{
         @autoreleasepool {
 		@try {
-			NSArray *volumes = [SLVolume allVolumes];
+            [_diskImageManager reloadInfo];
+			NSArray *volumes = [SLVolume allVolumesWithDiskManager:_diskImageManager];
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self updateStatusItemMenuWithVolumes:volumes];
                 [self updateStatusItemIcon];
