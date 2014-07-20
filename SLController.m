@@ -358,7 +358,7 @@
             }
         }
 		if ([unmountedVols count] > 0) {
-			[[menu addItemWithTitle:NSLocalizedString(@"Unmounted", nil) action:@selector(doEjectAll:) keyEquivalent:@""] setAction:nil];
+			[menu addItemWithTitle:NSLocalizedString(@"Unmounted", nil) action:nil keyEquivalent:@""];
 			for (SLDisk *uvol in unmountedVols) {
                 NSString *uvolName = uvol.name;
                 if (!uvolName) {
