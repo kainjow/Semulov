@@ -447,15 +447,17 @@
 	[NSApp terminate:nil];
 }
 
-- (BOOL)ejectVolumeWithFeedback:(SLVolume *)volume
+- (void)ejectVolumeWithFeedback:(SLVolume *)volume
 {
-	if (![volume eject])
-	{
-		[NSApp activateIgnoringOtherApps:YES];
-		NSRunAlertPanel(NSLocalizedString(@"Unmount failed", nil), NSLocalizedString(@"Failed to eject volume.", nil), nil, nil, nil);
-		return NO;
-	}
-	return YES;
+    SLDisk *disk = [deviceManager diskForPath:volume.path];
+    if (disk) {
+        [deviceManager unmountAndMaybeEject:disk handler:^(BOOL unmounted) {
+            if (!unmounted) {
+                [NSApp activateIgnoringOtherApps:YES];
+                NSRunAlertPanel(NSLocalizedString(@"Unmount failed", nil), NSLocalizedString(@"Failed to eject volume.", nil), nil, nil, nil);
+            }
+        }];
+    }
 }
 
 - (void)doEject:(id)sender

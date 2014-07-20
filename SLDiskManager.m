@@ -10,6 +10,7 @@
 #import <AppKit/AppKit.h>
 #import <DiskArbitration/DiskArbitration.h>
 #import <IOKit/kext/KextManager.h>
+#import <sys/mount.h>
 
 NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification = @"SLDiskManagerUnmountedVolumesDidChangeNotification";
 
@@ -97,6 +98,8 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
     disk.name = volumeName;
     disk.volumePath = [description objectForKey:(NSString *)kDADiskDescriptionVolumePathKey];
     disk.mountable = [[description objectForKey:(NSString *)kDADiskDescriptionVolumeMountableKey] boolValue];
+    disk.whole = [[description objectForKey:(NSString *)kDADiskDescriptionMediaWholeKey] boolValue];
+
 }
 
 - (SLDisk *)diskFromDescription:(NSDictionary *)description diskID:(NSString *)diskID
@@ -182,7 +185,9 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
                 [_pendingDisks enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                     NSString *pendingDiskID = key;
                     if ([[[self class] diskIDStripSlice:pendingDiskID] isEqualToString:diskID]) {
-                        [disk.children addObject:[self diskFromDescription:obj diskID:pendingDiskID]];
+                        SLDisk *childDisk = [self diskFromDescription:obj diskID:pendingDiskID];
+                        childDisk.parent = disk;
+                        [disk.children addObject:childDisk];
                         [pendingDiskIDsToRemove addObject:pendingDiskID];
                     }
                 }];
@@ -192,7 +197,9 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
                 NSString *wholeDiskID = [[self class] diskIDStripSlice:diskID];
                 for (SLDisk *disk in _disks) {
                     if ([disk.diskID isEqualToString:wholeDiskID]) {
-                        [disk.children addObject:[self diskFromDescription:description diskID:diskID]];
+                        SLDisk *childDisk = [self diskFromDescription:description diskID:diskID];
+                        childDisk.parent = disk;
+                        [disk.children addObject:childDisk];
                         found = YES;
                         break;
                     }
@@ -221,12 +228,138 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
 	}
 }
 
+static void diskUnmountCallback(DADiskRef disk, DADissenterRef dissenter, void *context)
+{
+	NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
+	NSString *diskID = [description objectForKey:(NSString *)kDADiskDescriptionMediaBSDNameKey];
+    if (!diskID) {
+        return;
+    }
+    if (context) {
+        SLUnmountHandler handler = (__bridge_transfer SLUnmountHandler)context;
+        handler(dissenter == NULL);
+        if (dissenter != NULL) {
+            NSString *status = (__bridge NSString *)DADissenterGetStatusString(dissenter);
+            if (status) {
+                NSLog(@"Unmount dissenter status: %@", status);
+            }
+        }
+    }
+}
+
+static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *context)
+{
+	NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
+	NSString *diskID = [description objectForKey:(NSString *)kDADiskDescriptionMediaBSDNameKey];
+    if (!diskID) {
+        return;
+    }
+    if (dissenter) {
+        NSString *status = (__bridge NSString *)DADissenterGetStatusString(dissenter);
+        if (status) {
+            NSLog(@"Can't eject %@ (%@)", diskID, status);
+        } else {
+            NSLog(@"Can't eject %@", diskID);
+        }
+    }
+}
+
+- (void)unmountDisk:(SLDisk *)disk handler:(SLUnmountHandler)handler
+{
+    DADiskRef diskref = DADiskCreateFromBSDName(kCFAllocatorDefault, _session, disk.diskID.UTF8String);
+    if (!disk) {
+        NSLog(@"Can't create disk for unmounted %@", disk.diskID);
+        return;
+    }
+    DADiskUnmount(diskref, kDADiskUnmountOptionDefault, diskUnmountCallback, (__bridge_retained void *)[handler copy]);
+    CFRelease(diskref);
+}
+
+- (void)ejectDisk:(SLDisk *)disk
+{
+    DADiskRef diskref = DADiskCreateFromBSDName(kCFAllocatorDefault, _session, disk.diskID.UTF8String);
+    if (!disk) {
+        NSLog(@"Can't create disk for ejecting %@", disk.diskID);
+        return;
+    }
+    DADiskEject(diskref, kDADiskEjectOptionDefault, diskEjectCallback, NULL);
+    CFRelease(diskref);
+}
+
+- (void)unmountAndMaybeEject:(SLDisk *)disk handler:(SLUnmountHandler)handler
+{
+    if (disk.children.count > 0) {
+        // Unmount all children
+        for (SLDisk *childDisk in disk.children) {
+            if (childDisk.mounted) {
+                [self unmountDisk:childDisk handler:nil];
+            }
+        }
+        // TODO? eject disk once all children are unmounted
+    } else if (disk.mounted) {
+        unsigned numOtherMounted = 0;
+        for (SLDisk *childDisk in disk.parent.children) {
+            if (childDisk.mounted && childDisk != disk) {
+                ++numOtherMounted;
+            }
+        }
+        [self unmountDisk:disk handler:handler];
+        if (numOtherMounted == 0) {
+            //  The disk has no other mounted volumes, so eject it.
+            [self ejectDisk:disk.parent ? disk.parent : disk];
+        }
+    }
+}
+
+- (NSString *)diskIDForPath:(NSString *)path
+{
+    struct statfs sb;
+    if (statfs([path fileSystemRepresentation], &sb) != 0) {
+        return nil;
+    }
+    return [[NSString stringWithUTF8String:sb.f_mntfromname] lastPathComponent];
+}
+
+- (SLDisk *)diskForPath:(NSString *)path
+{
+    NSString *pathDiskID = [self diskIDForPath:path];
+    if (!pathDiskID) {
+        return nil;
+    }
+    for (SLDisk *disk in _disks) {
+        if ([disk.diskID isEqualToString:pathDiskID]) {
+            return disk;
+        }
+        for (SLDisk *childDisk in disk.children) {
+            if ([childDisk.diskID isEqualToString:pathDiskID]) {
+                return childDisk;
+            }
+        }
+    }
+    return nil;
+}
+
 @end
 
 @implementation SLDisk
             
 - (BOOL)mounted {
     return self.volumePath != nil;
+}
+
+- (BOOL)isStartupDisk
+{
+    return [self.volumePath.path isEqualToString:@"/"];
+}
+
+- (BOOL)containsStartupDisk
+{
+    for (SLDisk *childDisk in self.children) {
+        if (childDisk.isStartupDisk) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 @end
