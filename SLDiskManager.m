@@ -1,19 +1,19 @@
 //
-//  SLDeviceManager.m
+//  SLDiskManager.m
 //  Semulov
 //
 //  Created by Kevin Wojniak on 9/1/11.
 //  Copyright 2011-2014 Kevin Wojniak. All rights reserved.
 //
 
-#import "SLDeviceManager.h"
+#import "SLDiskManager.h"
 #import <AppKit/AppKit.h>
 #import <DiskArbitration/DiskArbitration.h>
 #import <IOKit/kext/KextManager.h>
 
-NSString * const SLDeviceManagerUnmountedVolumesDidChangeNotification = @"SLDeviceManagerUnmountedVolumesDidChangeNotification";
+NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification = @"SLDiskManagerUnmountedVolumesDidChangeNotification";
 
-@interface SLDeviceManager (Private)
+@interface SLDiskManager (Private)
 
 - (void)diskChanged:(DADiskRef)disk isGone:(BOOL)gone;
 
@@ -21,20 +21,20 @@ NSString * const SLDeviceManagerUnmountedVolumesDidChangeNotification = @"SLDevi
 
 void diskAppearedCallback(DADiskRef disk, void *context)
 {
-	[(__bridge SLDeviceManager *)context diskChanged:disk isGone:NO];
+	[(__bridge SLDiskManager *)context diskChanged:disk isGone:NO];
 }
 
 void diskDisappearedCallback(DADiskRef disk, void *context)
 {
-	[(__bridge SLDeviceManager *)context diskChanged:disk isGone:YES];
+	[(__bridge SLDiskManager *)context diskChanged:disk isGone:YES];
 }
 
 void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *context)
 {
-	[(__bridge SLDeviceManager *)context diskChanged:disk isGone:NO];
+	[(__bridge SLDiskManager *)context diskChanged:disk isGone:NO];
 }
 
-@implementation SLDeviceManager {
+@implementation SLDiskManager {
 	DASessionRef _session;
     NSMutableDictionary *_pendingDisks;
     NSMutableArray *_disks;
@@ -211,7 +211,7 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
         }
     }
 		
-	[[NSNotificationCenter defaultCenter] postNotificationName:SLDeviceManagerUnmountedVolumesDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
 }
 
 - (void)mount:(NSString *)diskID

@@ -3,19 +3,19 @@
 //  Semulov
 //
 //  Created by Kevin Wojniak on 11/5/06.
-//  Copyright 2006 - 2011 Kevin Wojniak. All rights reserved.
+//  Copyright 2006 - 2014 Kevin Wojniak. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-@class SLDeviceManager;
+@class SLDiskManager;
 
 @interface SLController : NSObject <NSApplicationDelegate>
 {
 	NSStatusItem *_statusItem;
 	NSArray *_volumes;
 	NSWindowController *_prefs;
-	SLDeviceManager *deviceManager;
+	SLDiskManager *deviceManager;
     dispatch_queue_t queue;
     NSArray *ignoredVolumes;
 }

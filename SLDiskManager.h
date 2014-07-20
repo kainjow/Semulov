@@ -1,5 +1,5 @@
 //
-//  SLDeviceManager.h
+//  SLDiskManager.h
 //  Semulov
 //
 //  Created by Kevin Wojniak on 9/1/11.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SLDeviceManager : NSObject
+@interface SLDiskManager : NSObject
 
 @property (readonly) NSArray *unmountedDisks;
 @property (readonly) NSArray *disks;
@@ -17,7 +17,7 @@
 
 @end
 
-extern NSString * const SLDeviceManagerUnmountedVolumesDidChangeNotification;
+extern NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification;
 
 @interface SLDisk : NSObject
 

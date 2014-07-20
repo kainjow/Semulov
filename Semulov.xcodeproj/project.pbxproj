@@ -23,7 +23,7 @@
 		A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58BD399140FFCA8007E9DF9 /* IOKit.framework */; };
 		A58BD4BD14100163007E9DF9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4B914100163007E9DF9 /* Localizable.strings */; };
 		A58BD4BE14100163007E9DF9 /* Labels.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4BB14100163007E9DF9 /* Labels.strings */; };
-		A58BD52014100451007E9DF9 /* SLDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A58BD51F14100451007E9DF9 /* SLDeviceManager.m */; };
+		A58BD52014100451007E9DF9 /* SLDiskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A58BD51F14100451007E9DF9 /* SLDiskManager.m */; };
 		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
 /* End PBXBuildFile section */
 
@@ -65,8 +65,8 @@
 		A58BD399140FFCA8007E9DF9 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		A58BD4BA14100163007E9DF9 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A58BD4BC14100163007E9DF9 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Labels.strings; sourceTree = "<group>"; };
-		A58BD51E14100451007E9DF9 /* SLDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDeviceManager.h; sourceTree = "<group>"; };
-		A58BD51F14100451007E9DF9 /* SLDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDeviceManager.m; sourceTree = "<group>"; };
+		A58BD51E14100451007E9DF9 /* SLDiskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDiskManager.h; sourceTree = "<group>"; };
+		A58BD51F14100451007E9DF9 /* SLDiskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDiskManager.m; sourceTree = "<group>"; };
 		A5D982940C8B7F7B002A802F /* Eject.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Eject.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,8 +91,8 @@
 				A5455F8B0AFE64C6001F61C8 /* SLController.m */,
 				A5455FE50AFE66A1001F61C8 /* SLVolume.h */,
 				A5455FE60AFE66A1001F61C8 /* SLVolume.m */,
-				A58BD51E14100451007E9DF9 /* SLDeviceManager.h */,
-				A58BD51F14100451007E9DF9 /* SLDeviceManager.m */,
+				A58BD51E14100451007E9DF9 /* SLDiskManager.h */,
+				A58BD51F14100451007E9DF9 /* SLDiskManager.m */,
 				A54561840AFE720D001F61C8 /* SLGrowlController.h */,
 				A54561850AFE720D001F61C8 /* SLGrowlController.m */,
 				A5537F0B0C822FE000A1806D /* SLNSImageAdditions.h */,
@@ -253,7 +253,7 @@
 				A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */,
 				A54561870AFE720D001F61C8 /* SLGrowlController.m in Sources */,
 				A5537F0E0C822FE000A1806D /* SLNSImageAdditions.m in Sources */,
-				A58BD52014100451007E9DF9 /* SLDeviceManager.m in Sources */,
+				A58BD52014100451007E9DF9 /* SLDiskManager.m in Sources */,
 				A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */,
 				A517AE45190C990900DB66DC /* NSApplication+LoginItems.m in Sources */,
 			);

@@ -3,7 +3,7 @@
 //  Semulov
 //
 //  Created by Kevin Wojniak on 11/5/06.
-//  Copyright 2006 - 2011 Kevin Wojniak. All rights reserved.
+//  Copyright 2006 - 2014 Kevin Wojniak. All rights reserved.
 //
 
 #import "SLController.h"
@@ -11,7 +11,7 @@
 #import "SLGrowlController.h"
 #import "SLNSImageAdditions.h"
 #import "NSApplication+LoginItems.h"
-#import "SLDeviceManager.h"
+#import "SLDiskManager.h"
 
 #define SLShowVolumesNumber		@"SLShowVolumesNumber"
 #define SLShowStartupDisk		@"SLShowStartupDisk"
@@ -75,8 +75,8 @@
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(handleMount:) name:NSWorkspaceDidMountNotification object:nil];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(handleUnmount:) name:NSWorkspaceDidUnmountNotification object:nil];
 	
-	deviceManager = [[SLDeviceManager alloc] init];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDeviceManagerUnmountedVolumesDidChangeNotification object:nil];
+	deviceManager = [[SLDiskManager alloc] init];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
 	
 	[self setupBindings];
 	
