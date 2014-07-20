@@ -292,9 +292,16 @@
                     children = @[disk];
                 }
                 for (SLDisk *childDisk in children) {
-                    SEL sel = childDisk.mounted ? @selector(doEject:) : @selector(doMount:);
                     if (childDisk.isStartupDisk && !showStartupDisk) {
-                        sel = nil;
+                        continue;
+                    }
+                    SEL sel = nil;
+                    if (!childDisk.isStartupDisk) {
+                        if (childDisk.mounted) {
+                            sel = @selector(doEject:);
+                        } else {
+                            sel = @selector(doMount:);
+                        }
                     }
                     menuItem = [[NSMenuItem alloc] initWithTitle:childDisk.name action:sel keyEquivalent:@""];
                     if (!childDisk.mounted) {
