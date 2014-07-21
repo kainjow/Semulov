@@ -108,11 +108,10 @@
 				A54561850AFE720D001F61C8 /* SLNotificationController.m */,
 				A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */,
 				A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */,
-				A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */,
-				A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */,
 				A58DAA71197C7D7400DCC2CA /* SLPreferenceKeys.h */,
 				A58DAA56197C657000DCC2CA /* SLPreferencesController.h */,
 				A58DAA57197C657000DCC2CA /* SLPreferencesController.m */,
+				A58DAA72197C9D6800DCC2CA /* NSAppLoginItems */,
 				A58DAA5F197C7A5100DCC2CA /* MASShortcut */,
 			);
 			name = Classes;
@@ -187,6 +186,15 @@
 				A58DAA69197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m */,
 			);
 			name = MASShortcut;
+			sourceTree = "<group>";
+		};
+		A58DAA72197C9D6800DCC2CA /* NSAppLoginItems */ = {
+			isa = PBXGroup;
+			children = (
+				A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */,
+				A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */,
+			);
+			name = NSAppLoginItems;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
