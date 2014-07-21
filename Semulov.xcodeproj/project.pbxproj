@@ -24,21 +24,15 @@
 		A58BD4BE14100163007E9DF9 /* Labels.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4BB14100163007E9DF9 /* Labels.strings */; };
 		A58BD52014100451007E9DF9 /* SLDiskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A58BD51F14100451007E9DF9 /* SLDiskManager.m */; };
 		A58DAA47197C4C7100DCC2CA /* SLDiskImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA46197C4C7100DCC2CA /* SLDiskImageManager.m */; };
+		A58DAA58197C657000DCC2CA /* SLPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA57197C657000DCC2CA /* SLPreferencesController.m */; };
+		A58DAA6A197C7A5C00DCC2CA /* MASShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA61197C7A5C00DCC2CA /* MASShortcut.m */; };
+		A58DAA6B197C7A5C00DCC2CA /* MASShortcut+Monitoring.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA63197C7A5C00DCC2CA /* MASShortcut+Monitoring.m */; };
+		A58DAA6C197C7A5C00DCC2CA /* MASShortcut+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA65197C7A5C00DCC2CA /* MASShortcut+UserDefaults.m */; };
+		A58DAA6D197C7A5C00DCC2CA /* MASShortcutView.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA67197C7A5C00DCC2CA /* MASShortcutView.m */; };
+		A58DAA6E197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA69197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m */; };
+		A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */; };
 		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A545617F0AFE71F5001F61C8 /* Copy Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Copy Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -67,6 +61,20 @@
 		A58BD51F14100451007E9DF9 /* SLDiskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDiskManager.m; sourceTree = "<group>"; };
 		A58DAA45197C4C4C00DCC2CA /* SLDiskImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDiskImageManager.h; sourceTree = "<group>"; };
 		A58DAA46197C4C7100DCC2CA /* SLDiskImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDiskImageManager.m; sourceTree = "<group>"; };
+		A58DAA56197C657000DCC2CA /* SLPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLPreferencesController.h; sourceTree = "<group>"; };
+		A58DAA57197C657000DCC2CA /* SLPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLPreferencesController.m; sourceTree = "<group>"; };
+		A58DAA60197C7A5C00DCC2CA /* MASShortcut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MASShortcut.h; path = MASShortcut/MASShortcut.h; sourceTree = "<group>"; };
+		A58DAA61197C7A5C00DCC2CA /* MASShortcut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MASShortcut.m; path = MASShortcut/MASShortcut.m; sourceTree = "<group>"; };
+		A58DAA62197C7A5C00DCC2CA /* MASShortcut+Monitoring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MASShortcut+Monitoring.h"; path = "MASShortcut/MASShortcut+Monitoring.h"; sourceTree = "<group>"; };
+		A58DAA63197C7A5C00DCC2CA /* MASShortcut+Monitoring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MASShortcut+Monitoring.m"; path = "MASShortcut/MASShortcut+Monitoring.m"; sourceTree = "<group>"; };
+		A58DAA64197C7A5C00DCC2CA /* MASShortcut+UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MASShortcut+UserDefaults.h"; path = "MASShortcut/MASShortcut+UserDefaults.h"; sourceTree = "<group>"; };
+		A58DAA65197C7A5C00DCC2CA /* MASShortcut+UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MASShortcut+UserDefaults.m"; path = "MASShortcut/MASShortcut+UserDefaults.m"; sourceTree = "<group>"; };
+		A58DAA66197C7A5C00DCC2CA /* MASShortcutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MASShortcutView.h; path = MASShortcut/MASShortcutView.h; sourceTree = "<group>"; };
+		A58DAA67197C7A5C00DCC2CA /* MASShortcutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MASShortcutView.m; path = MASShortcut/MASShortcutView.m; sourceTree = "<group>"; };
+		A58DAA68197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MASShortcutView+UserDefaults.h"; path = "MASShortcut/MASShortcutView+UserDefaults.h"; sourceTree = "<group>"; };
+		A58DAA69197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MASShortcutView+UserDefaults.m"; path = "MASShortcut/MASShortcutView+UserDefaults.m"; sourceTree = "<group>"; };
+		A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		A58DAA71197C7D7400DCC2CA /* SLPreferenceKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPreferenceKeys.h; sourceTree = "<group>"; };
 		A5D982940C8B7F7B002A802F /* Eject.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Eject.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */,
 				A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */,
@@ -101,6 +110,10 @@
 				A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */,
 				A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */,
 				A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */,
+				A58DAA71197C7D7400DCC2CA /* SLPreferenceKeys.h */,
+				A58DAA56197C657000DCC2CA /* SLPreferencesController.h */,
+				A58DAA57197C657000DCC2CA /* SLPreferencesController.m */,
+				A58DAA5F197C7A5100DCC2CA /* MASShortcut */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -143,6 +156,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				A518D7730BB19CC5009EC77B /* DiskArbitration.framework */,
 				A58BD399140FFCA8007E9DF9 /* IOKit.framework */,
@@ -156,6 +170,23 @@
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		A58DAA5F197C7A5100DCC2CA /* MASShortcut */ = {
+			isa = PBXGroup;
+			children = (
+				A58DAA60197C7A5C00DCC2CA /* MASShortcut.h */,
+				A58DAA61197C7A5C00DCC2CA /* MASShortcut.m */,
+				A58DAA62197C7A5C00DCC2CA /* MASShortcut+Monitoring.h */,
+				A58DAA63197C7A5C00DCC2CA /* MASShortcut+Monitoring.m */,
+				A58DAA64197C7A5C00DCC2CA /* MASShortcut+UserDefaults.h */,
+				A58DAA65197C7A5C00DCC2CA /* MASShortcut+UserDefaults.m */,
+				A58DAA66197C7A5C00DCC2CA /* MASShortcutView.h */,
+				A58DAA67197C7A5C00DCC2CA /* MASShortcutView.m */,
+				A58DAA68197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.h */,
+				A58DAA69197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m */,
+			);
+			name = MASShortcut;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,6 +279,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A58DAA6C197C7A5C00DCC2CA /* MASShortcut+UserDefaults.m in Sources */,
+				A58DAA58197C657000DCC2CA /* SLPreferencesController.m in Sources */,
+				A58DAA6A197C7A5C00DCC2CA /* MASShortcut.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				A5455F8C0AFE64C6001F61C8 /* SLController.m in Sources */,
 				A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */,
@@ -256,6 +290,9 @@
 				A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */,
 				A517AE45190C990900DB66DC /* NSApplication+LoginItems.m in Sources */,
 				A58DAA47197C4C7100DCC2CA /* SLDiskImageManager.m in Sources */,
+				A58DAA6E197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m in Sources */,
+				A58DAA6D197C7A5C00DCC2CA /* MASShortcutView.m in Sources */,
+				A58DAA6B197C7A5C00DCC2CA /* MASShortcut+Monitoring.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

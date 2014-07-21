@@ -12,20 +12,11 @@
 #import "NSApplication+LoginItems.h"
 #import "SLDiskManager.h"
 #import "SLDiskImageManager.h"
-
-#define SLShowVolumesNumber		@"SLShowVolumesNumber"
-#define SLShowStartupDisk		@"SLShowStartupDisk"
-#define SLShowEjectAll			@"SLShowEjectAll"
-#define SLLaunchAtStartup		@"SLLaunchAtStartup"
-#define SLShowUnmountedVolumes  @"SLShowUnmountedVolumes"
-#define SLIgnoredVolumes        @"SLIgnoredVolumes"
-#define SLReverseChooseAction   @"SLReverseChooseAction"
-#define SLCustomIconPattern     @"SLCustomIconPattern"
-#define SLCustomIconColor       @"SLCustomIconColor"
-#define SLDisksLayout           @"SLDisksLayout"
+#import "SLPreferencesController.h"
+#import "MASShortcut+UserDefaults.h"
+#import "SLPreferenceKeys.h"
 
 @interface SLController (Private)
-- (void)setupBindings;
 - (void)setupStatusItem;
 - (void)updateStatusItemMenu;
 - (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes;
@@ -36,7 +27,7 @@
 {
 	NSStatusItem *_statusItem;
 	NSArray *_volumes;
-	NSWindowController *_prefs;
+	SLPreferencesController *_prefs;
 	SLDiskManager *deviceManager;
     dispatch_queue_t queue;
     NSArray *ignoredVolumes;
@@ -88,8 +79,8 @@
 	deviceManager = [[SLDiskManager alloc] init];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
     
-	[self setupBindings];
-	
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];
+
 	// At startup make sure we're in the login items if the pref is set (user may have manually removed us)
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
 		[NSApp addToLoginItems];
@@ -109,38 +100,19 @@
 }
 
 #pragma mark -
-#pragma mark Bindings
+#pragma mark User Defaults
 
-- (void)setupBindings
+- (void)userDefaultsDidChange:(NSNotification *)note
 {
-	NSUserDefaultsController *sdc = [NSUserDefaultsController sharedUserDefaultsController];
-	[sdc addObserver:self forKeyPath:@"values.SLShowVolumesNumber" options:0 context:SLShowVolumesNumber];
-	[sdc addObserver:self forKeyPath:@"values.SLShowStartupDisk" options:0 context:SLShowStartupDisk];
-	[sdc addObserver:self forKeyPath:@"values.SLShowEjectAll" options:0 context:SLShowEjectAll];
-	[sdc addObserver:self forKeyPath:@"values."SLLaunchAtStartup options:0 context:SLLaunchAtStartup];
-	[sdc addObserver:self forKeyPath:@"values.SLShowUnmountedVolumes" options:0 context:SLShowUnmountedVolumes];
-    [sdc addObserver:self forKeyPath:@"values."SLIgnoredVolumes options:0 context:SLIgnoredVolumes];
-    [sdc addObserver:self forKeyPath:@"values."SLReverseChooseAction options:0 context:SLReverseChooseAction];
-    [sdc addObserver:self forKeyPath:@"values."SLCustomIconPattern options:0 context:SLCustomIconPattern];
-    [sdc addObserver:self forKeyPath:@"values."SLCustomIconColor options:0 context:SLCustomIconColor];
-    [sdc addObserver:self forKeyPath:@"values."SLDisksLayout options:0 context:SLDisksLayout];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    NSString *ctx = (__bridge NSString *)context;
-	if ([ctx isEqualToString:SLLaunchAtStartup]) {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
-			[NSApp addToLoginItems];
-		} else {
-			[NSApp removeFromLoginItems];
-		}
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
+        [NSApp addToLoginItems];
     } else {
-        if ([ctx isEqualToString:SLIgnoredVolumes]) {
-            [self updateIgnoredVolumes];
-        }
-		[self updateStatusItemMenu];
-	}
+        [NSApp removeFromLoginItems];
+    }
+    
+    [self updateIgnoredVolumes];
+    
+    [self updateStatusItemMenu];
 }
 
 #pragma mark -
@@ -348,6 +320,9 @@
         }
         [volumesToDisplay addObject:vol];
     }
+    
+    NSMenuItem *ejectAllItem = nil;
+    [MASShortcut unregisterGlobalShortcutWithUserDefaultsKey:SLEjectAllShortcut];
 
     if (disksLayout) {
         NSArray *disks = [deviceManager.disks sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
@@ -430,7 +405,15 @@
         if (volumesToDisplay.count > 0) {
             if (showEjectAll) {
                 [menu addItem:[NSMenuItem separatorItem]];
-                [menu addItemWithTitle:NSLocalizedString(@"Eject All", nil) action:@selector(doEjectAll:) keyEquivalent:@""];
+                ejectAllItem = [menu addItemWithTitle:NSLocalizedString(@"Eject All", nil) action:@selector(doEjectAll:) keyEquivalent:@""];
+                MASShortcut *shortcut = [MASShortcut shortcutWithData:[[NSUserDefaults standardUserDefaults] objectForKey:SLEjectAllShortcut]];
+                if (shortcut && shortcut.isValid) {
+                    ejectAllItem.keyEquivalent = shortcut.keyCodeStringForKeyEquivalent;
+                    ejectAllItem.keyEquivalentModifierMask = shortcut.modifierFlags;
+                    [MASShortcut registerGlobalShortcutWithUserDefaultsKey:SLEjectAllShortcut handler:^{
+                        [self doEjectAll:ejectAllItem.representedObject];
+                    }];
+                }
             }
             
             [menu addItem:[NSMenuItem separatorItem]];
@@ -624,8 +607,9 @@
 
 - (void)doPrefs:(id)sender
 {
-	if (_prefs == nil)
-		_prefs = [[NSWindowController alloc] initWithWindowNibName:@"Preferences"];
+	if (!_prefs) {
+		_prefs = [[SLPreferencesController alloc] init];
+    }
 	[_prefs window];
 	[NSApp activateIgnoringOtherApps:YES];
 	[_prefs showWindow:nil];

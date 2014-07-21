@@ -1,3 +1,6 @@
 [submodule "NSAppLoginItems"]
 	path = NSAppLoginItems
 	url = https://github.com/kainjow/NSAppLoginItems.git
+[submodule "MASShortcut"]
+	path = MASShortcut
+	url = https://github.com/kainjow/MASShortcut.git

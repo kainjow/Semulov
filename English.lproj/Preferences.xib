@@ -5,8 +5,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="NSWindowController">
+        <customObject id="-2" userLabel="File's Owner" customClass="SLPreferencesController">
             <connections>
+                <outlet property="shortcutView" destination="tnz-Jy-Qrv" id="lD6-cE-CC1"/>
                 <outlet property="window" destination="5" id="10"/>
             </connections>
         </customObject>
@@ -15,15 +16,15 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="Prefs" animationBehavior="default" id="5" userLabel="Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="301" y="392" width="399" height="560"/>
+            <rect key="contentRect" x="301" y="392" width="399" height="564"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
             <value key="minSize" type="size" width="213" height="107"/>
             <view key="contentView" id="6">
-                <rect key="frame" x="0.0" y="0.0" width="399" height="560"/>
+                <rect key="frame" x="0.0" y="0.0" width="399" height="564"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button id="7">
-                        <rect key="frame" x="31" y="452" width="323" height="18"/>
+                        <rect key="frame" x="31" y="456" width="323" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show number of mounted volumes in menu bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="39">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -34,7 +35,7 @@
                         </connections>
                     </button>
                     <button id="11">
-                        <rect key="frame" x="31" y="432" width="263" height="18"/>
+                        <rect key="frame" x="31" y="436" width="263" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show startup disk" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="40">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -45,7 +46,7 @@
                         </connections>
                     </button>
                     <button id="13">
-                        <rect key="frame" x="31" y="412" width="263" height="18"/>
+                        <rect key="frame" x="31" y="416" width="263" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show &quot;Eject All&quot; menu item" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="41">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -56,7 +57,7 @@
                         </connections>
                     </button>
                     <button id="17">
-                        <rect key="frame" x="31" y="499" width="320" height="18"/>
+                        <rect key="frame" x="31" y="503" width="320" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Launch Semulov at login" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="43">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -67,7 +68,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" id="20">
-                        <rect key="frame" x="18" y="476" width="114" height="17"/>
+                        <rect key="frame" x="18" y="480" width="114" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Interface" id="44">
                             <font key="font" metaFont="systemBold"/>
@@ -76,7 +77,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="21">
-                        <rect key="frame" x="18" y="523" width="114" height="17"/>
+                        <rect key="frame" x="18" y="527" width="114" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="General" id="45">
                             <font key="font" metaFont="systemBold"/>
@@ -223,7 +224,7 @@ For example, ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01."
                         </connections>
                     </textField>
                     <colorWell id="bsK-Nv-wwX">
-                        <rect key="frame" x="327" y="155" width="44" height="23"/>
+                        <rect key="frame" x="335" y="155" width="44" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <color key="color" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
@@ -254,6 +255,10 @@ For example, ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01."
                             <binding destination="8" name="value" keyPath="values.SLDisksLayout" id="G2T-Sh-yuW"/>
                         </connections>
                     </button>
+                    <customView id="tnz-Jy-Qrv" customClass="MASShortcutView">
+                        <rect key="frame" x="228" y="416" width="151" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </customView>
                 </subviews>
             </view>
         </window>
