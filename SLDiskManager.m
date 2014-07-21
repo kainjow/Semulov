@@ -149,10 +149,6 @@ DADissenterRef diskMountApproval(DADiskRef disk, void *context)
     return diskID;
 }
 
-- (void)processPendingDisks
-{
-}
-
 - (void)diskChanged:(DADiskRef)disk isGone:(BOOL)gone
 {
     [_diskImageManager reloadInfo];
