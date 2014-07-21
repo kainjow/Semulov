@@ -9,9 +9,6 @@
 #import "SLNotificationController.h"
 #import "SLVolume.h"
 
-#define SL_VOLUME_MOUNTED	NSLocalizedString(@"Volume Mounted", "")
-#define SL_VOLUME_UNMOUNTED	NSLocalizedString(@"Volume Unmounted", "")
-
 @implementation SLNotificationController
 
 + (id)sharedController
@@ -34,16 +31,21 @@
 
 - (void)postVolumeMounted:(SLVolume *)volume
 {
-    NSString *notifTitle = SL_VOLUME_MOUNTED;
+    NSString *notifTitle = NSLocalizedString(@"Volume Mounted", "");
     NSString *notifDescription = [volume name];
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
 }
 
 - (void)postVolumeUnmounted:(SLVolume *)volume;
 {
-    NSString *notifTitle = SL_VOLUME_UNMOUNTED;
+    NSString *notifTitle = NSLocalizedString(@"Volume Unmounted", "");
     NSString *notifDescription = [volume name];
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
+}
+
+- (void)postVolumeMountBlocked:(NSString *)volumeName
+{
+    [self postNotificationCenterWithTitle:NSLocalizedString(@"Mount Blocked", "") subtitle:volumeName];
 }
 
 @end

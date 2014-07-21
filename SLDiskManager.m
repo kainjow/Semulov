@@ -14,6 +14,7 @@
 #import "SLDiskImageManager.h"
 
 NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification = @"SLDiskManagerUnmountedVolumesDidChangeNotification";
+NSString * const SLDiskManagerDidBLockMountNotification = @"SLDiskManagerDidBLockMountNotification";
 
 @interface SLDiskManager (Private)
 
@@ -34,6 +35,16 @@ void diskDisappearedCallback(DADiskRef disk, void *context)
 void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *context)
 {
 	[(__bridge SLDiskManager *)context diskChanged:disk isGone:NO];
+}
+
+DADissenterRef diskMountApproval(DADiskRef disk, void *context)
+{
+    if (((__bridge SLDiskManager *)context).blockMounts) {
+        NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
+        [[NSNotificationCenter defaultCenter] postNotificationName:SLDiskManagerDidBLockMountNotification object:description userInfo:nil];
+        return DADissenterCreate(kCFAllocatorDefault, kDAReturnNotPermitted, NULL);
+    }
+    return NULL;
 }
 
 @implementation SLDiskManager {
@@ -85,6 +96,7 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
 		DARegisterDiskAppearedCallback(_session, NULL, diskAppearedCallback, (__bridge void *)self);
 		DARegisterDiskDisappearedCallback(_session, NULL, diskDisappearedCallback, (__bridge void *)self);
 		DARegisterDiskDescriptionChangedCallback(_session, kDADiskDescriptionMatchVolumeMountable, kDADiskDescriptionWatchVolumePath, diskDescriptionChangedCallback, (__bridge void *)self);
+        DARegisterDiskMountApprovalCallback(_session, kDADiskDescriptionMatchVolumeMountable, diskMountApproval, (__bridge void *)self);
 		DASessionScheduleWithRunLoop(_session, [[NSRunLoop currentRunLoop] getCFRunLoop], kCFRunLoopDefaultMode);
 	}
 	return self;

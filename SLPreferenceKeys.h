@@ -19,3 +19,5 @@
 #define SLCustomIconColor       @"SLCustomIconColor"
 #define SLDisksLayout           @"SLDisksLayout"
 #define SLEjectAllShortcut      @"SLEjectAllShortcut"
+#define SLShowBlockMounts       @"SLShowBlockMounts"
+#define SLBlockMounts           @"SLBlockMounts"

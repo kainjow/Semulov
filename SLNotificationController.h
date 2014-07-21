@@ -16,5 +16,6 @@
 
 - (void)postVolumeMounted:(SLVolume *)volume;
 - (void)postVolumeUnmounted:(SLVolume *)volume;
+- (void)postVolumeMountBlocked:(NSString *)volumeName;
 
 @end

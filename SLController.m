@@ -43,6 +43,7 @@
 		[NSNumber numberWithBool:NO], SLShowUnmountedVolumes,
         [NSNumber numberWithBool:NO], SLReverseChooseAction,
         @(NO), SLDisksLayout,
+        @(NO), SLBlockMounts,
 		nil]];
 }
 
@@ -77,12 +78,19 @@
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(handleUnmount:) name:NSWorkspaceDidUnmountNotification object:nil];
 	
 	deviceManager = [[SLDiskManager alloc] init];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
+    NSUserDefaults *uds = [NSUserDefaults standardUserDefaults];
+    deviceManager.blockMounts = [uds boolForKey:SLShowBlockMounts] && [uds boolForKey:SLBlockMounts];
+    NSNotificationCenter *notifCenter = [NSNotificationCenter defaultCenter];
+	[notifCenter addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
+    [notifCenter addObserverForName:SLDiskManagerDidBLockMountNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+        NSString *volumeName = [note.object objectForKey:(NSString *)kDADiskDescriptionVolumeNameKey];
+        [[SLNotificationController sharedController] postVolumeMountBlocked:volumeName];
+    }];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];
+    [notifCenter addObserver:self selector:@selector(userDefaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:uds];
 
 	// At startup make sure we're in the login items if the pref is set (user may have manually removed us)
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
+	if ([uds boolForKey:SLLaunchAtStartup]) {
 		[NSApp addToLoginItems];
 	}
     
@@ -104,11 +112,15 @@
 
 - (void)userDefaultsDidChange:(NSNotification *)note
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:SLLaunchAtStartup]) {
+    NSUserDefaults *uds = [NSUserDefaults standardUserDefaults];
+    
+    if ([uds boolForKey:SLLaunchAtStartup]) {
         [NSApp addToLoginItems];
     } else {
         [NSApp removeFromLoginItems];
     }
+    
+    deviceManager.blockMounts = [uds boolForKey:SLShowBlockMounts] && [uds boolForKey:SLBlockMounts];
     
     [self updateIgnoredVolumes];
     
@@ -444,6 +456,12 @@
         }
     }
     
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:SLShowBlockMounts]) {
+        NSMenuItem *blockMountsItem = [menu addItemWithTitle:NSLocalizedString(@"Block Mounts", nil) action:@selector(doToggleBlockMounts:) keyEquivalent:@""];
+        blockMountsItem.state = [[NSUserDefaults standardUserDefaults] boolForKey:SLBlockMounts] ? NSOnState : NSOffState;
+        [menu addItem:[NSMenuItem separatorItem]];
+    }
+    
     if (showVolumesNumber) {
         [_statusItem setTitle:[NSString stringWithFormat:@"%lu", (unsigned long)volumesToDisplay.count]];
     } else {
@@ -613,6 +631,15 @@
 	[_prefs window];
 	[NSApp activateIgnoringOtherApps:YES];
 	[_prefs showWindow:nil];
+}
+
+- (void)doToggleBlockMounts:(id)sender
+{
+    NSUserDefaults *uds = [NSUserDefaults standardUserDefaults];
+    BOOL block = ![uds boolForKey:SLBlockMounts];
+    deviceManager.blockMounts = block;
+    [uds setBool:block forKey:SLBlockMounts];
+    [self updateStatusItemMenu];
 }
 
 @end
