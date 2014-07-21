@@ -273,6 +273,13 @@
             altTitle = [NSString stringWithFormat:NSLocalizedString(@"Show %@", nil), [obj name]];
         }
     }
+
+    if (!mainTitle && disk) {
+        mainTitle = disk.diskID;
+    }
+    if (!mainTitle) {
+        mainTitle = @"";
+    }
     
     NSImage *mainItemImage = [self shrinkImageForMenu:[obj isKindOfClass:[SLVolume class]] ? [obj image] : [obj icon]];
     
@@ -283,7 +290,7 @@
     [menuItem setTarget:self];
     
     if (disk && !disk.mounted) {
-        NSAttributedString *astr = [[NSAttributedString alloc] initWithString:disk.name attributes:@{
+        NSAttributedString *astr = [[NSAttributedString alloc] initWithString:mainTitle attributes:@{
             NSForegroundColorAttributeName: [NSColor grayColor],
             NSFontAttributeName: [NSFont menuFontOfSize:14],
         }];
