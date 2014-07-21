@@ -200,7 +200,6 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				A545617F0AFE71F5001F61C8 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
