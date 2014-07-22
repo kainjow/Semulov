@@ -115,7 +115,13 @@ DADissenterRef diskMountApproval(DADiskRef disk, void *context)
         }
     }
     disk.name = [description objectForKey:(NSString *)kDADiskDescriptionVolumeNameKey];
-    disk.deviceName = [[description objectForKey:(NSString *)kDADiskDescriptionDeviceModelKey] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *model = [[description objectForKey:(NSString *)kDADiskDescriptionDeviceModelKey] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *vendor = [[description objectForKey:(NSString *)kDADiskDescriptionDeviceVendorKey] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (model && vendor) {
+        disk.deviceName = [NSString stringWithFormat:@"%@ %@", vendor, model];
+    } else if (model) {
+        disk.deviceName = model;
+    }
     disk.volumePath = [description objectForKey:(NSString *)kDADiskDescriptionVolumePathKey];
     disk.mountable = [[description objectForKey:(NSString *)kDADiskDescriptionVolumeMountableKey] boolValue];
     disk.whole = [[description objectForKey:(NSString *)kDADiskDescriptionMediaWholeKey] boolValue];
