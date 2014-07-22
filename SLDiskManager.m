@@ -123,6 +123,10 @@ DADissenterRef diskMountApproval(DADiskRef disk, void *context)
         disk.deviceName = model;
     }
     disk.volumePath = [description objectForKey:(NSString *)kDADiskDescriptionVolumePathKey];
+    // If the volume exists, use its volume so we show custom icons
+    if (disk.volumePath && [disk.volumePath checkResourceIsReachableAndReturnError:nil]) {
+        disk.icon = [[NSWorkspace sharedWorkspace] iconForFile:[disk.volumePath path]];
+    }
     disk.mountable = [[description objectForKey:(NSString *)kDADiskDescriptionVolumeMountableKey] boolValue];
     disk.whole = [[description objectForKey:(NSString *)kDADiskDescriptionMediaWholeKey] boolValue];
     disk.diskImage = [_diskImageManager diskImageForDiskID:disk.diskID];
