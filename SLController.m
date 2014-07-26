@@ -552,7 +552,10 @@
     SLUnmountHandler handler = ^(BOOL unmounted) {
         if (!unmounted && uiFeedback) {
             [NSApp activateIgnoringOtherApps:YES];
-            NSRunAlertPanel(NSLocalizedString(@"Unmount failed", nil), NSLocalizedString(@"Failed to eject volume.", nil), nil, nil, nil);
+            NSAlert *alert = [[NSAlert alloc] init];
+            alert.informativeText = NSLocalizedString(@"Failed to eject volume.", nil);
+            alert.messageText = NSLocalizedString(@"Unmount failed", nil);
+            (void)[alert runModal];
         }
     };
     
