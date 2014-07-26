@@ -31,7 +31,7 @@ typedef void (^SLUnmountHandler)(BOOL unmounted);
 @end
 
 extern NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification;
-extern NSString * const SLDiskManagerDidBLockMountNotification; // object is DADiskRef dictionary
+extern NSString * const SLDiskManagerDidBlockMountNotification; // object is DADiskRef dictionary
 
 @interface SLDisk : NSObject
 

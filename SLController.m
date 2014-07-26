@@ -83,7 +83,7 @@
     deviceManager.blockMounts = [uds boolForKey:SLShowBlockMounts] && [uds boolForKey:SLBlockMounts];
     NSNotificationCenter *notifCenter = [NSNotificationCenter defaultCenter];
 	[notifCenter addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
-    [notifCenter addObserverForName:SLDiskManagerDidBLockMountNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+    [notifCenter addObserverForName:SLDiskManagerDidBlockMountNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSString *volumeName = [note.object objectForKey:(NSString *)kDADiskDescriptionVolumeNameKey];
         [[SLNotificationController sharedController] postVolumeMountBlocked:volumeName];
     }];

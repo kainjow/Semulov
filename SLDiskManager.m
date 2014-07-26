@@ -14,7 +14,7 @@
 #import "SLDiskImageManager.h"
 
 NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification = @"SLDiskManagerUnmountedVolumesDidChangeNotification";
-NSString * const SLDiskManagerDidBLockMountNotification = @"SLDiskManagerDidBLockMountNotification";
+NSString * const SLDiskManagerDidBlockMountNotification = @"SLDiskManagerDidBlockMountNotification";
 
 @interface SLDiskManager (Private)
 
@@ -41,7 +41,7 @@ DADissenterRef diskMountApproval(DADiskRef disk, void *context)
 {
     if (((__bridge SLDiskManager *)context).blockMounts) {
         NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
-        [[NSNotificationCenter defaultCenter] postNotificationName:SLDiskManagerDidBLockMountNotification object:description userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SLDiskManagerDidBlockMountNotification object:description userInfo:nil];
         return DADissenterCreate(kCFAllocatorDefault, kDAReturnNotPermitted, NULL);
     }
     return NULL;
