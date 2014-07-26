@@ -37,7 +37,7 @@ void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *conte
 	[(__bridge SLDiskManager *)context diskChanged:disk isGone:NO];
 }
 
-DADissenterRef diskMountApproval(DADiskRef disk, void *context)
+CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *context)
 {
     if (((__bridge SLDiskManager *)context).blockMounts) {
         NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
