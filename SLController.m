@@ -547,24 +547,31 @@
 	[NSApp terminate:nil];
 }
 
+- (void)runAlertWithTitle:(NSString *)title message:(NSString *)message
+{
+    [NSApp activateIgnoringOtherApps:YES];
+    NSAlert *alert = [[NSAlert alloc] init];
+    if (title) {
+        alert.messageText = title;
+    }
+    if (message) {
+        alert.informativeText = message;
+    }
+    (void)[alert runModal];
+}
+
 - (void)eject:(id)object withUIFeedback:(BOOL)uiFeedback
 {
-    SLUnmountHandler handler = ^(BOOL unmounted) {
-        if (!unmounted && uiFeedback) {
-            [NSApp activateIgnoringOtherApps:YES];
-            NSAlert *alert = [[NSAlert alloc] init];
-            alert.informativeText = NSLocalizedString(@"Failed to eject volume.", nil);
-            alert.messageText = NSLocalizedString(@"Unmount failed", nil);
-            (void)[alert runModal];
-        }
-    };
-    
     SLDisk *disk = nil;
     
     if ([object isKindOfClass:[SLVolume class]]) {
         SLVolume *volume = (SLVolume *)object;
         if (!volume.isLocal) {
-            handler([[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:[NSURL fileURLWithPath:volume.path] error:nil]);
+            NSError *err = nil;
+            if (![[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:[NSURL fileURLWithPath:volume.path] error:&err] && uiFeedback) {
+                NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Failed to unmount %@.", nil), volume.name];
+                [self runAlertWithTitle:title message:[err localizedDescription]];
+            }
             return;
         }
         
@@ -577,7 +584,12 @@
         disk = (SLDisk *)object;
     }
     
-    [deviceManager unmountAndMaybeEject:disk handler:handler];
+    [deviceManager unmountAndMaybeEject:disk handler:^(BOOL unmounted) {
+        if (!unmounted && uiFeedback) {
+            NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Failed to unmount %@.", nil), disk.name];
+            [self runAlertWithTitle:title message:nil];
+        }
+    }];
 }
 
 - (void)doEject:(id)sender
