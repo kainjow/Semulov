@@ -11,15 +11,7 @@
 
 @implementation SLNotificationController
 
-+ (id)sharedController
-{
-	static id instance = nil;
-	if (instance == nil)
-		instance = [[[self class] alloc] init];
-	return instance;
-}
-
-- (void)postNotificationCenterWithTitle:(NSString *)title subtitle:(NSString *)subtitle
++ (void)postNotificationCenterWithTitle:(NSString *)title subtitle:(NSString *)subtitle
 {
     if (NSClassFromString(@"NSUserNotification")) {
         NSUserNotification *note = [[NSUserNotification alloc] init];
@@ -29,21 +21,21 @@
     }
 }
 
-- (void)postVolumeMounted:(SLVolume *)volume
++ (void)postVolumeMounted:(SLVolume *)volume
 {
     NSString *notifTitle = NSLocalizedString(@"Volume Mounted", "");
     NSString *notifDescription = [volume name];
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
 }
 
-- (void)postVolumeUnmounted:(SLVolume *)volume;
++ (void)postVolumeUnmounted:(SLVolume *)volume;
 {
     NSString *notifTitle = NSLocalizedString(@"Volume Unmounted", "");
     NSString *notifDescription = [volume name];
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
 }
 
-- (void)postVolumeMountBlocked:(NSString *)volumeName
++ (void)postVolumeMountBlocked:(NSString *)volumeName
 {
     [self postNotificationCenterWithTitle:NSLocalizedString(@"Mount Blocked", "") subtitle:volumeName];
 }

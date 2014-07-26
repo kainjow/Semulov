@@ -85,7 +85,7 @@
 	[notifCenter addObserver:self selector:@selector(unmountedVolumesChanged:) name:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
     [notifCenter addObserverForName:SLDiskManagerDidBlockMountNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSString *volumeName = [note.object objectForKey:(NSString *)kDADiskDescriptionVolumeNameKey];
-        [[SLNotificationController sharedController] postVolumeMountBlocked:volumeName];
+        [SLNotificationController postVolumeMountBlocked:volumeName];
     }];
     
     [notifCenter addObserver:self selector:@selector(userDefaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:uds];
@@ -512,7 +512,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             SLVolume *vol = [self volumeWithMountPath:devicePath];
             if (vol) {
-                [[SLNotificationController sharedController] postVolumeMounted:vol];
+                [SLNotificationController postVolumeMounted:vol];
             }
         });
     });
@@ -522,7 +522,7 @@
 {
     SLVolume *vol = [self volumeWithMountPath:[[not userInfo] objectForKey:@"NSDevicePath"]];
     if (vol) {
-        [[SLNotificationController sharedController] postVolumeUnmounted:vol];
+        [SLNotificationController postVolumeUnmounted:vol];
     }
 
 	[self updateStatusItemMenu];

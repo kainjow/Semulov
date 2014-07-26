@@ -12,10 +12,8 @@
 
 @interface SLNotificationController : NSObject
 
-+ (id)sharedController;
-
-- (void)postVolumeMounted:(SLVolume *)volume;
-- (void)postVolumeUnmounted:(SLVolume *)volume;
-- (void)postVolumeMountBlocked:(NSString *)volumeName;
++ (void)postVolumeMounted:(SLVolume *)volume;
++ (void)postVolumeUnmounted:(SLVolume *)volume;
++ (void)postVolumeMountBlocked:(NSString *)volumeName;
 
 @end
