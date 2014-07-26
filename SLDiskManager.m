@@ -16,25 +16,38 @@
 NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification = @"SLDiskManagerUnmountedVolumesDidChangeNotification";
 NSString * const SLDiskManagerDidBlockMountNotification = @"SLDiskManagerDidBlockMountNotification";
 
+@interface SLDiskEjector : NSObject
+
+typedef void (^SLDiskEjectorHandler)(BOOL succeeded, SLDisk *failureDisk);
+- (instancetype)initWithDisk:(SLDisk *)disk manager:(SLDiskManager *)manager handler:(SLDiskEjectorHandler)handler;
+
+@end
+
 @interface SLDiskManager (Private)
 
-- (void)diskChanged:(DADiskRef)disk isGone:(BOOL)gone;
+typedef enum {
+    kSLDiskChangeModeAppeared,
+    kSLDiskChangeModeDisappeared,
+    kSLDiskChangeModeDescriptionChanged,
+} SLDiskChangeMode;
+
+- (void)diskChanged:(DADiskRef)disk mode:(SLDiskChangeMode)mode;
 
 @end
 
 void diskAppearedCallback(DADiskRef disk, void *context)
 {
-	[(__bridge SLDiskManager *)context diskChanged:disk isGone:NO];
+    [(__bridge SLDiskManager *)context diskChanged:disk mode:kSLDiskChangeModeAppeared];
 }
 
 void diskDisappearedCallback(DADiskRef disk, void *context)
 {
-	[(__bridge SLDiskManager *)context diskChanged:disk isGone:YES];
+    [(__bridge SLDiskManager *)context diskChanged:disk mode:kSLDiskChangeModeDisappeared];
 }
 
 void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *context)
 {
-	[(__bridge SLDiskManager *)context diskChanged:disk isGone:NO];
+    [(__bridge SLDiskManager *)context diskChanged:disk mode:kSLDiskChangeModeDescriptionChanged];
 }
 
 CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *context)
@@ -52,6 +65,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
     NSMutableDictionary *_pendingDisks;
     NSMutableArray *_disks;
     SLDiskImageManager *_diskImageManager;
+    NSMutableArray *_ejectors;
 }
 
 @dynamic disks, diskImageManager;
@@ -89,9 +103,10 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
 			return nil;
 		}
         
-        _pendingDisks = [[NSMutableDictionary alloc] init];
-        _disks = [[NSMutableArray alloc] init];
+        _pendingDisks = [NSMutableDictionary dictionary];
+        _disks = [NSMutableArray array];
         _diskImageManager = [[SLDiskImageManager alloc] init];
+        _ejectors = [NSMutableArray array];
 		
 		DARegisterDiskAppearedCallback(_session, NULL, diskAppearedCallback, (__bridge void *)self);
 		DARegisterDiskDisappearedCallback(_session, NULL, diskDisappearedCallback, (__bridge void *)self);
@@ -159,7 +174,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
     return diskID;
 }
 
-- (void)diskChanged:(DADiskRef)disk isGone:(BOOL)gone
+- (void)diskChanged:(DADiskRef)disk mode:(SLDiskChangeMode)mode
 {
     [_diskImageManager reloadInfo];
     
@@ -172,7 +187,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
     NSNumber *wholeNum = [description objectForKey:(NSString *)kDADiskDescriptionMediaWholeKey];
     BOOL isWhole = wholeNum && [wholeNum boolValue];
     
-    if (gone) {
+    if (mode == kSLDiskChangeModeDisappeared) {
         // Disk disappeared, remove entire object
         for (NSInteger i = _disks.count - 1; i >= 0; --i) {
             SLDisk *disk = _disks[i];
@@ -195,7 +210,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
             }
         }
     } else {
-        // Disk was added or changed
+        // Disk appeared or had a description changed
         BOOL found = NO;
         for (SLDisk *disk in _disks) {
             if ([disk.diskID isEqualToString:diskID]) {
@@ -212,6 +227,11 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
             }
         }
         if (!found) {
+            if (mode == kSLDiskChangeModeDescriptionChanged) {
+                // Sometimes a disk changed event can be sent after a disk disappeared event.
+                // We just ignore these.
+                return;
+            }
             if (isWhole) {
                 SLDisk *disk = [self diskFromDescription:description diskID:diskID];
                 // Process pending disks
@@ -262,6 +282,8 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
 	}
 }
 
+typedef void (^SLEjectHandler)(BOOL ejected);
+
 static void diskUnmountCallback(DADiskRef disk, DADissenterRef dissenter, void *context)
 {
 	NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
@@ -271,12 +293,8 @@ static void diskUnmountCallback(DADiskRef disk, DADissenterRef dissenter, void *
     }
     if (context) {
         SLUnmountHandler handler = (__bridge_transfer SLUnmountHandler)context;
-        handler(dissenter == NULL);
-        if (dissenter != NULL) {
-            NSString *status = (__bridge NSString *)DADissenterGetStatusString(dissenter);
-            if (status) {
-                NSLog(@"Unmount dissenter status: %@", status);
-            }
+        if (handler) {
+            handler(dissenter == NULL);
         }
     }
 }
@@ -288,12 +306,10 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
     if (!diskID) {
         return;
     }
-    if (dissenter) {
-        NSString *status = (__bridge NSString *)DADissenterGetStatusString(dissenter);
-        if (status) {
-            NSLog(@"Can't eject %@ (%@)", diskID, status);
-        } else {
-            NSLog(@"Can't eject %@", diskID);
+    if (context) {
+        SLEjectHandler handler = (__bridge_transfer SLEjectHandler)context;
+        if (handler) {
+            handler(dissenter == NULL);
         }
     }
 }
@@ -305,31 +321,30 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
         NSLog(@"Can't create disk for unmounted %@", disk.diskID);
         return;
     }
-    DADiskUnmount(diskref, kDADiskUnmountOptionDefault, diskUnmountCallback, (__bridge_retained void *)[handler copy]);
+    DADiskUnmount(diskref, kDADiskUnmountOptionDefault, diskUnmountCallback, (__bridge_retained void *)handler);
     CFRelease(diskref);
 }
 
-- (void)ejectDisk:(SLDisk *)disk
+- (void)ejectDisk:(SLDisk *)disk handler:(SLEjectHandler)handler
 {
     DADiskRef diskref = DADiskCreateFromBSDName(kCFAllocatorDefault, _session, disk.diskID.UTF8String);
     if (!disk) {
         NSLog(@"Can't create disk for ejecting %@", disk.diskID);
         return;
     }
-    DADiskEject(diskref, kDADiskEjectOptionDefault, diskEjectCallback, NULL);
+    DADiskEject(diskref, kDADiskEjectOptionDefault, diskEjectCallback, (__bridge_retained void *)handler);
     CFRelease(diskref);
 }
 
 - (void)unmountAndMaybeEject:(SLDisk *)disk handler:(SLUnmountHandler)handler
 {
+    SLDiskEjector *ejector = nil;
     if (disk.children.count > 0) {
-        // Unmount all children
-        for (SLDisk *childDisk in disk.children) {
-            if (childDisk.mounted) {
-                [self unmountDisk:childDisk handler:nil];
-            }
-        }
-        [self ejectDisk:disk];
+        ejector = [[SLDiskEjector alloc] initWithDisk:disk manager:self handler:^(BOOL succeeded, SLDisk *failureDisk) {
+            handler(succeeded);
+            [_ejectors removeObject:ejector];
+        }];
+        [_ejectors addObject:ejector];
     } else if (disk.mounted) {
         unsigned numOtherMounted = 0;
         for (SLDisk *childDisk in disk.parent.children) {
@@ -337,10 +352,15 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
                 ++numOtherMounted;
             }
         }
-        [self unmountDisk:disk handler:handler];
         if (numOtherMounted == 0) {
-            //  The disk has no other mounted volumes, so eject it.
-            [self ejectDisk:disk.parent ? disk.parent : disk];
+            //  The disk has no other mounted volumes, so unmount then eject it.
+            ejector = [[SLDiskEjector alloc] initWithDisk:disk.parent ? disk.parent : disk manager:self handler:^(BOOL succeeded, SLDisk *failureDisk) {
+                handler(succeeded);
+                [_ejectors removeObject:ejector];
+            }];
+            [_ejectors addObject:ejector];
+        } else {
+            [self unmountDisk:disk handler:handler];
         }
     }
 }
@@ -395,6 +415,57 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
         }
     }
     return NO;
+}
+
+@end
+
+@implementation SLDiskEjector
+{
+    SLDisk *_disk;
+    __weak SLDiskManager *_manager;
+    SLDiskEjectorHandler _handler;
+    NSMutableArray *_children;
+}
+
+- (void)unmountNext
+{
+    if (_children.count == 0) {
+        [_manager ejectDisk:_disk handler:^(BOOL ejected) {
+            _handler(ejected, ejected ? nil : _disk);
+        }];
+        return;
+    }
+    
+    SLDisk *disk = [_children objectAtIndex:0];
+    [_children removeObjectAtIndex:0];
+    [_manager unmountDisk:disk handler:^(BOOL unmounted) {
+        if (unmounted) {
+            [self unmountNext];
+        } else {
+            _handler(NO, disk);
+        }
+    }];
+}
+
+- (instancetype)initWithDisk:(SLDisk *)disk manager:(SLDiskManager *)manager handler:(SLDiskEjectorHandler)handler
+{
+    if ((self = [super init]) != nil) {
+        _disk = disk;
+        _manager = manager;
+        _handler = handler;
+        
+        _children = [NSMutableArray array];
+        for (SLDisk *childDisk in disk.children) {
+            if (childDisk.mounted) {
+                [_children addObject:childDisk];
+            }
+        }
+        if (disk.mounted) {
+            [_children addObject:disk];
+        }
+        [self unmountNext];
+    }
+    return self;
 }
 
 @end
