@@ -26,6 +26,7 @@
 @implementation SLController
 {
 	NSStatusItem *_statusItem;
+    NSImage *_baseImage;
 	NSArray *_volumes;
 	SLPreferencesController *_prefs;
 	SLDiskManager *deviceManager;
@@ -139,9 +140,8 @@
 	_statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
 	[_statusItem setHighlightMode:YES];
 
-    NSImage *ejectImageAlt = [[NSImage imageNamed:@"Eject"] copy];
-    [ejectImageAlt setTemplate:YES];
-    [_statusItem setAlternateImage:ejectImageAlt];
+    _baseImage = [[NSImage imageNamed:@"Eject"] copy];
+    [_statusItem setAlternateImage:[self colorImage:_baseImage withColor:[NSColor whiteColor]]];
 
     [self updateStatusItemIcon];
 	[self updateStatusItemMenu];
@@ -170,24 +170,23 @@
 
 - (void)updateStatusItemIcon
 {
-    NSImage *baseImage = [NSImage imageNamed:@"Eject"];
     BOOL setDefault = YES;
-    if (NSClassFromString(@"NSRegularExpression")) { // NSRegularExpressionSearch only available on 10.7+
-        NSString *iconPattern = [[NSUserDefaults standardUserDefaults] objectForKey:SLCustomIconPattern];
-        NSData *iconColorData = [[NSUserDefaults standardUserDefaults] objectForKey:SLCustomIconColor];
-        NSColor *iconColor = iconColorData ? (NSColor *)[NSUnarchiver unarchiveObjectWithData:iconColorData] : nil;
-        if (iconPattern && iconColor && [iconPattern length] > 0) {
-            for (SLVolume *vol in _volumes) {
-                if ([vol.name rangeOfString:iconPattern options:NSCaseInsensitiveSearch|NSRegularExpressionSearch].location != NSNotFound) {
-                    [_statusItem setImage:[self colorImage:[baseImage copy] withColor:iconColor]];
-                    setDefault = NO;
-                    break;
-                }
+    NSString *iconPattern = [[NSUserDefaults standardUserDefaults] objectForKey:SLCustomIconPattern];
+    NSData *iconColorData = [[NSUserDefaults standardUserDefaults] objectForKey:SLCustomIconColor];
+    NSColor *iconColor = iconColorData ? (NSColor *)[NSUnarchiver unarchiveObjectWithData:iconColorData] : nil;
+    if (iconPattern && iconColor && [iconPattern length] > 0) {
+        for (SLVolume *vol in _volumes) {
+            if ([vol.name rangeOfString:iconPattern options:NSCaseInsensitiveSearch|NSRegularExpressionSearch].location != NSNotFound) {
+                [_statusItem setImage:[self colorImage:_baseImage withColor:iconColor]];
+                setDefault = NO;
+                break;
             }
         }
     }
     if (setDefault) {
-        [_statusItem setImage:[baseImage copy]];
+        NSImage *img = [_baseImage copy];
+        img.template = YES;
+        [_statusItem setImage:img];
     }
 }
 
