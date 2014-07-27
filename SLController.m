@@ -597,14 +597,70 @@
     [self eject:[sender representedObject] withUIFeedback:YES];
 }
 
+- (SLVolume *)volumeForDisk:(SLDisk *)disk
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSError *err = nil;
+    NSDictionary *attrs = [fm attributesOfItemAtPath:disk.volumePath.path error:nil];
+    if (!attrs || err) {
+        return nil;
+    }
+    NSInteger diskFSNum = [attrs fileSystemNumber];
+    for (SLVolume *vol in _volumes) {
+        err = nil;
+        attrs = [fm attributesOfItemAtPath:vol.path error:&err];
+        if (!attrs || err) {
+            continue;
+        }
+        if ([attrs fileSystemNumber] == diskFSNum) {
+            return vol;
+        }
+    }
+    return nil;
+}
+
 - (void)doEjectAll:(id)sender
 {
-    // FIXME: for disks with lots of partitions, this doesn't eject it, just unmounts all of them.
-	NSArray *volumesCopy = [_volumes copy];
-	for (SLVolume *vol in volumesCopy) {
+    NSMutableArray *vols = [NSMutableArray array];
+    
+    // First collect volums that can be ejected
+    for (SLVolume *vol in _volumes) {
 		if ([self objectCanBeEjected:vol]) {
-            [self eject:vol withUIFeedback:NO];
-		}
+            [vols addObject:vol];
+        }
+    }
+    
+    NSMutableArray *disksToEject = [NSMutableArray array];
+    
+    // For each disk, if all ejectable volumes for that disk are to be unmounted, eject that disk.
+    for (SLDisk *disk in deviceManager.disks) {
+        SLVolume *vol = [self volumeForDisk:disk];
+        if ([vols containsObject:vol]) {
+            [disksToEject addObject:disk];
+            [vols removeObject:vol];
+        } else {
+            BOOL containsAllChildren = YES;
+            NSMutableArray *diskVols = [NSMutableArray array];
+            for (SLDisk *childDisk in disk.children) {
+                vol = [self volumeForDisk:childDisk];
+                if (![vols containsObject:vol]) {
+                    containsAllChildren = NO;
+                    break;
+                }
+                [diskVols addObject:vol];
+            }
+            if (containsAllChildren) {
+                [vols removeObjectsInArray:diskVols];
+                [disksToEject addObject:disk];
+            }
+        }
+    }
+    
+    for (SLDisk *disk in disksToEject) {
+        [self eject:disk withUIFeedback:YES];
+    }
+    for (SLVolume *vol in vols) {
+        [self eject:vol withUIFeedback:YES];
 	}
 }
 
