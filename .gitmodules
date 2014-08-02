@@ -4,3 +4,6 @@
 [submodule "MASShortcut"]
 	path = MASShortcut
 	url = https://github.com/shpakovski/MASShortcut.git
+[submodule "Sparkle"]
+	path = Sparkle
+	url = https://github.com/sparkle-project/Sparkle.git

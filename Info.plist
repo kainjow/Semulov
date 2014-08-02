@@ -24,5 +24,7 @@
 	<string>NSApplication</string>
 	<key>NSUIElement</key>
 	<string>1</string>
+	<key>SUFeedURL</key>
+	<string>http://kainjow.com/updates/semulov.xml</string>
 </dict>
 </plist>

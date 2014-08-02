@@ -15,6 +15,7 @@
 #import "SLPreferencesController.h"
 #import "MASShortcut+UserDefaults.h"
 #import "SLPreferenceKeys.h"
+#import <Sparkle/Sparkle.h>
 
 @interface SLController (Private)
 - (void)setupStatusItem;
@@ -32,6 +33,7 @@
 	SLDiskManager *deviceManager;
     dispatch_queue_t queue;
     NSArray *ignoredVolumes;
+    SUUpdater *_updater;
 }
 
 + (void)initialize
@@ -106,6 +108,8 @@
         }
         return event;
     }];
+    
+    _updater = [SUUpdater sharedUpdater];
 }
 
 #pragma mark -
@@ -477,6 +481,7 @@
 	NSMenuItem *slMenuItem = [[NSMenuItem alloc] initWithTitle:@"Semulov" action:nil keyEquivalent:@""];
 	NSMenu *slSubmenu = [[NSMenu alloc] init];
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"About", nil) action:@selector(doAbout:) keyEquivalent:@""];
+    [slSubmenu addItemWithTitle:NSLocalizedString(@"Check for Updates\u2026", nil) action:@selector(doCheckForUpdates:) keyEquivalent:@""];
 	[slSubmenu addItem:[NSMenuItem separatorItem]];
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"Preferences\u2026", nil) action:@selector(doPrefs:) keyEquivalent:@""];
 	[slSubmenu addItem:[NSMenuItem separatorItem]];
@@ -717,6 +722,11 @@
     deviceManager.blockMounts = block;
     [uds setBool:block forKey:SLBlockMounts];
     [self updateStatusItemMenu];
+}
+
+- (void)doCheckForUpdates:(id)sender
+{
+    [_updater checkForUpdates:sender];
 }
 
 @end
