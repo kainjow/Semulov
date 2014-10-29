@@ -176,9 +176,14 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
 
 - (void)diskChanged:(DADiskRef)disk mode:(SLDiskChangeMode)mode
 {
-    [_diskImageManager reloadInfo];
-    
-	NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
+    NSDictionary *description = (__bridge_transfer NSDictionary *)DADiskCopyDescription(disk);
+    [_diskImageManager reloadInfo:^{
+        [self diskChangedWithDescription:description mode:mode];
+    }];
+}
+
+- (void)diskChangedWithDescription:(NSDictionary*)description mode:(SLDiskChangeMode)mode
+{
 	NSString *diskID = [description objectForKey:(NSString *)kDADiskDescriptionMediaBSDNameKey];
 	if (!diskID) {
 		return;

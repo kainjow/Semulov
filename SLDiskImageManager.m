@@ -8,10 +8,65 @@
 
 #import "SLDiskImageManager.h"
 #import "NSTaskAdditions.h"
+#import <pthread.h>
+
+@interface SLReadWriteLock : NSObject
+
+- (void)readLock;
+- (void)writeLock;
+- (void)unlock;
+
+@end
+
+@implementation SLReadWriteLock
+{
+    pthread_rwlock_t _lock;
+}
+
+- (id)init
+{
+    if ((self = [super init]) != nil) {
+        if (pthread_rwlock_init(&_lock, NULL) != 0) {
+            NSLog(@"rwlock_init error: %s", strerror(errno));
+        }
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    if (pthread_rwlock_destroy(&_lock) != 0) {
+        NSLog(@"rwlock_destroy error: %s", strerror(errno));
+    }
+}
+
+- (void)readLock
+{
+    if (pthread_rwlock_rdlock(&_lock) != 0) {
+        NSLog(@"rwlock_rdlock error: %s", strerror(errno));
+    }
+}
+
+- (void)writeLock
+{
+    if (pthread_rwlock_wrlock(&_lock) != 0) {
+        NSLog(@"rwlock_wrlock error: %s", strerror(errno));
+    }
+}
+
+- (void)unlock
+{
+    if (pthread_rwlock_unlock(&_lock) != 0) {
+        NSLog(@"rwlock_unlock error: %s", strerror(errno));
+    }
+}
+
+@end
 
 @implementation SLDiskImageManager
 {
     NSDictionary *_info;
+    SLReadWriteLock *_infoLock;
 }
 
 + (NSDictionary *)infoPlist
@@ -43,13 +98,33 @@
     return plistDict;
 }
 
-- (void)reloadInfo
+- (id)init
 {
-    _info = [[self class] infoPlist];
+    if ((self = [super init]) != nil) {
+        _infoLock = [[SLReadWriteLock alloc] init];
+    }
+    return self;
+}
+
+- (void)reloadInfo:(dispatch_block_t)finishedHandler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        @autoreleasepool {
+            NSDictionary *info = [[self class] infoPlist];
+            [_infoLock writeLock];
+            _info = info;
+            [_infoLock unlock];
+            if (finishedHandler) {
+                dispatch_async(dispatch_get_main_queue(), finishedHandler);
+            }
+        }
+    });
 }
 
 - (NSString *)diskImageForVolume:(NSString *)volume
 {
+    NSString *ret = nil;
+    [_infoLock readLock];
     for (NSDictionary *imagesDict in [_info objectForKey:@"images"]) {
         NSString *imagePath = imagesDict[@"image-path"];
         
@@ -63,16 +138,21 @@
             NSString *mountPoint = [sysEntity objectForKey:@"mount-point"];
             
             if ([mountPoint isEqualToString:volume]) {
-                return imagePath;
+                // make a copy so we're not using an object inside _info which may be
+                // deallocated after the lock is released.
+                ret = [imagePath copy];
+                break;
             }
         }
     }
-    
-    return nil;
+    [_infoLock unlock];
+    return ret;
 }
 
 - (NSString *)diskImageForDiskID:(NSString *)diskID
 {
+    NSString *ret = nil;
+    [_infoLock readLock];
     for (NSDictionary *imagesDict in [_info objectForKey:@"images"]) {
         NSString *imagePath = imagesDict[@"image-path"];
         
@@ -85,12 +165,15 @@
         for (NSDictionary *sysEntity in imagesDict[@"system-entities"]) {
             NSString *devEntry = [[sysEntity objectForKey:@"dev-entry"] lastPathComponent];
             if ([devEntry isEqualToString:diskID]) {
-                return imagePath;
+                // make a copy so we're not using an object inside _info which may be
+                // deallocated after the lock is released.
+                ret = [imagePath copy];
+                break;
             }
         }
     }
-    
-    return nil;
+    [_infoLock unlock];
+    return ret;
 }
 
 @end

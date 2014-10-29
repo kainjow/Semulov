@@ -10,7 +10,7 @@
 
 @interface SLDiskImageManager : NSObject
 
-- (void)reloadInfo;
+- (void)reloadInfo:(dispatch_block_t)finishedHandler;
 
 - (NSString *)diskImageForVolume:(NSString *)volume;
 - (NSString *)diskImageForDiskID:(NSString *)diskID;
