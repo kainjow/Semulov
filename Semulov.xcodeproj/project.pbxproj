@@ -148,9 +148,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
+		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
 				A5455F8A0AFE64C6001F61C8 /* SLController.h */,
 				A5455F8B0AFE64C6001F61C8 /* SLController.m */,
 				A5455FE50AFE66A1001F61C8 /* SLVolume.h */,
@@ -169,7 +170,7 @@
 				A58DAA72197C9D6800DCC2CA /* NSAppLoginItems */,
 				A58DAA5F197C7A5100DCC2CA /* MASShortcut */,
 			);
-			name = Classes;
+			name = Sources;
 			sourceTree = "<group>";
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
@@ -184,8 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */,
-				080E96DDFE201D6D7F000001 /* Classes */,
-				A58540F013E5D3B60002EF3C /* Other Sources */,
+				080E96DDFE201D6D7F000001 /* Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -229,14 +229,6 @@
 				A582C1B8198D528B00124F73 /* Autoupdate.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A58540F013E5D3B60002EF3C /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-				29B97316FDCFA39411CA2CEA /* main.m */,
-			);
-			name = "Other Sources";
 			sourceTree = "<group>";
 		};
 		A58DAA5F197C7A5100DCC2CA /* MASShortcut */ = {
