@@ -591,7 +591,11 @@
     
     [deviceManager unmountAndMaybeEject:disk handler:^(BOOL unmounted) {
         if (!unmounted && uiFeedback) {
-            NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Failed to unmount %@.", nil), disk.name];
+            NSString *diskName = disk.name ? disk.name : disk.deviceName;
+            if (!diskName) {
+                diskName = disk.diskID;
+            }
+            NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Failed to unmount %@.", nil), diskName];
             [self runAlertWithTitle:title message:nil];
         }
     }];
