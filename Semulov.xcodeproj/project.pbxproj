@@ -463,6 +463,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
+				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_NAME = Semulov;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -478,6 +479,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Sparkle/build/$(CONFIGURATION)";
 				INFOPLIST_FILE = Info.plist;
+				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_NAME = Semulov;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
