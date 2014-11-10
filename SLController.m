@@ -384,7 +384,7 @@
             }
             if (networkVolumes.count > 0) {
                 [menu addItem:[NSMenuItem separatorItem]];
-                [menu addItemWithTitle:NSLocalizedString(@"Network", nil) action:nil keyEquivalent:@""];
+                [menu addItemWithTitle:NSLocalizedStringFromTable(@"Network", @"Labels", nil) action:nil keyEquivalent:@""];
                 [networkVolumes sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES]]];
                 for (SLVolume *vol in networkVolumes) {
                     for (NSMenuItem *item in [self setupMenuItemsForMoutableObject:vol reverseAction:reverseAction]) {
