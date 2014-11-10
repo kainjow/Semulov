@@ -376,6 +376,23 @@
                     }
                 }
             }
+            NSMutableArray *networkVolumes = [NSMutableArray array];
+            for (SLVolume *vol in volumes) {
+                if (!vol.isLocal) {
+                    [networkVolumes addObject:vol];
+                }
+            }
+            if (networkVolumes.count > 0) {
+                [menu addItem:[NSMenuItem separatorItem]];
+                [menu addItemWithTitle:NSLocalizedString(@"Network", nil) action:nil keyEquivalent:@""];
+                [networkVolumes sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES]]];
+                for (SLVolume *vol in networkVolumes) {
+                    for (NSMenuItem *item in [self setupMenuItemsForMoutableObject:vol reverseAction:reverseAction]) {
+                        [menu addItem:item];
+                    }
+                }
+            }
+            
             [menu addItem:[NSMenuItem separatorItem]];
         }
     } else {
