@@ -101,11 +101,12 @@
 			{
                 _hostURL = [hostURL copy];
                 
-                if ([[_hostURL scheme] isEqualToString:@"ftp"]) {
+                NSString *urlScheme = [_hostURL scheme];
+                if ([urlScheme isEqualToString:@"ftp"]) {
                     _type = SLVolumeFTP;
-                } else if ([[_hostURL scheme] isEqualToString:@"afp"] || [[_hostURL scheme] isEqualToString:@"smb"]) {
+                } else if ([urlScheme isEqualToString:@"afp"] || [urlScheme isEqualToString:@"smb"]) {
                     // keep as SLVolumeNetwork
-                } else if ([[_hostURL scheme] isEqualToString:@"file"]) {
+                } else if ([urlScheme isEqualToString:@"file"]) {
                     // probably file:///Volumes/MobileBackups/ (mtmfs)
                 } else {
                     if ([fileSystemType isEqualToString:@"webdav"]) {
