@@ -103,7 +103,7 @@
                 
                 if ([[_hostURL scheme] isEqualToString:@"ftp"]) {
                     _type = SLVolumeFTP;
-                } else if ([[_hostURL scheme] isEqualToString:@"afp"]) {
+                } else if ([[_hostURL scheme] isEqualToString:@"afp"] || [[_hostURL scheme] isEqualToString:@"smb"]) {
                     // keep as SLVolumeNetwork
                 } else if ([[_hostURL scheme] isEqualToString:@"file"]) {
                     // probably file:///Volumes/MobileBackups/ (mtmfs)
