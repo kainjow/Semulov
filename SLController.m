@@ -17,6 +17,10 @@
 #import "SLPreferenceKeys.h"
 #import <Sparkle/Sparkle.h>
 
+static inline NSString *stringOrEmpty(NSString *str) {
+    return str ? str : @"";
+}
+
 @interface SLController (Private)
 - (void)setupStatusItem;
 - (void)updateStatusItemMenu;
@@ -286,7 +290,7 @@
     
     NSImage *mainItemImage = [self shrinkImageForMenu:[obj isKindOfClass:[SLVolume class]] ? [obj image] : [obj icon]];
     
-    menuItem = [[NSMenuItem alloc] initWithTitle:mainTitle action:mainAction keyEquivalent:@""];
+    menuItem = [[NSMenuItem alloc] initWithTitle:stringOrEmpty(mainTitle) action:mainAction keyEquivalent:@""];
     [menuItem setRepresentedObject:obj];
     [menuItem setImage:mainItemImage];
     [menuItem setIndentationLevel:1];
@@ -301,7 +305,7 @@
     }
     
     if (altAction && altTitle) {
-        altMenuItem = [[NSMenuItem alloc] initWithTitle:altTitle action:altAction keyEquivalent:@""];
+        altMenuItem = [[NSMenuItem alloc] initWithTitle:stringOrEmpty(altTitle) action:altAction keyEquivalent:@""];
         [altMenuItem setAlternate:YES];
         [altMenuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
         [altMenuItem setRepresentedObject:obj];
@@ -350,7 +354,7 @@
         NSArray *disks = [deviceManager.disks sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
         if (disks.count > 0) {
             for (SLDisk *disk in disks) {
-                NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:disk.deviceName action:@selector(doEject:) keyEquivalent:@""];
+                NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:stringOrEmpty(disk.deviceName) action:@selector(doEject:) keyEquivalent:@""];
                 [menuItem setRepresentedObject:disk];
                 NSImage *diskIcon;
                 if (disk.isDiskImage && disk.diskImage) {
@@ -428,7 +432,7 @@
                     titleName = NSLocalizedStringFromTable(@"RAM Disks", @"Labels", nil);
                 else if (_lastType == SLVolumeBluray)
                     titleName = NSLocalizedStringFromTable(@"Blurays", @"Labels", nil);
-                titleMenu = [[NSMenuItem alloc] initWithTitle:titleName action:nil keyEquivalent:@""];
+                titleMenu = [[NSMenuItem alloc] initWithTitle:stringOrEmpty(titleName) action:nil keyEquivalent:@""];
             }
             
             if (titleMenu) {
@@ -472,7 +476,7 @@
                     if (!uvolName) {
                         uvolName = uvol.diskID;
                     }
-                    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:uvolName action:@selector(doMount:) keyEquivalent:@""];
+                    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:stringOrEmpty(uvolName) action:@selector(doMount:) keyEquivalent:@""];
                     [menuItem setIndentationLevel:1];
                     [menuItem setRepresentedObject:uvol.diskID];
                     [menuItem setImage:[self shrinkImageForMenu:uvol.icon]];
