@@ -32,6 +32,7 @@
 		A58DAA6D197C7A5C00DCC2CA /* MASShortcutView.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA67197C7A5C00DCC2CA /* MASShortcutView.m */; };
 		A58DAA6E197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA69197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m */; };
 		A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */; };
+		A5A9C2FA1B811822005FD70C /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = A5A9C2F91B811822005FD70C /* dsa_pub.pem */; };
 		A5D71EA11982AB21008E1B7A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5D71EA01982AB21008E1B7A /* Images.xcassets */; };
 		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
 /* End PBXBuildFile section */
@@ -128,6 +129,7 @@
 		A58DAA69197C7A5C00DCC2CA /* MASShortcutView+UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MASShortcutView+UserDefaults.m"; path = "MASShortcut/MASShortcutView+UserDefaults.m"; sourceTree = "<group>"; };
 		A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		A58DAA71197C7D7400DCC2CA /* SLPreferenceKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPreferenceKeys.h; sourceTree = "<group>"; };
+		A5A9C2F91B811822005FD70C /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		A5D71EA01982AB21008E1B7A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A5D982940C8B7F7B002A802F /* Eject.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Eject.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -204,6 +206,7 @@
 				A58BD4BB14100163007E9DF9 /* Labels.strings */,
 				A585417913E5D6830002EF3C /* Preferences.xib */,
 				A5D71EA01982AB21008E1B7A /* Images.xcassets */,
+				A5A9C2F91B811822005FD70C /* dsa_pub.pem */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				A5A9C2FA1B811822005FD70C /* dsa_pub.pem in Resources */,
 				A5D71EA11982AB21008E1B7A /* Images.xcassets in Resources */,
 				A5552A140B10C2C9005EB062 /* Credits.rtf in Resources */,
 				A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */,
