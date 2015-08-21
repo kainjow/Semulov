@@ -666,7 +666,9 @@ static inline NSString *stringOrEmpty(NSString *str) {
     for (SLDisk *disk in deviceManager.disks) {
         SLVolume *vol = [self volumeForDisk:disk];
         if ([vols containsObject:vol]) {
-            [disksToEject addObject:disk];
+            if (disk.ejectable) {
+                [disksToEject addObject:disk];
+            }
             [vols removeObject:vol];
         } else {
             BOOL containsAllChildren = YES;
@@ -681,7 +683,9 @@ static inline NSString *stringOrEmpty(NSString *str) {
             }
             if (containsAllChildren) {
                 [vols removeObjectsInArray:diskVols];
-                [disksToEject addObject:disk];
+                if (disk.ejectable) {
+                    [disksToEject addObject:disk];
+                }
             }
         }
     }

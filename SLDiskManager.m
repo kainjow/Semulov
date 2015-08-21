@@ -143,6 +143,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
         disk.icon = [[NSWorkspace sharedWorkspace] iconForFile:[disk.volumePath path]];
     }
     disk.mountable = [[description objectForKey:(NSString *)kDADiskDescriptionVolumeMountableKey] boolValue];
+    disk.ejectable = [[description objectForKey:(NSString *)kDADiskDescriptionMediaEjectableKey] boolValue];
     disk.whole = [[description objectForKey:(NSString *)kDADiskDescriptionMediaWholeKey] boolValue];
     disk.diskImage = [_diskImageManager diskImageForDiskID:disk.diskID];
     if (disk.diskImage) {

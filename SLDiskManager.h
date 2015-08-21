@@ -43,6 +43,7 @@ extern NSString * const SLDiskManagerDidBlockMountNotification; // object is DAD
 @property (readwrite, strong) NSURL *volumePath;
 @property (readonly) BOOL mounted;
 @property (readwrite) BOOL mountable;
+@property (readwrite) BOOL ejectable;
 @property (readwrite) BOOL whole;
 @property (readonly) BOOL isStartupDisk;
 @property (readonly) BOOL containsStartupDisk;
