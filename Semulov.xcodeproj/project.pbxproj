@@ -289,7 +289,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Kevin Wojniak";
 				TargetAttributes = {
 					8D1107260486CEB800E47090 = {
@@ -466,6 +466,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
 				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kainjow.Semulov;
 				PRODUCT_NAME = Semulov;
 				WRAPPER_EXTENSION = app;
 			};
@@ -479,6 +480,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Sparkle/build/$(CONFIGURATION)";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kainjow.Semulov;
 				PRODUCT_NAME = Semulov;
 				WRAPPER_EXTENSION = app;
 			};
@@ -495,6 +497,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
