@@ -28,7 +28,7 @@
     [self postNotificationCenterWithTitle:notifTitle subtitle:notifDescription];
 }
 
-+ (void)postVolumeUnmounted:(SLVolume *)volume;
++ (void)postVolumeUnmounted:(SLVolume *)volume
 {
     NSString *notifTitle = NSLocalizedString(@"Volume Unmounted", "");
     NSString *notifDescription = [volume name];
