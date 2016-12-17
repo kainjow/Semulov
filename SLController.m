@@ -13,7 +13,7 @@
 #import "SLDiskManager.h"
 #import "SLDiskImageManager.h"
 #import "SLPreferencesController.h"
-#import "MASShortcut+UserDefaults.h"
+#import <MASShortcut/Shortcut.h>
 #import "SLPreferenceKeys.h"
 #import <Sparkle/Sparkle.h>
 
@@ -348,7 +348,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
     }
     
     NSMenuItem *ejectAllItem = nil;
-    [MASShortcut unregisterGlobalShortcutWithUserDefaultsKey:SLEjectAllShortcut];
+    [[MASShortcutBinder sharedBinder] breakBindingWithDefaultsKey:SLEjectAllShortcut];
 
     if (disksLayout) {
         NSArray *disks = [deviceManager.disks sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
@@ -449,11 +449,8 @@ static inline NSString *stringOrEmpty(NSString *str) {
             if (showEjectAll) {
                 [menu addItem:[NSMenuItem separatorItem]];
                 ejectAllItem = [menu addItemWithTitle:NSLocalizedString(@"Eject All", nil) action:@selector(doEjectAll:) keyEquivalent:@""];
-                MASShortcut *shortcut = [MASShortcut shortcutWithData:[[NSUserDefaults standardUserDefaults] objectForKey:SLEjectAllShortcut]];
-                if (shortcut && shortcut.isValid) {
-                    ejectAllItem.keyEquivalent = shortcut.keyCodeStringForKeyEquivalent;
-                    ejectAllItem.keyEquivalentModifierMask = shortcut.modifierFlags;
-                    [MASShortcut registerGlobalShortcutWithUserDefaultsKey:SLEjectAllShortcut handler:^{
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:SLEjectAllShortcut]) {
+                    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:SLEjectAllShortcut toAction:^{
                         [self doEjectAll:ejectAllItem.representedObject];
                     }];
                 }

@@ -7,8 +7,7 @@
 //
 
 #import "SLPreferencesController.h"
-#import "MASSHortcut.h"
-#import "MASShortcutView+UserDefaults.h"
+#import <MASShortcut/Shortcut.h>
 #import "SLPreferenceKeys.h"
 
 @implementation SLPreferencesController
