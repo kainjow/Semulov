@@ -27,7 +27,7 @@
 	<key>NSUIElement</key>
 	<string>1</string>
 	<key>SUFeedURL</key>
-	<string>http://kainjow.com/updates/semulov.xml</string>
+	<string>https://kainjow.com/updates/semulov.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>
