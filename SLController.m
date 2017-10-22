@@ -496,7 +496,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
         [_statusItem setTitle:nil];
     }
     
-	NSMenuItem *slMenuItem = [[NSMenuItem alloc] initWithTitle:@"Semulov" action:nil keyEquivalent:@""];
+	NSMenuItem *slMenuItem = [[NSMenuItem alloc] initWithTitle:NSRunningApplication.currentApplication.localizedName action:nil keyEquivalent:@""];
 	NSMenu *slSubmenu = [[NSMenu alloc] init];
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"About", nil) action:@selector(doAbout:) keyEquivalent:@""];
     [slSubmenu addItemWithTitle:NSLocalizedString(@"Check for Updates\u2026", nil) action:@selector(doCheckForUpdates:) keyEquivalent:@""];
