@@ -503,8 +503,6 @@ static inline NSString *stringOrEmpty(NSString *str) {
 	[slSubmenu addItem:[NSMenuItem separatorItem]];
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"Preferences\u2026", nil) action:@selector(doPrefs:) keyEquivalent:@""];
 	[slSubmenu addItem:[NSMenuItem separatorItem]];
-	[slSubmenu addItemWithTitle:NSLocalizedString(@"Send Feedback", nil) action:@selector(doFeedback:) keyEquivalent:@""];
-	[slSubmenu addItem:[NSMenuItem separatorItem]];
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"Quit", nil) action:@selector(doQuit:) keyEquivalent:@""];
 	[slMenuItem setSubmenu:slSubmenu];
 	[menu addItem:slMenuItem];
@@ -722,13 +720,6 @@ static inline NSString *stringOrEmpty(NSString *str) {
     } else if ([obj isKindOfClass:[SLDisk class]]) {
         [deviceManager mount:(SLDisk *)obj];
     }
-}
-
-- (void)doFeedback:(id)sender
-{
-	NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-	NSString *urlString = [[NSString stringWithFormat:@"mailto:kainjow@kainjow.com?subject=Semulov %@ Feedback", appVersion] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
 }
 
 - (void)doPrefs:(id)sender
