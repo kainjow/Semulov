@@ -152,6 +152,13 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
             disk.deviceName = [disk.diskImage lastPathComponent];
         }
     }
+    disk.volumeKind = [description objectForKey:(NSString *)kDADiskDescriptionVolumeKindKey];
+    NSString* volumeType = [description objectForKey:(NSString *)kDADiskDescriptionVolumeTypeKey];
+    disk.encrypted = [volumeType rangeOfString:@"encrypt"].location == NSNotFound;
+    CFUUIDRef uuidRef = (__bridge CFUUIDRef)[description objectForKey:(NSString *)kDADiskDescriptionVolumeUUIDKey];
+    if (uuidRef) {
+        disk.volumeUUID = (__bridge NSString *)CFUUIDCreateString(NULL, uuidRef);
+    }
 }
 
 - (SLDisk *)diskFromDescription:(NSDictionary *)description diskID:(NSString *)diskID
@@ -281,10 +288,50 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
 
 - (void)mount:(SLDisk *)disk
 {
-	DADiskRef diskref = DADiskCreateFromBSDName(kCFAllocatorDefault, _session, [disk.diskID UTF8String]);
 	if (disk) {
-		DADiskMount(diskref, NULL, kDADiskMountOptionDefault, NULL, NULL);
-		CFRelease(diskref);
+        // DiskArbitration does not seem to support encrypted disk. In order to be able to mount an encrypted disk we have to use the diskutil command
+        if (disk.encrypted) {
+            NSString* service = disk.volumeUUID;
+
+            UInt32 pwLength = 0;
+            void* pwData = NULL;
+            SecKeychainItemRef itemRef = NULL;
+            
+            OSStatus status = SecKeychainFindGenericPassword(
+                NULL,         // Search default keychains
+                (UInt32)service.length,
+                [service UTF8String],
+                0,
+                NULL,
+                &pwLength,
+                &pwData,
+                &itemRef      // Get a reference this time
+            );
+            
+            if (status == errSecSuccess) {
+                NSData* data = [NSData dataWithBytes:pwData length:pwLength];
+                NSString* password = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"Volume encryption password fetched successfully from the keychain");
+                
+                // Execute diskutil, passing the volumeKind and the encryption password
+                NSTask *task = [[NSTask alloc] init];
+                [task setLaunchPath:@"/usr/sbin/diskutil"];
+                [task setArguments:@[ disk.volumeKind, @"unlockVolume", disk.diskID, @"-passphrase", password ]];
+                [task launch];
+            } else {
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert setMessageText: [NSString stringWithFormat:@"Error: %@ \n\nRemember that in order to be able to mount an encrypted volume, previously you have to: \na) Mount it using Disk Utility\nb) Save the password in the keychain", SecCopyErrorMessageString(status, NULL)]];
+                [alert runModal];
+
+                NSLog(@"Failed to fetch the volume encryption password from the keychain: %@", SecCopyErrorMessageString(status, NULL));
+            }
+            
+            if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
+        } else {
+            DADiskRef diskref = DADiskCreateFromBSDName(kCFAllocatorDefault, _session, [disk.diskID UTF8String]);
+            DADiskMount(diskref, NULL, kDADiskMountOptionDefault, NULL, NULL);
+            CFRelease(diskref);
+        }
 	}
 }
 
