@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		414805DD200AF50600EA8E8F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414805CC200AF50600EA8E8F /* Security.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -35,6 +36,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		414805DB200AF50600EA8E8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5AE13FB31E0D9E07000D2C2C;
+			remoteInfo = generate_appcast;
+		};
 		A582C1AF198D528B00124F73 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
@@ -125,6 +133,7 @@
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		414805CC200AF50600EA8E8F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Semulov.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Semulov.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+LoginItems.h"; path = "NSAppLoginItems/NSApplication+LoginItems.h"; sourceTree = "<group>"; };
@@ -163,6 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				414805DD200AF50600EA8E8F /* Security.framework in Frameworks */,
 				A5E3D2F81E050C55006A6515 /* MASShortcut.framework in Frameworks */,
 				A582C1B9198D529900124F73 /* Sparkle.framework in Frameworks */,
 				A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */,
@@ -239,6 +249,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				414805CC200AF50600EA8E8F /* Security.framework */,
 				A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				A518D7730BB19CC5009EC77B /* DiskArbitration.framework */,
@@ -257,6 +268,7 @@
 				A582C1B8198D528B00124F73 /* Autoupdate.app */,
 				A5D887401E0509960040897E /* UI Tests.xctest */,
 				A5D887421E0509960040897E /* fileop */,
+				414805DC200AF50600EA8E8F /* generate_appcast */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -347,6 +359,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		414805DC200AF50600EA8E8F /* generate_appcast */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = generate_appcast;
+			remoteRef = 414805DB200AF50600EA8E8F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A582C1B0198D528B00124F73 /* Sparkle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
