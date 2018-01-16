@@ -307,31 +307,51 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
                                                          &itemRef      // Get a reference this time
                                                          );
         
-        if (status == errSecSuccess) {
-            NSData* data = [NSData dataWithBytes:pwData length:pwLength];
-            NSString* password = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        if (status == errSecSuccess && pwData) {
             NSLog(@"Volume encryption password fetched successfully from the keychain");
+
+            NSData* data = [NSData dataWithBytes:pwData length:pwLength];
+            SecKeychainItemFreeContent(NULL, pwData);
             
-            // Execute diskutil, passing the volumeKind and the encryption password
-            NSTask *task = [[NSTask alloc] init];
-            [task setLaunchPath:@"/usr/sbin/diskutil"];
-            [task setArguments:@[ disk.volumeKind, @"unlockVolume", disk.diskID, @"-passphrase", password ]];
-            [task launch];
+            NSString* password = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            unlockDisk(disk.volumeKind, disk.diskID, password);
         } else {
-            NSAlert *alert = [[NSAlert alloc] init];
-            [alert setMessageText: [NSString stringWithFormat: NSLocalizedString(@"Error: %@ \n\nRemember that in order to be able to mount an encrypted volume, previously you have to: \na) Mount it using Disk Utility\nb) Save the password in the keychain", nil), (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL)]];
-            [alert runModal];
+            NSLog(@"Error when fetching the encryption password from the keychain: %@ Prompting the user for it.", (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL));
+
+            NSAlert *alert = [NSAlert alertWithMessageText: [NSString stringWithFormat: NSLocalizedString(@"Introduce the encryption password to unlock the volume once:", nil), (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL)] defaultButton: NSLocalizedString(@"Ok", nil) alternateButton: NSLocalizedString(@"Cancel", nil) otherButton: nil informativeTextWithFormat: @"If you want to mount an encrypted volume automatically without manually introducing the password: \na) Mount it using Disk Utility\nb) Save the password in the keychain"];
+            NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 250, 24)];
+            [alert setAccessoryView: input];
+            NSInteger button = [alert runModal];
             
-            NSLog(@"Failed to fetch the volume encryption password from the keychain: %@", (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL));
+            if (button == NSAlertDefaultReturn) {
+                [input validateEditing];
+                unlockDisk(disk.volumeKind, disk.diskID, [input stringValue]);
+            } else {
+                NSLog(@"Unlocking disk was cancelled by the user");
+            }
         }
-        
-        if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
     } else {
         DADiskRef diskref = DADiskCreateFromBSDName(kCFAllocatorDefault, _session, [disk.diskID UTF8String]);
         if (diskref) {
             DADiskMount(diskref, NULL, kDADiskMountOptionDefault, NULL, NULL);
             CFRelease(diskref);
         }
+    }
+}
+
+static void unlockDisk(NSString *volumeKind, NSString *diskID, NSString *password)
+{
+    // Execute diskutil, passing the volumeKind and the encryption password
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/sbin/diskutil"];
+    [task setArguments:@[ volumeKind, @"unlockVolume", diskID, @"-passphrase", password ]];
+    [task launch];
+    [task waitUntilExit];
+    
+    // In case return code is not zero, there was an error
+    if ([task terminationStatus]) {
+        NSAlert *alert = [NSAlert alertWithMessageText: @"There was an error unlocking the disk" defaultButton: @"Ok" alternateButton: nil otherButton: nil informativeTextWithFormat: @"Check that you introduced the correct password"];
+        [alert runModal];
     }
 }
 
