@@ -321,8 +321,12 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
             NSAlert *alert = [NSAlert alertWithMessageText: [NSString stringWithFormat: NSLocalizedString(@"Introduce the encryption password to unlock the volume once:", nil), (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL)] defaultButton: NSLocalizedString(@"Ok", nil) alternateButton: NSLocalizedString(@"Cancel", nil) otherButton: nil informativeTextWithFormat: @"If you want to mount an encrypted volume automatically without manually introducing the password: \na) Mount it using Disk Utility\nb) Save the password in the keychain"];
             NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 250, 24)];
             [alert setAccessoryView: input];
-            NSInteger button = [alert runModal];
             
+            // Set the focus to the textField, so the user can type the password right away
+            [[NSRunningApplication currentApplication] activateWithOptions: NSApplicationActivateIgnoringOtherApps];
+            [[alert window] setInitialFirstResponder: input];
+
+            NSInteger button = [alert runModal];
             if (button == NSAlertDefaultReturn) {
                 [input validateEditing];
                 unlockDisk(disk.volumeKind, disk.diskID, [input stringValue]);
