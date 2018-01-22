@@ -50,5 +50,9 @@ extern NSString * const SLDiskManagerDidBlockMountNotification; // object is DAD
 @property (readwrite) BOOL isDiskImage;
 @property (readwrite, copy) NSString *diskImage;
 @property (readwrite, strong) NSMutableArray *children;
+// Properties introduced for being able to mount encrypted volumes
+@property (readwrite, copy) NSString *volumeKind;
+@property (readwrite) BOOL encrypted;
+@property (readwrite, copy) NSString *volumeUUID;
 
 @end
