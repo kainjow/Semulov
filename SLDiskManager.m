@@ -94,7 +94,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
     return _disks;
 }
 
-- (id)init
+- (instancetype)init
 {
     if ((self = [super init]) != nil) {
 		_session = DASessionCreate(kCFAllocatorDefault);

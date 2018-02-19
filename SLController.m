@@ -54,7 +54,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 		nil]];
 }
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self != nil) {

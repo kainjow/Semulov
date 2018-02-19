@@ -12,7 +12,7 @@
 
 @implementation SLPreferencesController
 
-- (id)init
+- (instancetype)init
 {
     if ((self = [super initWithWindowNibName:@"Preferences"]) != nil) {
     }

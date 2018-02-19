@@ -14,7 +14,7 @@
 
 @interface SLVolume ()
 
-- (id)initWithStatfs:(struct statfs *)statfs diskImageManager:(SLDiskImageManager *)diskImageManager;
+- (instancetype)initWithStatfs:(struct statfs *)statfs diskImageManager:(SLDiskImageManager *)diskImageManager;
 
 @end
 
@@ -66,7 +66,7 @@
     return hostURL;
 }
 
-- (id)initWithStatfs:(struct statfs *)statfs diskImageManager:(SLDiskImageManager *)diskImageManager
+- (instancetype)initWithStatfs:(struct statfs *)statfs diskImageManager:(SLDiskImageManager *)diskImageManager
 {
     self = [super init];
     if (self != nil)

@@ -23,7 +23,7 @@
     pthread_rwlock_t _lock;
 }
 
-- (id)init
+- (instancetype)init
 {
     if ((self = [super init]) != nil) {
         if (pthread_rwlock_init(&_lock, NULL) != 0) {
@@ -98,7 +98,7 @@
     return plistDict;
 }
 
-- (id)init
+- (instancetype)init
 {
     if ((self = [super init]) != nil) {
         _infoLock = [[SLReadWriteLock alloc] init];
