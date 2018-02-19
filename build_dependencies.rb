@@ -1,30 +1,7 @@
-$deps = [
-	{
-		'name' => 'Sparkle',
-		'git_url' => 'https://github.com/sparkle-project/Sparkle.git',
-		'git_commit' => '1.18.1',
-	},
-	{
-		'name' => 'MASShortcut',
-		'git_url' => 'https://github.com/shpakovski/MASShortcut.git',
-		'git_commit' => '2.3.6',
-	},
-	{
-		'name' => 'NSAppLoginItems',
-		'git_url' => 'https://github.com/kainjow/NSAppLoginItems.git',
-		'git_commit' => 'v1.0',
-		'files' => [
-			'NSApplication+LoginItems.h',
-			'NSApplication+LoginItems.m',
-		],
-	},
-]
-
-# # #
-
 require 'fileutils'
 require 'ostruct'
 require 'pathname'
+require 'yaml'
 
 def build(base_dir, configuration, dep)
 	root_dir = File.join(base_dir, dep.name)
@@ -78,9 +55,10 @@ def build(base_dir, configuration, dep)
 end
 
 def main()
-	base_dir = File.join(File.dirname(Pathname.new(__FILE__).realpath), 'Dependencies')
-
-	$deps.each do |dep|
+	project_dir = File.dirname(Pathname.new(__FILE__).realpath)
+	base_dir = File.join(project_dir, 'Dependencies')
+	deps = YAML.load_file(File.join(project_dir, 'dependencies.yml'))
+	deps.each do |dep|
 		# Set optional keys
 		[
 			['scheme', nil],

@@ -1,0 +1,14 @@
+- name: Sparkle
+  git_url: 'https://github.com/sparkle-project/Sparkle.git'
+  git_commit: '1.18.1'
+
+- name: MASShortcut
+  git_url: 'https://github.com/shpakovski/MASShortcut.git'
+  git_commit: '2.3.6'
+
+- name: NSAppLoginItems
+  git_url: 'https://github.com/kainjow/NSAppLoginItems.git'
+  git_commit: 'v1.0'
+  files:
+    - NSApplication+LoginItems.h
+    - NSApplication+LoginItems.m
