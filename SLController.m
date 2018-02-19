@@ -227,6 +227,12 @@ static inline NSString *stringOrEmpty(NSString *str) {
 
 - (BOOL)volumeIsOnIgnoreList:(NSString *)volume
 {
+    // https://github.com/kainjow/Semulov/issues/16
+    // Ignore "Macintosh HD@snap xx" Time Machine internal volumes
+    if ([volume rangeOfString:@"@snap"].location != NSNotFound) {
+        NSLog(@"Ignoring %@", volume);
+        return YES;
+    }
     for (NSString *ignoredVol in ignoredVolumes) {
         if ([ignoredVol compare:volume options:NSCaseInsensitiveSearch] == NSOrderedSame) {
             return YES;
