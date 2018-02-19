@@ -18,8 +18,6 @@
 		A54561870AFE720D001F61C8 /* SLNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54561850AFE720D001F61C8 /* SLNotificationController.m */; };
 		A5552A140B10C2C9005EB062 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A5552A130B10C2C9005EB062 /* Credits.rtf */; };
 		A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */; };
-		A582C1B9198D529900124F73 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A582C1B0198D528B00124F73 /* Sparkle.framework */; };
-		A582C1BB198D52AA00124F73 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A582C1B0198D528B00124F73 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		A585417B13E5D6830002EF3C /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = A585417913E5D6830002EF3C /* Preferences.xib */; };
 		A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58BD399140FFCA8007E9DF9 /* IOKit.framework */; };
 		A58BD4BD14100163007E9DF9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58BD4B914100163007E9DF9 /* Localizable.strings */; };
@@ -29,91 +27,15 @@
 		A58DAA58197C657000DCC2CA /* SLPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA57197C657000DCC2CA /* SLPreferencesController.m */; };
 		A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */; };
 		A5A9C2FA1B811822005FD70C /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = A5A9C2F91B811822005FD70C /* dsa_pub.pem */; };
+		A5D305A7203A8477001C482D /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; };
+		A5D305A8203A847A001C482D /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; };
+		A5D305A9203A847A001C482D /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A5D305AC203A8565001C482D /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; };
+		A5D305AD203A856E001C482D /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; };
+		A5D305AE203A856E001C482D /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D71EA11982AB21008E1B7A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5D71EA01982AB21008E1B7A /* Images.xcassets */; };
-		A5D8875B1E050AF20040897E /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A5D887561E050ADD0040897E /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
-		A5E3D2F81E050C55006A6515 /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D887561E050ADD0040897E /* MASShortcut.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		414805DB200AF50600EA8E8F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5AE13FB31E0D9E07000D2C2C;
-			remoteInfo = generate_appcast;
-		};
-		A582C1AF198D528B00124F73 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = Sparkle;
-		};
-		A582C1B1198D528B00124F73 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 61B5F90209C4CEE200B25A18;
-			remoteInfo = "Sparkle Test App";
-		};
-		A582C1B3198D528B00124F73 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 612279D90DB5470200AB99EA;
-			remoteInfo = "Sparkle Unit Tests";
-		};
-		A582C1B5198D528B00124F73 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5D06E8D00FD68C7C005AE3F6;
-			remoteInfo = BinaryDelta;
-		};
-		A582C1B7198D528B00124F73 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55C14BB7136EEF1500649790;
-			remoteInfo = Autoupdate;
-		};
-		A5D8873F1E0509960040897E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 726B2B5D1C645FC900388755;
-			remoteInfo = "UI Tests";
-		};
-		A5D887411E0509960040897E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 722954B41D04ADAF00ECF9CA;
-			remoteInfo = fileop;
-		};
-		A5D887551E050ADD0040897E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A5D8874F1E050ADD0040897E /* MASShortcut.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0D827CD31990D4420010B8EF;
-			remoteInfo = MASShortcut;
-		};
-		A5D887571E050ADD0040897E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A5D8874F1E050ADD0040897E /* MASShortcut.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0D827D8319910AFF0010B8EF;
-			remoteInfo = MASShortcutTests;
-		};
-		A5D887591E050ADD0040897E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A5D8874F1E050ADD0040897E /* MASShortcut.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0D827D371990D5E70010B8EF;
-			remoteInfo = Demo;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		A582C1BA198D52A000124F73 /* CopyFiles */ = {
@@ -122,8 +44,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A5D8875B1E050AF20040897E /* MASShortcut.framework in CopyFiles */,
-				A582C1BB198D52AA00124F73 /* Sparkle.framework in CopyFiles */,
+				A5D305AE203A856E001C482D /* MASShortcut.framework in CopyFiles */,
+				A5D305A9203A847A001C482D /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +70,6 @@
 		A5552A130B10C2C9005EB062 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A5779DD3144DE76E00FB1D37 /* NSTaskAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTaskAdditions.h; sourceTree = "<group>"; };
 		A5779DD4144DE76E00FB1D37 /* NSTaskAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTaskAdditions.m; sourceTree = "<group>"; };
-		A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		A585417A13E5D6830002EF3C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
 		A58BD399140FFCA8007E9DF9 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		A58BD4BA14100163007E9DF9 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -162,8 +83,9 @@
 		A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		A58DAA71197C7D7400DCC2CA /* SLPreferenceKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPreferenceKeys.h; sourceTree = "<group>"; };
 		A5A9C2F91B811822005FD70C /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		A5D305A6203A8477001C482D /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Dependencies/Sparkle/Build/Release/Sparkle.framework; sourceTree = "<group>"; };
+		A5D305AB203A8565001C482D /* MASShortcut.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MASShortcut.framework; path = Dependencies/MASShortcut/Build/Release/MASShortcut.framework; sourceTree = "<group>"; };
 		A5D71EA01982AB21008E1B7A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A5D8874F1E050ADD0040897E /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		A5D982940C8B7F7B002A802F /* Eject.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Eject.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,13 +94,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5D305AD203A856E001C482D /* MASShortcut.framework in Frameworks */,
 				414805DD200AF50600EA8E8F /* Security.framework in Frameworks */,
-				A5E3D2F81E050C55006A6515 /* MASShortcut.framework in Frameworks */,
-				A582C1B9198D529900124F73 /* Sparkle.framework in Frameworks */,
 				A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */,
+				A5D305AC203A8565001C482D /* MASShortcut.framework in Frameworks */,
+				A5D305A8203A847A001C482D /* Sparkle.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */,
 				A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */,
+				A5D305A7203A8477001C482D /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,8 +144,6 @@
 		29B97314FDCFA39411CA2CEA /* Semulov */ = {
 			isa = PBXGroup;
 			children = (
-				A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */,
-				A5D8874F1E050ADD0040897E /* MASShortcut.xcodeproj */,
 				080E96DDFE201D6D7F000001 /* Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -249,6 +171,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A5D305AB203A8565001C482D /* MASShortcut.framework */,
+				A5D305A6203A8477001C482D /* Sparkle.framework */,
 				414805CC200AF50600EA8E8F /* Security.framework */,
 				A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
@@ -256,21 +180,6 @@
 				A58BD399140FFCA8007E9DF9 /* IOKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A582C1A5198D528A00124F73 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A582C1B0198D528B00124F73 /* Sparkle.framework */,
-				A582C1B2198D528B00124F73 /* Sparkle Test App.app */,
-				A582C1B4198D528B00124F73 /* Sparkle Unit Tests.xctest */,
-				A582C1B6198D528B00124F73 /* BinaryDelta */,
-				A582C1B8198D528B00124F73 /* Autoupdate.app */,
-				A5D887401E0509960040897E /* UI Tests.xctest */,
-				A5D887421E0509960040897E /* fileop */,
-				414805DC200AF50600EA8E8F /* generate_appcast */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		A58DAA72197C9D6800DCC2CA /* NSAppLoginItems */ = {
@@ -282,16 +191,6 @@
 			name = NSAppLoginItems;
 			sourceTree = "<group>";
 		};
-		A5D887501E050ADD0040897E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A5D887561E050ADD0040897E /* MASShortcut.framework */,
-				A5D887581E050ADD0040897E /* MASShortcutTests.xctest */,
-				A5D8875A1E050ADD0040897E /* Demo.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -299,6 +198,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Semulov" */;
 			buildPhases = (
+				A5D305AA203A84F2001C482D /* Build Dependencies */,
 				A58BD4C11410017D007E9DF9 /* Run genstrings */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
@@ -341,102 +241,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Semulov */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = A5D887501E050ADD0040897E /* Products */;
-					ProjectRef = A5D8874F1E050ADD0040897E /* MASShortcut.xcodeproj */;
-				},
-				{
-					ProductGroup = A582C1A5198D528A00124F73 /* Products */;
-					ProjectRef = A582C1A4198D528A00124F73 /* Sparkle.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Semulov */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		414805DC200AF50600EA8E8F /* generate_appcast */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = generate_appcast;
-			remoteRef = 414805DB200AF50600EA8E8F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A582C1B0198D528B00124F73 /* Sparkle.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Sparkle.framework;
-			remoteRef = A582C1AF198D528B00124F73 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A582C1B2198D528B00124F73 /* Sparkle Test App.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Sparkle Test App.app";
-			remoteRef = A582C1B1198D528B00124F73 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A582C1B4198D528B00124F73 /* Sparkle Unit Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Sparkle Unit Tests.xctest";
-			remoteRef = A582C1B3198D528B00124F73 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A582C1B6198D528B00124F73 /* BinaryDelta */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = BinaryDelta;
-			remoteRef = A582C1B5198D528B00124F73 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A582C1B8198D528B00124F73 /* Autoupdate.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Autoupdate.app;
-			remoteRef = A582C1B7198D528B00124F73 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A5D887401E0509960040897E /* UI Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "UI Tests.xctest";
-			remoteRef = A5D8873F1E0509960040897E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A5D887421E0509960040897E /* fileop */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = fileop;
-			remoteRef = A5D887411E0509960040897E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A5D887561E050ADD0040897E /* MASShortcut.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MASShortcut.framework;
-			remoteRef = A5D887551E050ADD0040897E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A5D887581E050ADD0040897E /* MASShortcutTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = MASShortcutTests.xctest;
-			remoteRef = A5D887571E050ADD0040897E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A5D8875A1E050ADD0040897E /* Demo.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Demo.app;
-			remoteRef = A5D887591E050ADD0040897E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8D1107290486CEB800E47090 /* Resources */ = {
@@ -470,6 +280,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "genstrings -o English.lproj *.m";
+		};
+		A5D305AA203A84F2001C482D /* Build Dependencies */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Dependencies";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ruby ${PROJECT_DIR}/build_dependencies.rb";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -536,9 +360,15 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Dependencies/Sparkle/Build/Release",
+					"$(PROJECT_DIR)/Dependencies/MASShortcut/Build/Release",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kainjow.Semulov;
 				PRODUCT_NAME = Semulov;
@@ -553,7 +383,13 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application: Kevin Wojniak";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Dependencies/Sparkle/Build/Release",
+					"$(PROJECT_DIR)/Dependencies/MASShortcut/Build/Release",
+				);
 				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kainjow.Semulov;
 				PRODUCT_NAME = Semulov;
