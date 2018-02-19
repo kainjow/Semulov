@@ -76,7 +76,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 #pragma mark -
 #pragma mark App Delegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)notif
+- (void)applicationDidFinishLaunching:(NSNotification * __unused)notif
 {
     [self updateIgnoredVolumes];
 	[self setupStatusItem];
@@ -119,7 +119,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 #pragma mark -
 #pragma mark User Defaults
 
-- (void)userDefaultsDidChange:(NSNotification *)note
+- (void)userDefaultsDidChange:(NSNotification * __unused)note
 {
     NSUserDefaults *uds = [NSUserDefaults standardUserDefaults];
     
@@ -555,7 +555,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 	[self updateStatusItemMenu];
 }
 
-- (void)unmountedVolumesChanged:(NSNotification *)notif
+- (void)unmountedVolumesChanged:(NSNotification * __unused)notif
 {
 	[self updateStatusItemMenu];
 }
@@ -566,12 +566,12 @@ static inline NSString *stringOrEmpty(NSString *str) {
 - (void)doAbout:(id)sender
 {
 	[NSApp activateIgnoringOtherApps:YES];
-	[NSApp orderFrontStandardAboutPanel:nil];
+	[NSApp orderFrontStandardAboutPanel:sender];
 }
 
 - (void)doQuit:(id)sender
 {
-	[NSApp terminate:nil];
+	[NSApp terminate:sender];
 }
 
 - (void)runAlertWithTitle:(NSString *)title message:(NSString *)message
@@ -650,7 +650,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
     return nil;
 }
 
-- (void)doEjectAll:(id)sender
+- (void)doEjectAll:(id __unused)sender
 {
     NSMutableArray *vols = [NSMutableArray array];
     
@@ -735,10 +735,10 @@ static inline NSString *stringOrEmpty(NSString *str) {
     }
 	[_prefs window];
 	[NSApp activateIgnoringOtherApps:YES];
-	[_prefs showWindow:nil];
+	[_prefs showWindow:sender];
 }
 
-- (void)doToggleBlockMounts:(id)sender
+- (void)doToggleBlockMounts:(id __unused)sender
 {
     NSUserDefaults *uds = [NSUserDefaults standardUserDefaults];
     BOOL block = ![uds boolForKey:SLBlockMounts];

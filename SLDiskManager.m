@@ -45,7 +45,7 @@ void diskDisappearedCallback(DADiskRef disk, void *context)
     [(__bridge SLDiskManager *)context diskChanged:disk mode:kSLDiskChangeModeDisappeared];
 }
 
-void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys, void *context)
+void diskDescriptionChangedCallback(DADiskRef disk, CFArrayRef keys __unused, void *context)
 {
     [(__bridge SLDiskManager *)context diskChanged:disk mode:kSLDiskChangeModeDescriptionChanged];
 }
@@ -249,7 +249,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
                 SLDisk *disk = [self diskFromDescription:description diskID:diskID];
                 // Process pending disks
                 NSMutableArray *pendingDiskIDsToRemove = [NSMutableArray array];
-                [_pendingDisks enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                [_pendingDisks enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop __unused) {
                     NSString *pendingDiskID = key;
                     if ([[[self class] diskIDStripSlice:pendingDiskID] isEqualToString:diskID]) {
                         SLDisk *childDisk = [self diskFromDescription:obj diskID:pendingDiskID];
@@ -417,7 +417,7 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
 {
     SLDiskEjector *ejector = nil;
     if (disk.children.count > 0) {
-        ejector = [[SLDiskEjector alloc] initWithDisk:disk manager:self handler:^(BOOL succeeded, SLDisk *failureDisk) {
+        ejector = [[SLDiskEjector alloc] initWithDisk:disk manager:self handler:^(BOOL succeeded, SLDisk *failureDisk __unused) {
             handler(succeeded);
             [_ejectors removeObject:ejector];
         }];
@@ -431,7 +431,7 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
         }
         if (numOtherMounted == 0) {
             //  The disk has no other mounted volumes, so unmount then eject it.
-            ejector = [[SLDiskEjector alloc] initWithDisk:disk.parent ? disk.parent : disk manager:self handler:^(BOOL succeeded, SLDisk *failureDisk) {
+            ejector = [[SLDiskEjector alloc] initWithDisk:disk.parent ? disk.parent : disk manager:self handler:^(BOOL succeeded, SLDisk *failureDisk __unused) {
                 handler(succeeded);
                 [_ejectors removeObject:ejector];
             }];

@@ -223,11 +223,11 @@
 - (id)copyWithZone:(NSZone *)zone
 {
 	SLVolume *copy = [[SLVolume alloc] init];
-	copy->_path = [_path copy];
-	copy->_name = [_name copy];
-	copy->_image = [_image copy];
-	copy->_hostURL = [_hostURL copy];
-	copy->_imagePath = [_imagePath copy];
+	copy->_path = [_path copyWithZone:zone];
+	copy->_name = [_name copyWithZone:zone];
+	copy->_image = [_image copyWithZone:zone];
+	copy->_hostURL = [_hostURL copyWithZone:zone];
+	copy->_imagePath = [_imagePath copyWithZone:zone];
 	copy->_local = _local;
 	copy->_root = _root;
 	copy->_internal = _internal;
