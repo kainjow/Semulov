@@ -406,7 +406,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
             [menu addItem:[NSMenuItem separatorItem]];
         }
     } else {
-        SLVolumeType _lastType = -1;
+        SLVolumeType _lastType = (SLVolumeType)-1;
         NSMenuItem *titleMenu = nil;
         NSString *titleName = nil;
         

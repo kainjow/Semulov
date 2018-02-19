@@ -37,9 +37,9 @@
 	NSMutableArray *volumes = [NSMutableArray array];
 	int count = getfsstat(NULL, 0, MNT_NOWAIT);
 	if (count > 0) {
-		struct statfs *buf = calloc(count, sizeof(struct statfs));
+		struct statfs *buf = calloc((size_t)count, sizeof(struct statfs));
 		if (buf) {
-			if (getfsstat(buf, count * sizeof(struct statfs), MNT_NOWAIT) > 0) {
+			if (getfsstat(buf, count * (int)sizeof(struct statfs), MNT_NOWAIT) > 0) {
 				for (int i = 0; i < count; i++) {
 					SLVolume *vol = [[SLVolume alloc] initWithStatfs:&buf[i] diskImageManager:diskImageManager];
                     if (vol == nil) {

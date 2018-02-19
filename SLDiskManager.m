@@ -202,18 +202,18 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
     
     if (mode == kSLDiskChangeModeDisappeared) {
         // Disk disappeared, remove entire object
-        for (NSInteger i = _disks.count - 1; i >= 0; --i) {
-            SLDisk *disk = _disks[i];
+        for (NSInteger i = (NSInteger)_disks.count - 1; i >= 0; --i) {
+            SLDisk *disk = _disks[(NSUInteger)i];
             if ([disk.diskID isEqualToString:diskID]) {
-                [_disks removeObjectAtIndex:i];
+                [_disks removeObjectAtIndex:(NSUInteger)i];
                 break;
             }
             BOOL removedChild = NO;
             NSMutableArray *children = disk.children;
-            for (NSInteger j = children.count - 1; j >= 0; --j) {
-                SLDisk *childDisk = children[j];
+            for (NSInteger j = (NSInteger)children.count - 1; j >= 0; --j) {
+                SLDisk *childDisk = children[(NSUInteger)j];
                 if ([childDisk.diskID isEqualToString:diskID]) {
-                    [children removeObjectAtIndex:j];
+                    [children removeObjectAtIndex:(NSUInteger)j];
                     removedChild = YES;
                     break;
                 }
