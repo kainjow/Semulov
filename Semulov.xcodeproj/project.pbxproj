@@ -11,7 +11,6 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		A517AE45190C990900DB66DC /* NSApplication+LoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */; };
 		A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A518D7730BB19CC5009EC77B /* DiskArbitration.framework */; };
 		A5455F8C0AFE64C6001F61C8 /* SLController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5455F8B0AFE64C6001F61C8 /* SLController.m */; };
 		A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = A5455FE60AFE66A1001F61C8 /* SLVolume.m */; };
@@ -27,12 +26,11 @@
 		A58DAA58197C657000DCC2CA /* SLPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = A58DAA57197C657000DCC2CA /* SLPreferencesController.m */; };
 		A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */; };
 		A5A9C2FA1B811822005FD70C /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = A5A9C2F91B811822005FD70C /* dsa_pub.pem */; };
-		A5D305A7203A8477001C482D /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; };
 		A5D305A8203A847A001C482D /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; };
 		A5D305A9203A847A001C482D /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A5D305AC203A8565001C482D /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; };
 		A5D305AD203A856E001C482D /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; };
 		A5D305AE203A856E001C482D /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A5D305B1203A9141001C482D /* NSApplication+LoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D305B0203A9141001C482D /* NSApplication+LoginItems.m */; };
 		A5D71EA11982AB21008E1B7A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5D71EA01982AB21008E1B7A /* Images.xcassets */; };
 		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
 /* End PBXBuildFile section */
@@ -58,8 +56,6 @@
 		414805CC200AF50600EA8E8F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Semulov.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Semulov.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+LoginItems.h"; path = "NSAppLoginItems/NSApplication+LoginItems.h"; sourceTree = "<group>"; };
-		A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+LoginItems.m"; path = "NSAppLoginItems/NSApplication+LoginItems.m"; sourceTree = "<group>"; };
 		A518D7730BB19CC5009EC77B /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = /System/Library/Frameworks/DiskArbitration.framework; sourceTree = "<absolute>"; };
 		A5455F8A0AFE64C6001F61C8 /* SLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLController.h; sourceTree = "<group>"; };
 		A5455F8B0AFE64C6001F61C8 /* SLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLController.m; sourceTree = "<group>"; };
@@ -85,6 +81,8 @@
 		A5A9C2F91B811822005FD70C /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		A5D305A6203A8477001C482D /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Dependencies/Sparkle/Build/Release/Sparkle.framework; sourceTree = "<group>"; };
 		A5D305AB203A8565001C482D /* MASShortcut.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MASShortcut.framework; path = Dependencies/MASShortcut/Build/Release/MASShortcut.framework; sourceTree = "<group>"; };
+		A5D305AF203A913B001C482D /* NSApplication+LoginItems.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSApplication+LoginItems.h"; path = "Dependencies/NSAppLoginItems/Source/NSApplication+LoginItems.h"; sourceTree = "<group>"; };
+		A5D305B0203A9141001C482D /* NSApplication+LoginItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+LoginItems.m"; path = "Dependencies/NSAppLoginItems/Source/NSApplication+LoginItems.m"; sourceTree = "<group>"; };
 		A5D71EA01982AB21008E1B7A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A5D982940C8B7F7B002A802F /* Eject.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Eject.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,12 +95,10 @@
 				A5D305AD203A856E001C482D /* MASShortcut.framework in Frameworks */,
 				414805DD200AF50600EA8E8F /* Security.framework in Frameworks */,
 				A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */,
-				A5D305AC203A8565001C482D /* MASShortcut.framework in Frameworks */,
 				A5D305A8203A847A001C482D /* Sparkle.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				A518D7740BB19CC5009EC77B /* DiskArbitration.framework in Frameworks */,
 				A58BD39A140FFCA8007E9DF9 /* IOKit.framework in Frameworks */,
-				A5D305A7203A8477001C482D /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,8 +181,8 @@
 		A58DAA72197C9D6800DCC2CA /* NSAppLoginItems */ = {
 			isa = PBXGroup;
 			children = (
-				A517AE43190C990900DB66DC /* NSApplication+LoginItems.h */,
-				A517AE44190C990900DB66DC /* NSApplication+LoginItems.m */,
+				A5D305AF203A913B001C482D /* NSApplication+LoginItems.h */,
+				A5D305B0203A9141001C482D /* NSApplication+LoginItems.m */,
 			);
 			name = NSAppLoginItems;
 			sourceTree = "<group>";
@@ -221,7 +217,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Kevin Wojniak";
 				TargetAttributes = {
 					8D1107260486CEB800E47090 = {
@@ -309,7 +305,7 @@
 				A54561870AFE720D001F61C8 /* SLNotificationController.m in Sources */,
 				A58BD52014100451007E9DF9 /* SLDiskManager.m in Sources */,
 				A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */,
-				A517AE45190C990900DB66DC /* NSApplication+LoginItems.m in Sources */,
+				A5D305B1203A9141001C482D /* NSApplication+LoginItems.m in Sources */,
 				A58DAA47197C4C7100DCC2CA /* SLDiskImageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
