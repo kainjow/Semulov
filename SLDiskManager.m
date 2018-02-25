@@ -286,6 +286,21 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
 	[[NSNotificationCenter defaultCenter] postNotificationName:SLDiskManagerUnmountedVolumesDidChangeNotification object:nil];
 }
 
+static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *context __unused)
+{
+    if (dissenter) {
+        const char *bsdName = DADiskGetBSDName(disk);
+        NSString *diskStr = bsdName ? [NSString stringWithUTF8String:bsdName] : [NSString stringWithFormat:@"%@", disk];
+        DAReturn status = DADissenterGetStatus(dissenter);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSAlert *alert = [[NSAlert alloc] init];
+            alert.messageText = [NSString stringWithFormat:NSLocalizedString(@"Failed to mount %@", ""), diskStr];
+            alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Status: %ld", ""), (long)status & 0xFFL];
+            (void)[alert runModal];
+        });
+    }
+}
+
 - (void)mount:(SLDisk *)disk
 {
     // DiskArbitration does not seem to support encrypted disk. In order to be able to mount an encrypted disk we have to use the diskutil command
@@ -337,7 +352,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
     } else {
         DADiskRef diskref = DADiskCreateFromBSDName(kCFAllocatorDefault, _session, [disk.diskID UTF8String]);
         if (diskref) {
-            DADiskMount(diskref, NULL, kDADiskMountOptionDefault, NULL, NULL);
+            DADiskMount(diskref, NULL, kDADiskMountOptionDefault, diskMountCallback, NULL);
             CFRelease(diskref);
         }
     }
