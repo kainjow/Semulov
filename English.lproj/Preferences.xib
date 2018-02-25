@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13196" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13196"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -215,17 +215,17 @@ For example ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01" (
                                             </textFieldCell>
                                         </textField>
                                         <scrollView misplaced="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="Poz-t3-edg">
-                                            <rect key="frame" x="17" y="291" width="259" height="38"/>
+                                            <rect key="frame" x="17" y="17" width="359" height="312"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <clipView key="contentView" id="ewi-Ah-zbs">
-                                                <rect key="frame" x="1" y="1" width="257" height="36"/>
+                                                <rect key="frame" x="1" y="1" width="357" height="310"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="panel" allowsUndo="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" id="JFd-EZ-u09">
-                                                        <rect key="frame" x="0.0" y="0.0" width="257" height="36"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="357" height="310"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <size key="minSize" width="257" height="36"/>
+                                                        <size key="minSize" width="357" height="310"/>
                                                         <size key="maxSize" width="463" height="10000000"/>
                                                         <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <connections>
@@ -244,7 +244,7 @@ For example ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01" (
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="rgI-ZA-wwt">
-                                                <rect key="frame" x="242" y="1" width="16" height="36"/>
+                                                <rect key="frame" x="342" y="1" width="16" height="310"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                         </scrollView>
