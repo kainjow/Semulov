@@ -154,7 +154,7 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
     }
     disk.volumeKind = [description objectForKey:(NSString *)kDADiskDescriptionVolumeKindKey];
     NSString* volumeType = [description objectForKey:(NSString *)kDADiskDescriptionVolumeTypeKey];
-    disk.encrypted = [volumeType rangeOfString:@"encrypt"].location == NSNotFound;
+    disk.encrypted = [volumeType rangeOfString:@"encrypt" options:NSCaseInsensitiveSearch].location != NSNotFound;
     CFUUIDRef uuidRef = (__bridge CFUUIDRef)[description objectForKey:(NSString *)kDADiskDescriptionVolumeUUIDKey];
     if (uuidRef) {
         disk.volumeUUID = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuidRef);
