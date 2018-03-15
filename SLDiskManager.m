@@ -13,9 +13,6 @@
 #import <sys/mount.h>
 #import "SLDiskImageManager.h"
 
-// kDADiskDescriptionVolumeTypeKey is 10.11+ but we target 10.7+
-extern const CFStringRef kDADiskDescriptionVolumeTypeKey __attribute__((weak_import));
-
 NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification = @"SLDiskManagerUnmountedVolumesDidChangeNotification";
 NSString * const SLDiskManagerDidBlockMountNotification = @"SLDiskManagerDidBlockMountNotification";
 
@@ -156,8 +153,8 @@ CF_RETURNS_RETAINED DADissenterRef diskMountApproval(DADiskRef disk, void *conte
         }
     }
     disk.volumeKind = [description objectForKey:(NSString *)kDADiskDescriptionVolumeKindKey];
-    NSString* volumeType = kDADiskDescriptionVolumeTypeKey != NULL ? [description objectForKey:(NSString *)kDADiskDescriptionVolumeTypeKey] : nil;
-    disk.encrypted = volumeType != nil && [volumeType rangeOfString:@"encrypt" options:NSCaseInsensitiveSearch].location != NSNotFound;
+    NSString* volumeType = [description objectForKey:(NSString *)kDADiskDescriptionVolumeTypeKey];
+    disk.encrypted = [volumeType rangeOfString:@"encrypt" options:NSCaseInsensitiveSearch].location != NSNotFound;
     CFUUIDRef uuidRef = (__bridge CFUUIDRef)[description objectForKey:(NSString *)kDADiskDescriptionVolumeUUIDKey];
     if (uuidRef) {
         disk.volumeUUID = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuidRef);
