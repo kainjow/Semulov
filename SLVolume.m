@@ -222,7 +222,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-	SLVolume *copy = [[SLVolume alloc] init];
+	SLVolume *copy = [[SLVolume allocWithZone:zone] init];
 	copy->_path = [_path copyWithZone:zone];
 	copy->_name = [_name copyWithZone:zone];
 	copy->_image = [_image copyWithZone:zone];
