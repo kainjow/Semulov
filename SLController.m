@@ -24,7 +24,6 @@ static inline NSString *stringOrEmpty(NSString *str) {
 @interface SLController (Private)
 - (void)setupStatusItem;
 - (void)updateStatusItemMenu;
-- (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes;
 - (void)updateStatusItemIcon;
 @end
 
@@ -150,6 +149,9 @@ static inline NSString *stringOrEmpty(NSString *str) {
 
     _baseImage = [[NSImage imageNamed:@"Eject"] copy];
     [_statusItem setAlternateImage:[self colorImage:_baseImage withColor:[NSColor whiteColor]]];
+    NSMenu *menu = [[NSMenu alloc] init];
+    menu.delegate = self;
+    [_statusItem setMenu:menu];
 
     [self updateStatusItemIcon];
 	[self updateStatusItemMenu];
@@ -208,14 +210,14 @@ static inline NSString *stringOrEmpty(NSString *str) {
     return !disk.isStartupDisk && ![self volumeIsOnIgnoreList:disk.name];
 }
 
-- (void)updateStatusItemMenu
+- (void)updateVolumes
 {
 	dispatch_async(queue, ^{
         @autoreleasepool {
 		@try {
 			NSArray *volumes = [SLVolume allVolumesWithDiskManager:self->deviceManager.diskImageManager];
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[self updateStatusItemMenuWithVolumes:volumes];
+                self->_volumes = volumes;
                 [self updateStatusItemIcon];
 			});
 		} @catch (NSException *ex) {
@@ -348,11 +350,10 @@ static inline NSString *stringOrEmpty(NSString *str) {
     return @[menuItem];
 }
 
-- (void)updateStatusItemMenuWithVolumes:(NSArray *)volumes
+- (void)updateStatusItemMenu
 {
-	[_statusItem setMenu:[[NSMenu alloc] init]];
-	
-	NSMenu *menu = [[NSMenu alloc] init];
+    NSMenu *menu = _statusItem.menu;
+    [menu removeAllItems];
 	
 	NSDictionary *defaultValues = [[NSUserDefaultsController sharedUserDefaultsController] values];
 	BOOL showVolumesNumber = [[defaultValues valueForKey:SLShowVolumesNumber] boolValue];
@@ -361,11 +362,12 @@ static inline NSString *stringOrEmpty(NSString *str) {
 	BOOL showUnmountedVolumes = [[defaultValues valueForKey:SLShowUnmountedVolumes] boolValue];
     BOOL reverseAction = [[defaultValues valueForKey:SLReverseChooseAction] boolValue];
     BOOL disksLayout = [[defaultValues valueForKey:SLDisksLayout] boolValue];
-	
-    volumes = [self filterVolumes:volumes];
-    if (_volumes != volumes) {
-        _volumes = volumes;
+    
+    if ([NSEvent modifierFlags] & NSEventModifierFlagShift) {
+        disksLayout = !disksLayout;
     }
+	
+    NSArray *volumes = [self filterVolumes:_volumes];
     NSMutableArray *volumesToDisplay = [NSMutableArray array];
     for (SLVolume *vol in volumes) {
         if (vol.isRoot && !showStartupDisk) {
@@ -535,8 +537,11 @@ static inline NSString *stringOrEmpty(NSString *str) {
 	[slSubmenu addItemWithTitle:NSLocalizedString(@"Quit", nil) action:@selector(doQuit:) keyEquivalent:@""];
 	[slMenuItem setSubmenu:slSubmenu];
 	[menu addItem:slMenuItem];
+}
 
-	[_statusItem setMenu:menu];
+- (void)menuNeedsUpdate:(NSMenu * __unused)menu
+{
+    [self updateStatusItemMenu];
 }
 
 #pragma mark -
@@ -554,7 +559,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 
 - (void)handleMount:(NSNotification *)not
 {
-	[self updateStatusItemMenu];
+	[self updateVolumes];
 	
     NSString *devicePath = [[not userInfo] objectForKey:@"NSDevicePath"];
     // post on the serial queue so that the volumes list is reloaded by the time we post the note.
@@ -575,12 +580,12 @@ static inline NSString *stringOrEmpty(NSString *str) {
         [SLNotificationController postVolumeUnmounted:vol];
     }
 
-	[self updateStatusItemMenu];
+	[self updateVolumes];
 }
 
 - (void)unmountedVolumesChanged:(NSNotification * __unused)notif
 {
-	[self updateStatusItemMenu];
+	[self updateVolumes];
 }
 
 #pragma mark -
@@ -767,7 +772,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
     BOOL block = ![uds boolForKey:SLBlockMounts];
     deviceManager.blockMounts = block;
     [uds setBool:block forKey:SLBlockMounts];
-    [self updateStatusItemMenu];
+    [self updateVolumes];
 }
 
 - (void)doCheckForUpdates:(id)sender

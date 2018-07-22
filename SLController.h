@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface SLController : NSObject <NSApplicationDelegate>
+@interface SLController : NSObject <NSApplicationDelegate, NSMenuDelegate>
 
 @end
