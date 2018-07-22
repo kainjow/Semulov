@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+
 require 'fileutils'
 require 'ostruct'
 require 'pathname'
