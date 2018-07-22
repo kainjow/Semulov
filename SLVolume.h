@@ -43,4 +43,6 @@ typedef enum
 
 - (BOOL)isiPod;
 
+- (NSString *)diskID;
+
 @end

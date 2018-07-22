@@ -259,6 +259,25 @@ static inline NSString *stringOrEmpty(NSString *str) {
     return img;
 }
 
+- (NSString *)toolTipForObject:(id)obj
+{
+    if ([obj isKindOfClass:[SLVolume class]]) {
+        SLVolume *vol = (SLVolume *)obj;
+        return vol.diskID;
+    } else if ([obj isKindOfClass:[SLDisk class]]) {
+        SLDisk *disk = (SLDisk *)obj;
+        NSString *diskID = disk.diskID;
+        NSURL *diskVolumePath = disk.volumePath;
+        if (diskID && diskVolumePath) {
+            return [NSString stringWithFormat:@"%@, %@", diskID, diskVolumePath.lastPathComponent];
+        }
+        return diskID;
+    } else {
+        NSBeep();
+    }
+    return nil;
+}
+
 - (NSArray *)setupMenuItemsForMoutableObject:(id)obj reverseAction:(BOOL)reverseAction
 {
     NSMenuItem *menuItem = nil;
@@ -301,6 +320,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
     [menuItem setImage:mainItemImage];
     [menuItem setIndentationLevel:1];
     [menuItem setTarget:self];
+    menuItem.toolTip = [self toolTipForObject:obj];
     
     if (disk && !disk.mounted) {
         NSAttributedString *astr = [[NSAttributedString alloc] initWithString:mainTitle attributes:@{
@@ -318,6 +338,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
         [altMenuItem setImage:mainItemImage];
         [altMenuItem setIndentationLevel:1];
         [altMenuItem setTarget:self];
+        menuItem.toolTip = [self toolTipForObject:obj];
     }
     
     if (altMenuItem) {
@@ -369,6 +390,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
                     diskIcon = disk.icon;
                 }
                 [menuItem setImage:[self shrinkImageForMenu:diskIcon]];
+                menuItem.toolTip = [self toolTipForObject:disk];
                 [menu addItem:menuItem];
                 NSArray *children = [disk.children sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"diskID" ascending:YES]]];
                 if (!children.count && disk.mountable) {
@@ -483,6 +505,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
                     [menuItem setIndentationLevel:1];
                     [menuItem setRepresentedObject:uvol.diskID];
                     [menuItem setImage:[self shrinkImageForMenu:uvol.icon]];
+                    menuItem.toolTip = [self toolTipForObject:uvol];
                     [menu addItem:menuItem];
                 }
                 [menu addItem:[NSMenuItem separatorItem]];

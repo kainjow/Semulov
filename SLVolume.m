@@ -30,6 +30,7 @@
 	NSString *_imagePath;
 	
 	SLVolumeType _type;
+    NSString *_diskID;
 }
 
 + (NSArray *)allVolumesWithDiskManager:(SLDiskImageManager *)diskImageManager
@@ -91,6 +92,9 @@
 		
 		_path = [path copy];		
 		_name = [[[[NSFileManager alloc] init] displayNameAtPath:path] copy];
+        if (strlen(statfs->f_mntfromname) > 0) {
+            _diskID = [NSString stringWithUTF8String:statfs->f_mntfromname].lastPathComponent;
+        }
 
 		if ([self isLocal] == NO)
 		{
@@ -232,6 +236,7 @@
 	copy->_root = _root;
 	copy->_internal = _internal;
 	copy->_type = _type;
+    copy->_diskID = [_diskID copyWithZone:zone];
 	return copy;
 }
 
@@ -299,6 +304,11 @@
 	else if ([self type] > [b type])
 		return NSOrderedDescending;
 	return NSOrderedSame;
+}
+
+- (NSString *)diskID
+{
+    return _diskID;
 }
 
 @end
