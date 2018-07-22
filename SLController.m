@@ -235,8 +235,20 @@ static inline NSString *stringOrEmpty(NSString *str) {
         NSLog(@"Ignoring %@", volume);
         return YES;
     }
+    BOOL useRegex = [[NSUserDefaults standardUserDefaults] boolForKey:@"SLRegExIgnore"];
     for (NSString *ignoredVol in ignoredVolumes) {
-        if ([ignoredVol compare:volume options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+        if (useRegex) {
+            NSError *err = nil;
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:ignoredVol options:0 error:&err];
+            if (err) {
+                NSLog(@"Bad regex \"%@\": %@", ignoredVol, err);
+                continue;
+            }
+            NSRange range = [regex rangeOfFirstMatchInString:volume options:0 range:NSMakeRange(0, volume.length)];
+            if (range.location != NSNotFound) {
+                return YES;
+            }
+        } else if ([ignoredVol compare:volume options:NSCaseInsensitiveSearch] == NSOrderedSame) {
             return YES;
         }
     }

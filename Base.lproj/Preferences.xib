@@ -206,7 +206,7 @@ For example ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01" (
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="p1I-Zw-AOd">
-                                            <rect key="frame" x="15" y="343" width="351" height="34"/>
+                                            <rect key="frame" x="15" y="337" width="363" height="40"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Enter names (case insensitive) of volumes to be ignored. One name per line:" id="Aq0-JO-9Xy">
                                                 <font key="font" metaFont="system"/>
@@ -215,18 +215,18 @@ For example ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01" (
                                             </textFieldCell>
                                         </textField>
                                         <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="Poz-t3-edg">
-                                            <rect key="frame" x="17" y="17" width="359" height="312"/>
+                                            <rect key="frame" x="17" y="39" width="359" height="290"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <clipView key="contentView" drawsBackground="NO" id="ewi-Ah-zbs">
-                                                <rect key="frame" x="1" y="1" width="357" height="310"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <rect key="frame" x="1" y="1" width="357" height="288"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="panel" allowsUndo="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" id="JFd-EZ-u09">
-                                                        <rect key="frame" x="0.0" y="0.0" width="357" height="310"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="357" height="288"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="minSize" width="357" height="310"/>
+                                                        <size key="minSize" width="357" height="288"/>
                                                         <size key="maxSize" width="463" height="10000000"/>
                                                         <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <connections>
@@ -244,10 +244,21 @@ For example ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01" (
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="rgI-ZA-wwt">
-                                                <rect key="frame" x="342" y="1" width="16" height="310"/>
+                                                <rect key="frame" x="342" y="1" width="16" height="288"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                         </scrollView>
+                                        <button verticalHuggingPriority="750" id="VXK-hz-0Q5">
+                                            <rect key="frame" x="15" y="15" width="168" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Use regular expressions" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tAD-kJ-B6U">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="8" name="value" keyPath="values.SLRegExIgnore" id="gJg-ow-z58"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </view>
                             </tabViewItem>
