@@ -111,9 +111,9 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         @autoreleasepool {
             NSDictionary *info = [[self class] infoPlist];
-            [_infoLock writeLock];
-            _info = info;
-            [_infoLock unlock];
+            [self->_infoLock writeLock];
+            self->_info = info;
+            [self->_infoLock unlock];
             if (finishedHandler) {
                 dispatch_async(dispatch_get_main_queue(), finishedHandler);
             }

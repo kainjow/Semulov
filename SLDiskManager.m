@@ -434,7 +434,7 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
     if (disk.children.count > 0) {
         ejector = [[SLDiskEjector alloc] initWithDisk:disk manager:self handler:^(BOOL succeeded, SLDisk *failureDisk __unused) {
             handler(succeeded);
-            [_ejectors removeObject:ejector];
+            [self->_ejectors removeObject:ejector];
         }];
         [_ejectors addObject:ejector];
     } else if (disk.mounted) {
@@ -448,7 +448,7 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
             //  The disk has no other mounted volumes, so unmount then eject it.
             ejector = [[SLDiskEjector alloc] initWithDisk:disk.parent ? disk.parent : disk manager:self handler:^(BOOL succeeded, SLDisk *failureDisk __unused) {
                 handler(succeeded);
-                [_ejectors removeObject:ejector];
+                [self->_ejectors removeObject:ejector];
             }];
             [_ejectors addObject:ejector];
         } else {
@@ -523,7 +523,7 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
 {
     if (_children.count == 0) {
         [_manager ejectDisk:_disk handler:^(BOOL ejected) {
-            _handler(ejected, ejected ? nil : _disk);
+            self->_handler(ejected, ejected ? nil : self->_disk);
         }];
         return;
     }
@@ -534,7 +534,7 @@ static void diskEjectCallback(DADiskRef disk, DADissenterRef dissenter, void *co
         if (unmounted) {
             [self unmountNext];
         } else {
-            _handler(NO, disk);
+            self->_handler(NO, disk);
         }
     }];
 }

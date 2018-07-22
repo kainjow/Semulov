@@ -213,7 +213,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 	dispatch_async(queue, ^{
         @autoreleasepool {
 		@try {
-			NSArray *volumes = [SLVolume allVolumesWithDiskManager:deviceManager.diskImageManager];
+			NSArray *volumes = [SLVolume allVolumesWithDiskManager:self->deviceManager.diskImageManager];
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self updateStatusItemMenuWithVolumes:volumes];
                 [self updateStatusItemIcon];
