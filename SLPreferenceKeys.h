@@ -21,3 +21,4 @@
 #define SLEjectAllShortcut      @"SLEjectAllShortcut"
 #define SLShowBlockMounts       @"SLShowBlockMounts"
 #define SLBlockMounts           @"SLBlockMounts"
+#define SLShowNotifications     @"SLShowNotifications"

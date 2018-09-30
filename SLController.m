@@ -46,6 +46,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 		[NSNumber numberWithBool:NO], SLShowStartupDisk,
 		[NSNumber numberWithBool:NO], SLShowEjectAll,
 		[NSNumber numberWithBool:NO], SLLaunchAtStartup,
+		[NSNumber numberWithBool:YES], SLShowNotifications,
 		[NSNumber numberWithBool:NO], SLShowUnmountedVolumes,
         [NSNumber numberWithBool:NO], SLReverseChooseAction,
         @(NO), SLDisksLayout,
