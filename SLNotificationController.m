@@ -7,13 +7,14 @@
 //
 
 #import "SLNotificationController.h"
+#import "SLPreferenceKeys.h"
 #import "SLVolume.h"
 
 @implementation SLNotificationController
 
 + (void)postNotificationCenterWithTitle:(NSString *)title subtitle:(NSString *)subtitle
 {
-    if (NSClassFromString(@"NSUserNotification")) {
+    if (NSClassFromString(@"NSUserNotification") && [self notificationsEnabled]) {
         NSUserNotification *note = [[NSUserNotification alloc] init];
         note.title = title;
         note.subtitle = subtitle;
@@ -40,4 +41,8 @@
     [self postNotificationCenterWithTitle:NSLocalizedString(@"Mount Blocked", "") subtitle:volumeName];
 }
 
++ (BOOL)notificationsEnabled
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:SLShowNotifications];
+}
 @end
