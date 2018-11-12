@@ -579,7 +579,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
     dispatch_async(queue, ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             SLVolume *vol = [self volumeWithMountPath:devicePath];
-            if (vol) {
+            if (vol && ![self volumeIsOnIgnoreList:vol.name]) {
                 [SLNotificationController postVolumeMounted:vol];
             }
         });
@@ -588,8 +588,9 @@ static inline NSString *stringOrEmpty(NSString *str) {
 
 - (void)handleUnmount:(NSNotification *)not
 {
-    SLVolume *vol = [self volumeWithMountPath:[[not userInfo] objectForKey:@"NSDevicePath"]];
-    if (vol) {
+    NSString *devicePath = [[not userInfo] objectForKey:@"NSDevicePath"];
+    SLVolume *vol = [self volumeWithMountPath:devicePath];
+    if (vol && ![self volumeIsOnIgnoreList:vol.name]) {
         [SLNotificationController postVolumeUnmounted:vol];
     }
 
