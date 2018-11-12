@@ -219,6 +219,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 			dispatch_async(dispatch_get_main_queue(), ^{
                 self->_volumes = volumes;
                 [self updateStatusItemIcon];
+                [self updateStatusItemMenu];
 			});
 		} @catch (NSException *ex) {
 			NSLog(@"Caught exception: %@", ex);
