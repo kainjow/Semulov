@@ -269,7 +269,8 @@ static inline NSString *stringOrEmpty(NSString *str) {
         if ([vol.name compare:volumeName options:NSCaseInsensitiveSearch] != NSOrderedSame) {
             continue;
         }
-        return !vol.isLocal && [networkSchemes containsObject:vol.hostURL.scheme.lowercaseString];
+        NSString *scheme = vol.hostURL.scheme.lowercaseString;
+        return !vol.isLocal && scheme && [networkSchemes containsObject:scheme];
     }
     return NO;
 }
