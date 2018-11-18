@@ -260,15 +260,15 @@ static inline NSString *stringOrEmpty(NSString *str) {
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"SLIgnoreNetworkVolumes"]) {
         return NO;
     }
+    NSArray *networkSchemes = @[
+        @"ftp",
+        @"smb",
+        @"afp",
+    ];
     for (SLVolume *vol in _volumes) {
         if ([vol.name compare:volumeName options:NSCaseInsensitiveSearch] != NSOrderedSame) {
             continue;
         }
-        NSArray *networkSchemes = @[
-            @"ftp",
-            @"smb",
-            @"afp",
-        ];
         return !vol.isLocal && [networkSchemes containsObject:vol.hostURL.scheme.lowercaseString];
     }
     return NO;
