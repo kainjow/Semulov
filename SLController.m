@@ -204,10 +204,10 @@ static inline NSString *stringOrEmpty(NSString *str) {
 {
     if ([obj isKindOfClass:[SLVolume class]]) {
         SLVolume *volume = (SLVolume *)obj;
-        return ![volume isRoot] && ![self volumeIsOnIgnoreList:volume.name];
+        return ![volume isRoot] && ![self shouldIgnoreVolume:volume.name];
     }
     SLDisk *disk = (SLDisk *)obj;
-    return !disk.isStartupDisk && ![self volumeIsOnIgnoreList:disk.name];
+    return !disk.isStartupDisk && ![self shouldIgnoreVolume:disk.name];
 }
 
 - (void)updateVolumes
@@ -256,11 +256,36 @@ static inline NSString *stringOrEmpty(NSString *str) {
     return NO;
 }
 
+- (BOOL)shouldIgnoreNetworkVolume:(NSString *)volumeName {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"SLIgnoreNetworkVolumes"]) {
+        return NO;
+    }
+    for (SLVolume *vol in _volumes) {
+        if ([vol.name compare:volumeName options:NSCaseInsensitiveSearch] != NSOrderedSame) {
+            continue;
+        }
+        NSArray *networkSchemes = @[
+            @"ftp",
+            @"smb",
+            @"afp",
+        ];
+        return !vol.isLocal && [networkSchemes containsObject:vol.hostURL.scheme.lowercaseString];
+    }
+    return NO;
+}
+
+- (BOOL)shouldIgnoreVolume:(NSString *)volumeName
+{
+    return
+        [self volumeIsOnIgnoreList:volumeName] ||
+        [self shouldIgnoreNetworkVolume:volumeName];
+}
+
 - (NSArray *)filterVolumes:(NSArray *)volumes
 {
     NSMutableArray *newVolumes = [NSMutableArray array];
     for (SLVolume *vol in volumes) {
-        if ([self volumeIsOnIgnoreList:vol.name] == NO) {
+        if ([self shouldIgnoreVolume:vol.name] == NO) {
             [newVolumes addObject:vol];
         }
     }
@@ -505,7 +530,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
         if (showUnmountedVolumes) {
             NSMutableArray *unmountedVols = [NSMutableArray array];
             for (SLDisk *uvol in deviceManager.unmountedDisks) {
-                if ([self volumeIsOnIgnoreList:uvol.name] == NO) {
+                if ([self shouldIgnoreVolume:uvol.name] == NO) {
                     [unmountedVols addObject:uvol];
                 }
             }
@@ -579,7 +604,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
     dispatch_async(queue, ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             SLVolume *vol = [self volumeWithMountPath:devicePath];
-            if (vol && ![self volumeIsOnIgnoreList:vol.name]) {
+            if (vol && ![self shouldIgnoreVolume:vol.name]) {
                 [SLNotificationController postVolumeMounted:vol];
             }
         });
@@ -590,7 +615,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
 {
     NSString *devicePath = [[not userInfo] objectForKey:@"NSDevicePath"];
     SLVolume *vol = [self volumeWithMountPath:devicePath];
-    if (vol && ![self volumeIsOnIgnoreList:vol.name]) {
+    if (vol && ![self shouldIgnoreVolume:vol.name]) {
         [SLNotificationController postVolumeUnmounted:vol];
     }
 

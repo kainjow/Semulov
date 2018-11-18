@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -215,18 +215,18 @@ For example ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01" (
                                             </textFieldCell>
                                         </textField>
                                         <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="Poz-t3-edg">
-                                            <rect key="frame" x="17" y="39" width="359" height="290"/>
+                                            <rect key="frame" x="17" y="59" width="359" height="270"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <clipView key="contentView" drawsBackground="NO" id="ewi-Ah-zbs">
-                                                <rect key="frame" x="1" y="1" width="357" height="288"/>
+                                                <rect key="frame" x="1" y="1" width="357" height="268"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="panel" allowsUndo="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" id="JFd-EZ-u09">
-                                                        <rect key="frame" x="0.0" y="0.0" width="357" height="288"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="357" height="268"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="minSize" width="357" height="288"/>
+                                                        <size key="minSize" width="357" height="268"/>
                                                         <size key="maxSize" width="463" height="10000000"/>
                                                         <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <connections>
@@ -244,12 +244,23 @@ For example ^(Pswds|Photos01)$ would match volumes named "Pswds" or "Photos01" (
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="rgI-ZA-wwt">
-                                                <rect key="frame" x="342" y="1" width="16" height="288"/>
+                                                <rect key="frame" x="342" y="1" width="16" height="268"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                         </scrollView>
+                                        <button verticalHuggingPriority="750" id="Y5R-yj-cbf">
+                                            <rect key="frame" x="15" y="15" width="167" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Ignore network volumes" bezelStyle="regularSquare" imagePosition="left" inset="2" id="27y-iy-R0A">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="8" name="value" keyPath="values.SLIgnoreNetworkVolumes" id="6HY-aX-Ic6"/>
+                                            </connections>
+                                        </button>
                                         <button verticalHuggingPriority="750" id="VXK-hz-0Q5">
-                                            <rect key="frame" x="15" y="15" width="168" height="18"/>
+                                            <rect key="frame" x="15" y="35" width="168" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Use regular expressions" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tAD-kJ-B6U">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
