@@ -13,12 +13,10 @@
 
 + (void)postNotificationCenterWithTitle:(NSString *)title subtitle:(NSString *)subtitle
 {
-    if (NSClassFromString(@"NSUserNotification")) {
-        NSUserNotification *note = [[NSUserNotification alloc] init];
-        note.title = title;
-        note.subtitle = subtitle;
-        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:note];
-    }
+    NSUserNotification *note = [[NSUserNotification alloc] init];
+    note.title = title;
+    note.subtitle = subtitle;
+    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:note];
 }
 
 + (void)postVolumeMounted:(SLVolume *)volume
