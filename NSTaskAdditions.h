@@ -12,5 +12,6 @@
 @interface NSTask (NSTaskAdditions)
 
 + (NSString *)outputStringForTaskAtPath:(NSString *)taskPath arguments:(NSArray *)args encoding:(NSStringEncoding)encoding;
++ (NSString *)outputStringForTaskAtPath:(NSString *)taskPath arguments:(NSArray *)args encoding:(NSStringEncoding)encoding status:(int *)status;
 
 @end

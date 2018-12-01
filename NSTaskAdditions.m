@@ -10,7 +10,7 @@
 
 @implementation NSTask (NSTaskAdditions)
 
-+ (NSData *)outputDataForTaskAtPath:(NSString *)taskPath arguments:(NSArray *)args
++ (NSData *)outputDataForTaskAtPath:(NSString *)taskPath arguments:(NSArray *)args status:(int *)status
 {
 	NSTask *task = nil;
 	NSPipe *inPipe = nil, *outPipe = nil;
@@ -51,13 +51,21 @@
 	}
 	
 	[task waitUntilExit];
+    if (status) {
+        *status = [task terminationStatus];
+    }
 	
 	return outputData;
 }
 
 + (NSString *)outputStringForTaskAtPath:(NSString *)taskPath arguments:(NSArray *)args encoding:(NSStringEncoding)encoding
 {
-	NSData *data = [[self class] outputDataForTaskAtPath:taskPath arguments:args];
+    return [self outputStringForTaskAtPath:taskPath arguments:args encoding:encoding status:NULL];
+}
+
++ (NSString *)outputStringForTaskAtPath:(NSString *)taskPath arguments:(NSArray *)args encoding:(NSStringEncoding)encoding status:(int *)status
+{
+    NSData *data = [[self class] outputDataForTaskAtPath:taskPath arguments:args status:status];
 	if (data && [data length]) {
 		return [[NSString alloc] initWithData:data encoding:encoding];
 	}

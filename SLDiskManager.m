@@ -12,6 +12,7 @@
 #import <IOKit/kext/KextManager.h>
 #import <sys/mount.h>
 #import "SLDiskImageManager.h"
+#import "NSTaskAdditions.h"
 
 NSString * const SLDiskManagerUnmountedVolumesDidChangeNotification = @"SLDiskManagerUnmountedVolumesDidChangeNotification";
 NSString * const SLDiskManagerDidBlockMountNotification = @"SLDiskManagerDidBlockMountNotification";
@@ -363,15 +364,15 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
 static void unlockDisk(NSString *volumeKind, NSString *diskID, NSString *password)
 {
     // Execute diskutil, passing the volumeKind and the encryption password
-    NSTask *task = [[NSTask alloc] init];
-    [task setLaunchPath:@"/usr/sbin/diskutil"];
-    [task setArguments:@[ volumeKind, @"unlockVolume", diskID, @"-passphrase", password ]];
-    [task launch];
-    [task waitUntilExit];
+    int status = -1;
+    NSArray *args = @[volumeKind, @"unlockVolume", diskID, @"-passphrase", password];
+    NSString *output = [NSTask outputStringForTaskAtPath:@"/usr/sbin/diskutil" arguments:args encoding:NSUTF8StringEncoding status:&status];
     
     // In case return code is not zero, there was an error
-    if ([task terminationStatus]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"There was an error unlocking the disk", nil) defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:NSLocalizedString(@"Check that you introduced the correct password", nil)];
+    if (status != 0) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = NSLocalizedString(@"There was an error unlocking the disk", nil);
+        alert.informativeText = output;
         [alert runModal];
     }
 }
