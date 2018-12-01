@@ -372,18 +372,22 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
     NSString *volumeKind = disk.volumeKind;
     NSString *diskID = disk.diskID;
 
-    // Execute diskutil, passing the volumeKind and the encryption password
-    int status = -1;
-    NSArray *args = @[volumeKind, @"unlockVolume", diskID, @"-passphrase", password];
-    NSString *output = [NSTask outputStringForTaskAtPath:@"/usr/sbin/diskutil" arguments:args encoding:NSUTF8StringEncoding status:&status];
-    
-    // In case return code is not zero, there was an error
-    if (status != 0) {
-        NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = NSLocalizedString(@"There was an error unlocking the disk", nil);
-        alert.informativeText = output;
-        [alert runModal];
-    }
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // Execute diskutil, passing the volumeKind and the encryption password
+        int status = -1;
+        NSArray *args = @[volumeKind, @"unlockVolume", diskID, @"-passphrase", password];
+        NSString *output = [NSTask outputStringForTaskAtPath:@"/usr/sbin/diskutil" arguments:args encoding:NSUTF8StringEncoding status:&status];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // In case return code is not zero, there was an error
+            if (status != 0) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                alert.messageText = NSLocalizedString(@"There was an error unlocking the disk", nil);
+                alert.informativeText = output;
+                [alert runModal];
+            }
+        });
+    });
 }
 
 typedef void (^SLEjectHandler)(BOOL ejected);
