@@ -312,15 +312,15 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
         SecKeychainItemRef itemRef = NULL;
         
         OSStatus status = SecKeychainFindGenericPassword(
-                                                         NULL,         // Search default keychains
-                                                         (UInt32)service.length,
-                                                         [service UTF8String],
-                                                         0,
-                                                         NULL,
-                                                         &pwLength,
-                                                         &pwData,
-                                                         &itemRef      // Get a reference this time
-                                                         );
+            NULL,
+            (UInt32)service.length,
+            [service UTF8String],
+            0,
+            NULL,
+            &pwLength,
+            &pwData,
+            &itemRef
+        );
         
         if (status == errSecSuccess && pwData) {
             NSLog(@"Volume encryption password fetched successfully from the keychain");
