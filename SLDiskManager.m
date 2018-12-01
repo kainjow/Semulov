@@ -334,7 +334,9 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
             NSLog(@"Error when fetching the encryption password from the keychain: %@ Prompting the user for it.", (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL));
 
             NSAlert *alert = [NSAlert alertWithMessageText:[NSString stringWithFormat: NSLocalizedString(@"Introduce the encryption password to unlock the volume once:", nil), (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL)] defaultButton:nil alternateButton:NSLocalizedString(@"Cancel", nil) otherButton:nil informativeTextWithFormat:NSLocalizedString(@"If you want to mount an encrypted volume automatically without manually introducing the password:\na) Mount it using Disk Utility\nb) Save the password in the keychain", nil)];
-            NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 250, 24)];
+            NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSZeroRect];
+            [input sizeToFit];
+            [input setFrameSize:NSMakeSize(250, input.frame.size.height)];
             [alert setAccessoryView:input];
             
             // Set the focus to the textField, so the user can type the password right away
