@@ -305,7 +305,7 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
 - (void)mount:(SLDisk *)disk
 {
     // DiskArbitration does not seem to support encrypted disk. In order to be able to mount an encrypted disk we have to use the diskutil command
-    if (disk.encrypted) {
+    if (disk.encrypted && [self canUnlock:disk]) {
         NSString* service = disk.volumeUUID;
         
         UInt32 pwLength = 0;
@@ -330,7 +330,7 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
             SecKeychainItemFreeContent(NULL, pwData);
             
             NSString* password = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            unlockDisk(disk.volumeKind, disk.diskID, password);
+            [self unlockDisk:disk withPassword:password];
         } else {
             NSLog(@"Error when fetching the encryption password from the keychain: %@ Prompting the user for it.", (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL));
 
@@ -347,7 +347,7 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
             NSInteger button = [alert runModal];
             if (button == NSAlertDefaultReturn) {
                 [input validateEditing];
-                unlockDisk(disk.volumeKind, disk.diskID, [input stringValue]);
+                [self unlockDisk:disk withPassword:input.stringValue];
             } else {
                 NSLog(@"Unlocking disk was cancelled by the user");
             }
@@ -361,8 +361,17 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
     }
 }
 
-static void unlockDisk(NSString *volumeKind, NSString *diskID, NSString *password)
+- (BOOL)canUnlock:(SLDisk *)disk
 {
+    NSArray *unlockable = @[@"apfs", @"coreStorage"];
+    return [unlockable containsObject:disk.volumeKind];
+}
+
+- (void)unlockDisk:(SLDisk *)disk withPassword:(NSString *)password
+{
+    NSString *volumeKind = disk.volumeKind;
+    NSString *diskID = disk.diskID;
+
     // Execute diskutil, passing the volumeKind and the encryption password
     int status = -1;
     NSArray *args = @[volumeKind, @"unlockVolume", diskID, @"-passphrase", password];
