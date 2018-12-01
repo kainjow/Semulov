@@ -340,7 +340,7 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
             [alert setAccessoryView:input];
             
             // Set the focus to the textField, so the user can type the password right away
-            [[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+            [NSApp activateIgnoringOtherApps:YES];
             [[alert window] setInitialFirstResponder:input];
 
             NSInteger button = [alert runModal];
