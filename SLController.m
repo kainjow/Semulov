@@ -145,10 +145,10 @@ static inline NSString *stringOrEmpty(NSString *str) {
 		[[NSStatusBar systemStatusBar] removeStatusItem:_statusItem];
 	}
 	_statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-	[_statusItem setHighlightMode:YES];
+    ((NSButtonCell *)_statusItem.button.cell).highlightsBy = NSChangeBackgroundCellMask;
 
     _baseImage = [[NSImage imageNamed:@"Eject"] copy];
-    [_statusItem setAlternateImage:[self colorImage:_baseImage withColor:[NSColor whiteColor]]];
+    _statusItem.button.alternateImage = [self colorImage:_baseImage withColor:[NSColor whiteColor]];
     NSMenu *menu = [[NSMenu alloc] init];
     menu.delegate = self;
     [_statusItem setMenu:menu];
@@ -187,7 +187,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
     if (iconPattern && iconColor && [iconPattern length] > 0) {
         for (SLVolume *vol in _volumes) {
             if ([vol.name rangeOfString:iconPattern options:NSCaseInsensitiveSearch|NSRegularExpressionSearch].location != NSNotFound) {
-                [_statusItem setImage:[self colorImage:_baseImage withColor:iconColor]];
+                _statusItem.button.image = [self colorImage:_baseImage withColor:iconColor];
                 setDefault = NO;
                 break;
             }
@@ -196,7 +196,7 @@ static inline NSString *stringOrEmpty(NSString *str) {
     if (setDefault) {
         NSImage *img = [_baseImage copy];
         img.template = YES;
-        [_statusItem setImage:img];
+        _statusItem.button.image = img;
     }
 }
 
@@ -561,9 +561,11 @@ static inline NSString *stringOrEmpty(NSString *str) {
     }
     
     if (showVolumesNumber) {
-        [_statusItem setTitle:[NSString stringWithFormat:@"%lu", (unsigned long)volumesToDisplay.count]];
+        _statusItem.button.title = [NSString stringWithFormat:@"%lu", (unsigned long)volumesToDisplay.count];
+        _statusItem.button.imagePosition = NSImageLeft;
     } else {
-        [_statusItem setTitle:nil];
+        _statusItem.button.title = @"";
+        _statusItem.button.imagePosition = NSImageOnly;
     }
     
 	NSMenuItem *slMenuItem = [[NSMenuItem alloc] initWithTitle:NSRunningApplication.currentApplication.localizedName action:nil keyEquivalent:@""];
