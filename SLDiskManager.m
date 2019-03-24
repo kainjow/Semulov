@@ -334,7 +334,10 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
         } else {
             NSLog(@"Error when fetching the encryption password from the keychain: %@ Prompting the user for it.", (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL));
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             NSAlert *alert = [NSAlert alertWithMessageText:[NSString stringWithFormat: NSLocalizedString(@"Introduce the encryption password to unlock the volume once:", nil), (__bridge_transfer NSString *)SecCopyErrorMessageString(status, NULL)] defaultButton:nil alternateButton:NSLocalizedString(@"Cancel", nil) otherButton:nil informativeTextWithFormat:NSLocalizedString(@"If you want to mount an encrypted volume automatically without manually introducing the password:\na) Mount it using Disk Utility\nb) Save the password in the keychain", nil)];
+#pragma clang diagnostic pop
             NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSZeroRect];
             [input sizeToFit];
             [input setFrameSize:NSMakeSize(250, input.frame.size.height)];
@@ -345,7 +348,11 @@ static void diskMountCallback(DADiskRef disk, DADissenterRef dissenter, void *co
             [[alert window] setInitialFirstResponder:input];
 
             NSInteger button = [alert runModal];
-            if (button == NSAlertDefaultReturn) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            const BOOL clickedOK = button == NSAlertDefaultReturn;
+#pragma clang diagnostic pop
+            if (clickedOK) {
                 [input validateEditing];
                 [self unlockDisk:disk withPassword:input.stringValue];
             } else {
