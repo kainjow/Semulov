@@ -6,6 +6,21 @@
 	objectVersion = 51;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		A5B58DD8227F8C0C0050DB40 /* Build Dependencies */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A5B58DDB227F8C0C0050DB40 /* Build configuration list for PBXAggregateTarget "Build Dependencies" */;
+			buildPhases = (
+				A5B58DDC227F8C120050DB40 /* build_dependencies.rb
+ */,
+			);
+			dependencies = (
+			);
+			name = "Build Dependencies";
+			productName = "Build Dependencies";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		414805DD200AF50600EA8E8F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414805CC200AF50600EA8E8F /* Security.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -27,24 +42,35 @@
 		A58DAA70197C7B1C00DCC2CA /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58DAA6F197C7B1C00DCC2CA /* Carbon.framework */; };
 		A5A9C2FA1B811822005FD70C /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = A5A9C2F91B811822005FD70C /* dsa_pub.pem */; };
 		A5D305A8203A847A001C482D /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; };
-		A5D305A9203A847A001C482D /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A5D305A9203A847A001C482D /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305A6203A8477001C482D /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D305AD203A856E001C482D /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; };
-		A5D305AE203A856E001C482D /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A5D305AE203A856E001C482D /* MASShortcut.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = A5D305AB203A8565001C482D /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D305B1203A9141001C482D /* NSApplication+LoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D305B0203A9141001C482D /* NSApplication+LoginItems.m */; };
 		A5D71EA11982AB21008E1B7A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5D71EA01982AB21008E1B7A /* Images.xcassets */; };
 		A5D982960C8B7F7B002A802F /* Eject.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A5D982940C8B7F7B002A802F /* Eject.pdf */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A5B58DDD227F8C210050DB40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A5B58DD8227F8C0C0050DB40;
+			remoteInfo = "Build Dependencies";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
-		A582C1BA198D52A000124F73 /* CopyFiles */ = {
+		A582C1BA198D52A000124F73 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A5D305AE203A856E001C482D /* MASShortcut.framework in CopyFiles */,
-				A5D305A9203A847A001C482D /* Sparkle.framework in CopyFiles */,
+				A5D305AE203A856E001C482D /* MASShortcut.framework in Copy Frameworks */,
+				A5D305A9203A847A001C482D /* Sparkle.framework in Copy Frameworks */,
 			);
+			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -194,16 +220,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Semulov" */;
 			buildPhases = (
-				A5D305AA203A84F2001C482D /* Build Dependencies */,
 				A58BD4C11410017D007E9DF9 /* Run genstrings */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				A582C1BA198D52A000124F73 /* CopyFiles */,
+				A582C1BA198D52A000124F73 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A5B58DDE227F8C210050DB40 /* PBXTargetDependency */,
 			);
 			name = Semulov;
 			productInstallPath = "$(HOME)/Applications";
@@ -217,11 +243,15 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				DefaultBuildSystemTypeForWorkspace = Original;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Kevin Wojniak";
 				TargetAttributes = {
 					8D1107260486CEB800E47090 = {
 						ProvisioningStyle = Manual;
+					};
+					A5B58DD8227F8C0C0050DB40 = {
+						CreatedOnToolsVersion = 10.2.1;
 					};
 				};
 			};
@@ -241,6 +271,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Semulov */,
+				A5B58DD8227F8C0C0050DB40 /* Build Dependencies */,
 			);
 		};
 /* End PBXProject section */
@@ -278,19 +309,24 @@
 			shellPath = /bin/sh;
 			shellScript = "genstrings -o English.lproj *.m";
 		};
-		A5D305AA203A84F2001C482D /* Build Dependencies */ = {
+		A5B58DDC227F8C120050DB40 /* build_dependencies.rb
+ */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
 			);
-			name = "Build Dependencies";
+			name = "build_dependencies.rb\n";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ruby ${PROJECT_DIR}/build_dependencies.rb";
+			shellScript = "ruby ${PROJECT_DIR}/build_dependencies.rb\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -312,6 +348,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A5B58DDE227F8C210050DB40 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A5B58DD8227F8C0C0050DB40 /* Build Dependencies */;
+			targetProxy = A5B58DDD227F8C210050DB40 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
@@ -349,6 +393,22 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A5B58DD9227F8C0C0050DB40 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A5B58DDA227F8C0C0050DB40 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -492,6 +552,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A5B58DDB227F8C0C0050DB40 /* Build configuration list for PBXAggregateTarget "Build Dependencies" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5B58DD9227F8C0C0050DB40 /* Debug */,
+				A5B58DDA227F8C0C0050DB40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Semulov" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
