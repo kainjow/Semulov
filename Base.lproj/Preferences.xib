@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SLPreferencesController">
             <connections>
+                <outlet property="shortcutView" destination="c6z-8n-dZI" id="5BY-Eq-T7H"/>
                 <outlet property="window" destination="5" id="10"/>
             </connections>
         </customObject>
