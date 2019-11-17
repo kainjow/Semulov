@@ -321,6 +321,8 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(PROJECT_DIR)/Dependencies/NSAppLoginItems/Source/NSApplication+LoginItems.m",
+				"$(PROJECT_DIR)/Dependencies/NSAppLoginItems/Source/NSApplication+LoginItems.h",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
