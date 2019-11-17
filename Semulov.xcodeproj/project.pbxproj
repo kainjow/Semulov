@@ -11,8 +11,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = A5B58DDB227F8C0C0050DB40 /* Build configuration list for PBXAggregateTarget "Build Dependencies" */;
 			buildPhases = (
-				A5B58DDC227F8C120050DB40 /* build_dependencies.rb
- */,
+				A5B58DDC227F8C120050DB40 /* build_dependencies.rb */,
 			);
 			dependencies = (
 			);
@@ -309,8 +308,7 @@
 			shellPath = /bin/sh;
 			shellScript = "genstrings -o English.lproj *.m";
 		};
-		A5B58DDC227F8C120050DB40 /* build_dependencies.rb
- */ = {
+		A5B58DDC227F8C120050DB40 /* build_dependencies.rb */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -319,7 +317,7 @@
 			);
 			inputPaths = (
 			);
-			name = "build_dependencies.rb\n";
+			name = build_dependencies.rb;
 			outputFileListPaths = (
 			);
 			outputPaths = (
