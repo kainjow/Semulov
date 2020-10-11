@@ -1,6 +1,6 @@
 - name: Sparkle
   git_url: 'https://github.com/sparkle-project/Sparkle.git'
-  git_commit: '1.20.0'
+  git_commit: '1.23.0'
 
 - name: MASShortcut
   git_url: 'https://github.com/shpakovski/MASShortcut.git'
