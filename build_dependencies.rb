@@ -8,7 +8,7 @@ require 'yaml'
 def build(base_dir, configuration, dep)
 	root_dir = File.join(base_dir, dep.name)
 	build_dir = File.join(root_dir, 'Build')
-	
+
 	# If the source files already exist, do nothing
 	source_dir = File.join(root_dir, 'Source')
 	if dep.files
@@ -19,12 +19,12 @@ def build(base_dir, configuration, dep)
 		end
 		return if all_files_exist
 	end
-	
+
 	# If the output file already exists, do nothing
 	output = dep.output != nil ? dep.output : dep.name + '.framework'
 	output_path = File.join(build_dir, configuration, output)
 	return if File.exist?(output_path)
-	
+
 	# Fetch the source
 	FileUtils.rm_rf(source_dir)
 	abort if !system(
@@ -32,10 +32,11 @@ def build(base_dir, configuration, dep)
 		'clone',
 		'--branch', dep.git_commit,
 		'--depth', '1',
+		'--recurse-submodules',
 		dep.git_url,
 		source_dir
 	)
-	
+
 	# Build the source, only if no files are specified
 	if !dep.files
 		FileUtils.rm_rf(build_dir)
@@ -50,7 +51,7 @@ def build(base_dir, configuration, dep)
 				'SYMROOT=' + build_dir,
 			)
 		end
-	
+
 		# Remove source
 		FileUtils.rm_rf(source_dir)
 	end
