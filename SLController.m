@@ -16,6 +16,7 @@
 #import <MASShortcut/Shortcut.h>
 #import "SLPreferenceKeys.h"
 #import <Sparkle/Sparkle.h>
+#include "SLListCulprits.h"
 
 static inline NSString *stringOrEmpty(NSString *str) {
     return str ? str : @"";
@@ -667,7 +668,10 @@ static inline NSString *stringOrEmpty(NSString *str) {
             NSError *err = nil;
             if (![[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:[NSURL fileURLWithPath:volume.path] error:&err] && uiFeedback) {
                 NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Failed to unmount %@.", nil), volume.name];
-                [self runAlertWithTitle:title message:[err localizedDescription]];
+                NSString* message = [NSString stringWithFormat:@"%@\n%@",
+                                     [err localizedDescription],
+                                     listCulprits(volume.name)];
+                [self runAlertWithTitle:title message:message];
             }
             return;
         }
@@ -688,7 +692,9 @@ static inline NSString *stringOrEmpty(NSString *str) {
                 diskName = disk.diskID;
             }
             NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Failed to unmount %@.", nil), diskName];
-            [self runAlertWithTitle:title message:nil];
+            NSString* message = [NSString stringWithFormat:@"Possible culprits:\n%@",
+                                 listCulprits(diskName)];
+            [self runAlertWithTitle:title message:message];
         }
     }];
 }
