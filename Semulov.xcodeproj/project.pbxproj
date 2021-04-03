@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		04DE4A7A261780FC005C2008 /* SLListCulprits.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE4A79261780FC005C2008 /* SLListCulprits.m */; };
 		414805DD200AF50600EA8E8F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414805CC200AF50600EA8E8F /* Security.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -75,6 +76,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04DE4A78261780FC005C2008 /* SLListCulprits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLListCulprits.h; sourceTree = "<group>"; };
+		04DE4A79261780FC005C2008 /* SLListCulprits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLListCulprits.m; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -133,6 +136,8 @@
 		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				04DE4A78261780FC005C2008 /* SLListCulprits.h */,
+				04DE4A79261780FC005C2008 /* SLListCulprits.m */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				A5455F8A0AFE64C6001F61C8 /* SLController.h */,
 				A5455F8B0AFE64C6001F61C8 /* SLController.m */,
@@ -341,6 +346,7 @@
 				A5455FE70AFE66A1001F61C8 /* SLVolume.m in Sources */,
 				A54561870AFE720D001F61C8 /* SLNotificationController.m in Sources */,
 				A58BD52014100451007E9DF9 /* SLDiskManager.m in Sources */,
+				04DE4A7A261780FC005C2008 /* SLListCulprits.m in Sources */,
 				A5779DD5144DE76E00FB1D37 /* NSTaskAdditions.m in Sources */,
 				A5D305B1203A9141001C482D /* NSApplication+LoginItems.m in Sources */,
 				A58DAA47197C4C7100DCC2CA /* SLDiskImageManager.m in Sources */,
